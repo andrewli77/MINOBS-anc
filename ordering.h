@@ -2,7 +2,7 @@
 #define ORDERING_H 
 #include<iostream>
 #include<vector>
-#include"instance.h"
+#include "instance.h"
 #include "types.h"
 class Ordering {
   public:

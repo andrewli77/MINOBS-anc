@@ -39,6 +39,16 @@ Instance::Instance(std::string fileName) {
       v.resetParentIds();
       v.initParentsWithVar();
       vars[varId] = v;
+
+
+      file >> m;
+      ancestralConstraints.resize(m);
+      
+      for (int i=0; i < m; i++) {
+        int a, b;
+        file >> a >> b;
+        ancestralConstraints.push_back(std::make_pair(a, b));
+      } 
     } 
   } else {
     throw "Could not open file";
@@ -50,8 +60,16 @@ int Instance::getN() const {
   return n;
 }
 
+int Instance::getM() const {
+  return m;
+}
+
 const Variable &Instance::getVar(int i) const {
   return vars[i];
+}
+
+const Ancestral &Instance::getAncestral(int i) const {
+  return ancestralConstraints[i];
 }
 
 std::ostream& operator<<(std::ostream &os, const Instance& I) {
@@ -61,3 +79,4 @@ std::ostream& operator<<(std::ostream &os, const Instance& I) {
   }
   return os;
 }
+
