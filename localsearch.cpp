@@ -9,7 +9,7 @@
 #include "movetabulist.h"
 #include "swaptabulist.h"
 
-LocalSearch::LocalSearch(const Instance &instance) : instance(instance) { 
+LocalSearch::LocalSearch(Instance &instance) : instance(instance) { 
 }
 
 const ParentSet &LocalSearch::bestParent(const Ordering &ordering, const Types::Bitset pred, int idx) const {
@@ -79,6 +79,7 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) const {
 
 // New code
 Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
+
   if (!consistentWithAncestral(ordering)) {
     return 223372036854775807LL;
   }
@@ -93,7 +94,164 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
     scores[ordering.get(i)] = p.getScore();
     pred[ordering.get(i)] = 1;
   }
+
+  modifiedDAGScore(ordering, parents, score);
+
   return score;
+}
+
+
+bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y) const {
+  if (x == y) {
+    return true;
+  }
+
+  const Variable &yVar = instance.getVar(y);
+  const ParentSet &p = yVar.getParent(parents[y]);
+  const std::vector<int> &pars = p.getParentsVec();
+
+  for (int i=0; i < pars.size(); i++) {
+    if (hasDipath(parents, x, pars[i])) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+// i-th constraint
+// if des is true, fill the descendants property, else fill the ancestors property
+void LocalSearch::dfs(std::vector<int> *G, int node, int i, bool des, int *visited) const {
+  Variable &var = instance.getVar(node);
+
+  if (visited[node]) {
+    return;
+  } else {
+    visited[node] = true;
+  }
+
+  if (des) {
+    var.addDescendant(i);
+  } else {
+    var.addAncestor(i);
+  }
+
+  for (int j = 0; j < G[node].size(); j++) {
+    dfs(G, G[node][j], i, des, visited);
+  }
+}
+
+// Given a set of constraints, a (feasible) parent set p and it's corresponding child node,
+// return the set of constraints satisfied by replacing the current parent set of var with p.
+Types::Bitset LocalSearch::csat(const std::vector<Ancestral> &constraints, const ParentSet &p, const ParentSet &oldP, const Variable &var) const {
+  Types::Bitset sat(constraints.size(), 0);
+
+  for (int w=0; w < instance.getN(); w++) {
+    if (p.hasElement(w) && !oldP.hasElement(w)) {
+      const std::vector<int> &anc = instance.getVar(w).getAncestors();
+      for (int j = 0; j < anc.size(); j++) {
+        if (var.hasDescendant(anc[j])) {
+          sat[anc[j]] = 1;
+        }
+      }
+    }
+  }
+
+  return sat;
+}
+
+
+Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, Types::Score score) const {
+  int n = instance.getN(), m = instance.getM();
+
+  // Compute the set of unsatisfied ancestral constraints.
+  std::vector<Ancestral> constraints;
+  std::vector<int> X, Y; // X is the set of nodes on the LHS of a constraint
+                         // Y is the set of nodes on the RHS of a constraint
+
+  for (int i=0; i < m; i++) {
+    const Ancestral &cons = instance.getAncestral(i);
+    if (!hasDipath(parents, cons.first, cons.second)) {
+      constraints.push_back(cons);
+      std::cout << "Constraint not satisfied: " << cons.first << " " << cons.second << std::endl;
+      X.push_back(cons.first);
+      Y.push_back(cons.second);
+    }
+  }
+
+  m = constraints.size();
+
+  if (m == 0) {
+    return score;
+  }
+
+
+  // Compute the ancestors/descendants properties for each vertex 
+  std::vector<int> graph[n], rgraph[n]; // The arcs and reverse arcs of G
+
+  for (int i=0; i < n; i++) {
+    Variable &var = instance.getVar(i);
+    const ParentSet &p =  var.getParent(parents[i]);
+    const std::vector<int> &pars = p.getParentsVec();
+    for (int j=0; j < pars.size(); j++) {
+      graph[pars[j]].push_back(i);
+      rgraph[i].push_back(pars[j]);
+    }
+
+    var.clearAncestry();
+  }
+
+  int visited[n];
+  for (int i=0; i < n; i++) visited[i] = false;
+
+  for (int i=0; i < m; i++) {
+    dfs(graph, X[i], i, false, visited);
+  }
+
+  for (int i=0; i < n; i++) visited[i] = false;
+  for (int i=0; i < m; i++) {
+    dfs(rgraph, Y[i], i, true, visited);
+  }
+
+
+  // Find all feasible parent sets and their associated scores.
+  // A parent set for v is *feasible* iff p respects the ordering and is a 
+  // strict superset of the current parent set for v.
+  Types::Bitset pred(n, 0);
+
+  for (int i=0; i < n; i++) {
+    int cur = ordering.get(i);
+    const Variable &var = instance.getVar(cur);
+
+    if (var.numDescendants() != 0) {
+      const ParentSet &curPar = var.getParent(parents[cur]);
+      Types::Bitset cp(n, 0);
+
+      assert(curPar.subsetOf(pred));
+
+      for (int j=0; j < curPar.size(); j++) {
+        cp[curPar.getParentsVec()[j]] = 1;
+      }
+
+      for (int j=0; j < var.numParents(); j++) {
+        const ParentSet &p = var.getParent(j);
+
+        if (p.size() > curPar.size() && p.supersetOf(cp) && p.subsetOf(pred)) {
+          // p is feasible
+          std::cout << "FEASIBLE" << std::endl;
+          // Compute the constraints satisfied by p
+          Types::Bitset satisfied = csat(constraints, p, curPar, var);
+
+          std::cout << satisfied << " " << " Score: " << p.getScore() - curPar.getScore() << std::endl;
+        } 
+      }
+    }
+    pred[ordering.get(i)] = 1;
+  }
+
+  return score;
+
 }
 
 Types::Score LocalSearch::findBestScoreRange(const Ordering &o, int start, int end) {
@@ -405,6 +563,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   int steps = 0;
   std::vector<int> positions(n);
   Ordering cur(ordering);
+
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   std::iota(positions.begin(), positions.end(), 0);
   DBG("Inits: " << cur);
@@ -554,5 +713,6 @@ void LocalSearch::checkSolution(const Ordering &o) {
   std::cout << "Total Score: " << scoreFromScores << " " << scoreFromParents << std::endl;
   std::string validStr = valid ? "Good" : "Bad";
   std::cout << "Validity Check: " << validStr << std::endl;
-  std::cout << o << std::endl;
+
+  modifiedDAGScore(o, parents, scoreFromScores);
 }

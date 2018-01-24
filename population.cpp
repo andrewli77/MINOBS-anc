@@ -176,7 +176,7 @@ Ordering Population::crossoverCX(const Ordering &o1, const Ordering &o2) {
 
 
 
-void Population::diversify(int numKeep, const Instance &instance) {
+void Population::diversify(int numKeep, Instance &instance) {
   std::vector<SearchResult> diversified;
   int size = getSize();
   numKeep = numKeep <= size ? numKeep : size;

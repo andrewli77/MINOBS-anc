@@ -1,5 +1,6 @@
 #include "instance.h"
 #include <fstream>
+#include <iostream>
 #include "debug.h"
 #include<boost/dynamic_bitset.hpp>
 
@@ -39,17 +40,14 @@ Instance::Instance(std::string fileName) {
       v.resetParentIds();
       v.initParentsWithVar();
       vars[varId] = v;
-
-
-      file >> m;
-      ancestralConstraints.resize(m);
-      
-      for (int i=0; i < m; i++) {
-        int a, b;
-        file >> a >> b;
-        ancestralConstraints.push_back(std::make_pair(a, b));
-      } 
-    } 
+    }
+    file >> m;
+    ancestralConstraints.resize(m);
+    for (int i=0; i < m; i++) {
+      int a, b;
+      file >> a >> b;
+      ancestralConstraints[i] = std::make_pair(a, b);
+    }
   } else {
     throw "Could not open file";
   }
@@ -64,7 +62,7 @@ int Instance::getM() const {
   return m;
 }
 
-const Variable &Instance::getVar(int i) const {
+Variable &Instance::getVar(int i) {
   return vars[i];
 }
 

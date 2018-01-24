@@ -24,12 +24,20 @@ bool ParentSet::subsetOf(const Types::Bitset &set) const {
   return (set & parents) == parents;
 }
 
+bool ParentSet::supersetOf(const Types::Bitset &set) const {
+  return (set & parents) == set;
+}
+
 void ParentSet::setId(const int &i) {
   id = i;
 }
 
 int ParentSet::getId() const {
   return id;
+}
+
+int ParentSet::size() const {
+  return parentsVec.size();
 }
 
 const std::vector<int> &ParentSet::getParentsVec() const {

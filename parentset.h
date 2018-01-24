@@ -11,8 +11,10 @@ class ParentSet {
     Types::Score getScore() const;
     bool hasElement(int k) const;
     bool subsetOf(const Types::Bitset &set) const;
+    bool supersetOf(const Types::Bitset &set) const;
     int getVar() const;
     int getId() const;
+    int size() const;
     void setId(const int &i);
     friend std::ostream& operator<<(std::ostream &os, const ParentSet& p);
     const std::vector<int> &getParentsVec() const;

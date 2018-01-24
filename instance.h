@@ -12,7 +12,7 @@ class Instance {
     Instance(std::string fileName);
     int getN() const;
     int getM() const;
-    const Variable &getVar(int i) const;
+    Variable &getVar(int i);
     const Ancestral &getAncestral(int i) const;
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
     

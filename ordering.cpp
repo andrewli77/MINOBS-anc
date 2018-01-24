@@ -23,7 +23,7 @@ void Ordering::swap(const int &i, const int &j) {
   std::swap(ordering[i], ordering[j]);
 }
 
-Ordering Ordering::greedyOrdering(const Instance &instance, int greediness) {
+Ordering Ordering::greedyOrdering(Instance &instance, int greediness) {
   int n = instance.getN();
   Ordering o(n);
   for (int i = 0; i < n; i++) {
@@ -33,7 +33,7 @@ Ordering Ordering::greedyOrdering(const Instance &instance, int greediness) {
   return o;
 }
 
-Ordering Ordering::greedyOrdering(const Instance &instance) {
+Ordering Ordering::greedyOrdering(Instance &instance) {
   int greediness = 10;
   int n = instance.getN();
   Ordering o(n);
@@ -44,7 +44,7 @@ Ordering Ordering::greedyOrdering(const Instance &instance) {
   return o;
 }
 
-Ordering Ordering::randomOrdering(const Instance &instance) {
+Ordering Ordering::randomOrdering(Instance &instance) {
   int greediness = 10;
   int n = instance.getN();
   std::vector<int> shuffled;
@@ -59,7 +59,7 @@ Ordering Ordering::randomOrdering(const Instance &instance) {
   return o;
 }
 
-int Ordering::findSmallestConsistentWithOrdering(const int &m, const Instance &instance) {
+int Ordering::findSmallestConsistentWithOrdering(const int &m, Instance &instance) {
   int n = instance.getN();
   Types::Bitset current(n, 0);
   // Flag nodes that are already seen
@@ -84,7 +84,7 @@ int Ordering::findSmallestConsistentWithOrdering(const int &m, const Instance &i
   return minVar;
 }
 
-int Ordering::findSmallestConsistentWithOrderingRandom(const int &m, const Instance &instance, int MAX_HEAP_SIZE) {
+int Ordering::findSmallestConsistentWithOrderingRandom(const int &m, Instance &instance, int MAX_HEAP_SIZE) {
   int n = instance.getN();
   std::vector<const ParentSet*> heap;
 

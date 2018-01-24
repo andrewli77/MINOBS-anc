@@ -24,7 +24,7 @@ class Population {
     void mutate(int NUM_MUTATIONS, int MUTATION_POWER, std::vector<SearchResult> &offspring);
     void filterBest(int n);
     Types::Score getAverageFitness();
-    void diversify(int numKeep, const Instance &instance);
+    void diversify(int numKeep, Instance &instance);
     Ordering crossoverRK(const Ordering &o1, const Ordering &o2);
     void append(const std::vector<SearchResult> &offspring);
   private:

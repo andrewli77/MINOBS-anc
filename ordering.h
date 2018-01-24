@@ -12,11 +12,11 @@ class Ordering {
     int get(const int &index) const;
     friend std::ostream& operator<<(std::ostream &os, const Ordering& o);
     void swap(const int &i, const int &j);
-    static Ordering greedyOrdering(const Instance &instance);
-    static Ordering greedyOrdering(const Instance &instance, int greediness);
-    static Ordering randomOrdering(const Instance &instance);
-    int findSmallestConsistentWithOrdering(const int &i, const Instance &instance);
-    int findSmallestConsistentWithOrderingRandom(const int &i, const Instance &instance, int greediness);
+    static Ordering greedyOrdering(Instance &instance);
+    static Ordering greedyOrdering(Instance &instance, int greediness);
+    static Ordering randomOrdering(Instance &instance);
+    int findSmallestConsistentWithOrdering(const int &i, Instance &instance);
+    int findSmallestConsistentWithOrderingRandom(const int &i, Instance &instance, int greediness);
     void insert(const int &i, const int &j);
     void perturb(int PERTURB_FACTOR);
     int getSize() const;
