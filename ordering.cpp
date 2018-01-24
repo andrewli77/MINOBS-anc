@@ -46,17 +46,37 @@ Ordering Ordering::greedyOrdering(Instance &instance) {
 
 Ordering Ordering::randomOrdering(Instance &instance) {
   int greediness = 10;
-  int n = instance.getN();
+  int n = instance.getN(), m = instance.getM();
   std::vector<int> shuffled;
   for (int i = 0; i < n; i++) {
     shuffled.push_back(i);
   }
-  std::random_shuffle(shuffled.begin(), shuffled.end());
-  Ordering o(n);
-  for (int i = 0; i < n; i++) {
-    o.set(i, shuffled[i]);
+
+  // Add a while loop so that we only start with valid orderings.
+  // Note: make this better when adding topological constraints.
+  while (true) {
+    std::random_shuffle(shuffled.begin(), shuffled.end());
+    Ordering o(n);
+    for (int i = 0; i < n; i++) {
+      o.set(i, shuffled[i]);
+    }
+
+    bool sat = true;
+    int pos[n];
+    for (int i=0; i < n; i++) {
+      pos[o.get(i)] = i;
+    }
+
+    for (int i=0; i < m; i++) {
+      int x = instance.getAncestral(i).first, y = instance.getAncestral(i).second;
+      if (pos[x] > pos[y]) {
+        sat = false;
+        break;
+      }
+    }
+
+    if (sat) return o;
   }
-  return o;
 }
 
 int Ordering::findSmallestConsistentWithOrdering(const int &m, Instance &instance) {
