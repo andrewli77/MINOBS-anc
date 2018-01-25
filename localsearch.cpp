@@ -219,58 +219,6 @@ Types::Score LocalSearch::findBestScoreRange(const Ordering &o, int start, int e
   return curScore;
 }
 
-// A particularily efficient implementation of recalculating swap score
-SwapResult LocalSearch::findBestScoreSwap(
-const Ordering &ordering, int i, const std::vector<int> &parents, Types::Bitset &pred)
-{
-  int n = instance.getN();
-  int j = i + 1;
-  Types::Score curScore = 0;
-  int aVarId = ordering.get(i);
-  int bVarId = ordering.get(j);
-  const Variable &a = instance.getVar(aVarId);
-  const Variable &b = instance.getVar(bVarId);
-  const ParentSet &b_0 = b.getParent(parents[bVarId]);
-  const ParentSet &a_0 = a.getParent(parents[aVarId]);
-  int aNewParentSetId = -1;
-  int bNewParentSetId = -1;
-  Types::Score newBScore = -1LL;
-  Types::Score newAScore = -1LL;
-  if (b_0.hasElement(aVarId)) {
-    
-    const ParentSet &bNew = bestParentVar(pred, b);
-    newBScore = bNew.getScore();
-    bNewParentSetId = bNew.getId();
-    //DBG("Collision detected, found new parent set " << bNew.getId() << " for " << bVarId);
-  } else {
-    //DBG("No collision detected, reusing old parent set " << b_0.getId() << " for " << bVarId);
-    newBScore = b_0.getScore();
-    bNewParentSetId = b_0.getId();
-  }
-  pred[bVarId] = 1;
-
-  if (a_0.getId() != 0) {
-    const ParentSet *aNew = bestParentVarWithParent(pred, a, b, a_0.getScore());
-    if (aNew == NULL || aNew->getScore() > a_0.getScore()) {
-      //DBG("No new parent sets or none improving for " << aVarId);
-      newAScore = a_0.getScore();
-      aNewParentSetId = a_0.getId();
-    } else {
-      //DBG("Found improving parent set " << aNew->getId() << " including " << bVarId << " for " << aVarId);
-      newAScore = aNew->getScore();
-      aNewParentSetId = aNew->getId();
-    }
-  } else {
-    //DBG("Optimal parent for " << aVarId << " already found.");
-    newAScore = a_0.getScore();
-    aNewParentSetId = a_0.getId();
-  }
-  //DBG("A Var ID");
-  pred[bVarId] = 0;
-
-  return SwapResult(newBScore, newAScore, bNewParentSetId, aNewParentSetId);
-}
-
 SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   bool improving = false;
   int n = instance.getN();
