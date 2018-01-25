@@ -9,6 +9,11 @@
 #include "movetabulist.h"
 #include "swaptabulist.h"
 
+int LocalSearch::hits = 0;
+int LocalSearch::tries = 0;
+Types::Score LocalSearch::scoreDiff = 0;
+
+
 LocalSearch::LocalSearch(Instance &instance) : instance(instance) { 
 }
 
@@ -80,11 +85,6 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) const {
 // New code
 Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
-
-  if (!consistentWithAncestral(ordering)) {
-    return 223372036854775807LL;
-  }
-
   
   Types::Bitset pred(n, 0);
   Types::Score score = 0;
@@ -96,37 +96,63 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
     pred[ordering.get(i)] = 1;
   }
 
-  if (m == 0) {
-    return score;
-  }
-  return modifiedDAGScore(ordering, parents, scores);
-}
-
-// CAN BE OPTIMIZED
-bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y) const {
-  if (x == y) {
-    return true;
-  }
-
-  const Variable &yVar = instance.getVar(y);
-  const ParentSet &p = yVar.getParent(parents[y]);
-  const std::vector<int> &pars = p.getParentsVec();
-
-  for (int i=0; i < pars.size(); i++) {
-    if (hasDipath(parents, x, pars[i])) {
-      return true;
+  if (consistentWithAncestral(ordering) && m != 0) {
+    Types::Score modScore = modifiedDAGScore(ordering, parents, scores);
+    if (modScore != 223372036854775807LL) {
+      scoreDiff += modScore - score;
     }
   }
 
-  return false;
+  return score;
 }
 
-int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const {
+// CAN BE OPTIMIZED
+bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y, const Ordering &ordering) const {
+  if (x == y) return true;
+  int n = instance.getN();
+
+  bool reachable[n];
+  int posx, posy;
+
+  for (int i=0; i < n; i++) {
+    reachable[i] = false;
+    if (ordering.get(i) == x) {
+      posx = i;
+    } else if (ordering.get(i) == y) {
+      posy = i;
+    }
+
+  }
+
+  reachable[y] = true;
+  for (int i = posy; i > posx; i--) {
+    int cur = ordering.get(i);
+    if (!reachable[cur]) {
+      continue;
+    }
+
+    const Variable &var = instance.getVar(cur);
+
+    const ParentSet &p = var.getParent(parents[cur]);
+    const std::vector<int> &pars = p.getParentsVec();
+    int numParents = p.size();
+
+    for (int j = 0; j < numParents; j++) {
+      reachable[pars[j]] = true;
+    }
+  }
+
+
+  return reachable[x];
+
+}
+
+int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const Ordering &o) const {
   int n = instance.getN(), m = instance.getM(), count = 0;
 
   for (int i=0; i < m; i++) {
     const Ancestral &cons = instance.getAncestral(i);
-    if (hasDipath(parents, cons.first, cons.second)) {
+    if (hasDipath(parents, cons.first, cons.second, o)) {
       count++;
     }
   }
@@ -135,8 +161,10 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const 
 }
 
 
-Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
+Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
+
+  tries++;
 
   for (int iter = 0; iter < m * 3; iter++) {
     // Consider all feasible parent sets
@@ -144,7 +172,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
     Types::Bitset pred(n, 0);
     double bestScore = 223372036854775807;
     std::vector<int> bestGraph = parents;
-    int curNumSat = numConstraintsSatisfied(parents);
+    int curNumSat = numConstraintsSatisfied(parents, ordering);
 
     //std::cout << "Constraints satisfied: " << curNumSat << std::endl;
     if (curNumSat == m) {
@@ -153,9 +181,10 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
       Types::Score finalSc = 0LL;
       for (int i=0; i<n; i++) {
         finalSc += instance.getVar(i).getParent(parents[i]).getScore();
-        scores[i] = instance.getVar(i).getParent(parents[i]).getScore();
+        //scores[i] = instance.getVar(i).getParent(parents[i]).getScore();
       }
 
+      hits++;
       return finalSc;
     }
 
@@ -172,7 +201,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
           int oldPar = parents[cur];
           parents[cur] = j;
 
-          int numSat = numConstraintsSatisfied(parents) - curNumSat;
+          int numSat = numConstraintsSatisfied(parents, ordering) - curNumSat;
           Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
 
           double adjustedSc;
@@ -316,6 +345,8 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     population.addSpecimen(o);
   }
   std::cout << "Done generating initial population" << std::endl;
+
+  int iters = 0;
   do {
     //std::cout << "Time: " << rr.check() << " Starting generation " << numGenerations << std::endl;
     //DBG(population);
@@ -348,7 +379,9 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       best = curBest;
     }
     numGenerations++;
-  } while (rr.check() < cutoffTime);
+    iters++;
+    std::cout << iters << std::endl;
+  } while (iters < 5); //rr.check() < cutoffTime);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -386,9 +419,23 @@ void LocalSearch::checkSolution(const Ordering &o) {
   std::string validStr = valid ? "Good" : "Bad";
   std::cout << "Validity Check: " << validStr << std::endl;
 
+/*
   if (numConstraintsSatisfied(parents) == m) {
     std::cout << "Ancestral constraints check: Good" << std::endl;
   } else {
     std::cout << "Ancestral constraints check: Bad" << std::endl;
   }
+*/
+  std::cout << "Hits: " << hits << std::endl;
+  std::cout << "Tries: " << tries << std::endl;
+  std::cout << "Hit rate: " << (double)hits/tries << std::endl;
+
+  std::cout << "Average score difference: ";
+  if (hits != 0) {
+    std::cout << (double)scoreDiff/hits << std::endl;
+  } else {
+    std::cout << "N.A." << std::endl;
+  }
+  
+
 }

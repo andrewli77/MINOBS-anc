@@ -52,6 +52,14 @@ Ordering Ordering::randomOrdering(Instance &instance) {
     shuffled.push_back(i);
   }
 
+  std::random_shuffle(shuffled.begin(), shuffled.end());
+  Ordering o(n);
+  for (int i = 0; i < n; i++) {
+    o.set(i, shuffled[i]);
+  }
+
+  return o;
+/*
   // Add a while loop so that we only start with valid orderings.
   // Note: make this better when adding topological constraints.
   while (true) {
@@ -77,6 +85,7 @@ Ordering Ordering::randomOrdering(Instance &instance) {
 
     if (sat) return o;
   }
+*/
 }
 
 int Ordering::findSmallestConsistentWithOrdering(const int &m, Instance &instance) {
