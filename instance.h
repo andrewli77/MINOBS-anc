@@ -14,6 +14,7 @@ class Instance {
     int getM() const;
     Variable &getVar(int i);
     const Ancestral &getAncestral(int i) const;
+
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
     
   private:

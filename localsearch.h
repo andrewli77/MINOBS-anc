@@ -48,6 +48,7 @@ class LocalSearch {
     SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
     void checkSolution(const Ordering &o);
     bool consistentWithAncestral(const Ordering &ordering) const;
+    std::pair<int, int> constraintRange(const Ordering &ordering) const;
 
     static int hits;
     static int tries;

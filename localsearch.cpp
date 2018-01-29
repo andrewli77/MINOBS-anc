@@ -160,36 +160,52 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const 
   return count;
 }
 
+// Finds the smallest and largest index in the ordering that are affected by 
+// an ancestral constraint.
+std::pair<int, int> LocalSearch::constraintRange(const Ordering &ordering) const {
+  int n = instance.getN(), m = instance.getM();
+  int pos[n], lo = n-1, hi = 0;
+
+  for (int i=0; i < n; i++) {
+    pos[ordering.get(i)] = i;
+  }
+
+  for (int i=0; i < m; i++) {
+    lo = std::min(lo, pos[instance.getAncestral(i).first]);
+    hi = std::max(hi, pos[instance.getAncestral(i).second]);
+  }
+
+  return std::make_pair(lo, hi);
+}
+
 
 Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> &scores) const {
-  int n = instance.getN(), m = instance.getM();
-
+  int n = instance.getN(), m = instance.getM(), curNumSat;
   tries++;
 
-  for (int iter = 0; iter < m * 3; iter++) {
+  int stepsWithoutImprove = 0;
+
+  std::pair<int, int> range = constraintRange(ordering);
+
+  while (stepsWithoutImprove < 5) {
+
     // Consider all feasible parent sets
 
     Types::Bitset pred(n, 0);
-    double bestScore = 223372036854775807;
-    std::vector<int> bestGraph = parents;
-    int curNumSat = numConstraintsSatisfied(parents, ordering);
 
-    //std::cout << "Constraints satisfied: " << curNumSat << std::endl;
-    if (curNumSat == m) {
-      // Compute the final score of the graph.
 
-      Types::Score finalSc = 0LL;
-      for (int i=0; i<n; i++) {
-        finalSc += instance.getVar(i).getParent(parents[i]).getScore();
-        //scores[i] = instance.getVar(i).getParent(parents[i]).getScore();
-      }
-
-      hits++;
-      return finalSc;
+    for (int i=0; i <= range.first; i++) {
+      pred[ordering.get(i)] = 1;
     }
 
+    int bestC = -10000000, bestVar, bestPar;
+    Types::Score bestSc = 223372036854775807LL;
 
-    for (int i=0; i<n; i++) {
+    
+    curNumSat = numConstraintsSatisfied(parents, ordering);
+
+    for (int i = range.first+1; i <= range.second; i++) {
+
       int cur = ordering.get(i);
       const Variable &var = instance.getVar(cur);
 
@@ -204,29 +220,43 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
           int numSat = numConstraintsSatisfied(parents, ordering) - curNumSat;
           Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
 
-          double adjustedSc;
-          if (numSat > 0) {
-            adjustedSc = (double)sc / numSat;
-          } else if (numSat == 0) {
-            adjustedSc = (double)sc * 100000;
-          } else {
-            adjustedSc = 223372036854775807;
-          }
-
-          if (adjustedSc < bestScore) {
-            bestScore = adjustedSc;
-            bestGraph = parents;
-          }
-
           parents[cur] = oldPar;
 
+          if (numSat > bestC || (numSat == bestC && sc < bestSc)) {
+            bestC = numSat;
+            bestSc = sc;
+            bestVar = cur;
+            bestPar = j;
+          }
         } 
-      }
+      } 
 
       pred[cur] = 1;
     }
 
-    parents = bestGraph;
+    // Check if at least one constraint is satisfied
+    if (bestC > 0) {
+      stepsWithoutImprove = 0;
+    } else if (bestC == 0 && bestSc <= 0) {
+      stepsWithoutImprove++;
+    } else {
+      return 223372036854775807LL;
+    } 
+
+    parents[bestVar] = bestPar;
+  }
+
+  if (curNumSat == m) {
+    // Compute the final score of the graph.
+
+    Types::Score finalSc = 0LL;
+    for (int i=0; i<n; i++) {
+      finalSc += instance.getVar(i).getParent(parents[i]).getScore();
+      //scores[i] = instance.getVar(i).getParent(parents[i]).getScore();
+    }
+
+    hits++;
+    return finalSc;
   }
 
 
@@ -381,7 +411,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     numGenerations++;
     iters++;
     std::cout << iters << std::endl;
-  } while (iters < 5); //rr.check() < cutoffTime);
+  } while (iters < 100); //rr.check() < cutoffTime);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
