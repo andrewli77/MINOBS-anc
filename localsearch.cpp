@@ -107,52 +107,30 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 }
 
 // CAN BE OPTIMIZED
-bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y, const Ordering &ordering) const {
-  if (x == y) return true;
-  int n = instance.getN();
-
-  bool reachable[n];
-  int posx, posy;
-
-  for (int i=0; i < n; i++) {
-    reachable[i] = false;
-    if (ordering.get(i) == x) {
-      posx = i;
-    } else if (ordering.get(i) == y) {
-      posy = i;
-    }
-
+bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y) const {
+  if (x == y) {
+    return true;
   }
 
-  reachable[y] = true;
-  for (int i = posy; i > posx; i--) {
-    int cur = ordering.get(i);
-    if (!reachable[cur]) {
-      continue;
-    }
+  const Variable &yVar = instance.getVar(y);
+  const ParentSet &p = yVar.getParent(parents[y]);
+  const std::vector<int> &pars = p.getParentsVec();
 
-    const Variable &var = instance.getVar(cur);
-
-    const ParentSet &p = var.getParent(parents[cur]);
-    const std::vector<int> &pars = p.getParentsVec();
-    int numParents = p.size();
-
-    for (int j = 0; j < numParents; j++) {
-      reachable[pars[j]] = true;
+  for (int i=0; i < pars.size(); i++) {
+    if (hasDipath(parents, x, pars[i])) {
+      return true;
     }
   }
 
-
-  return reachable[x];
-
+  return false;
 }
 
-int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const Ordering &o) const {
+int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const {
   int n = instance.getN(), m = instance.getM(), count = 0;
 
   for (int i=0; i < m; i++) {
     const Ancestral &cons = instance.getAncestral(i);
-    if (hasDipath(parents, cons.first, cons.second, o)) {
+    if (hasDipath(parents, cons.first, cons.second)) {
       count++;
     }
   }
@@ -160,52 +138,42 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const 
   return count;
 }
 
-// Finds the smallest and largest index in the ordering that are affected by 
-// an ancestral constraint.
-std::pair<int, int> LocalSearch::constraintRange(const Ordering &ordering) const {
+// GREEDY HILL-CLIMBING METHOD (Best Improvement)
+// Optimize solution by number of constraints satisfied, using score as a tiebreaker.
+Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> scores) const {
   int n = instance.getN(), m = instance.getM();
-  int pos[n], lo = n-1, hi = 0;
 
-  for (int i=0; i < n; i++) {
-    pos[ordering.get(i)] = i;
-  }
-
-  for (int i=0; i < m; i++) {
-    lo = std::min(lo, pos[instance.getAncestral(i).first]);
-    hi = std::max(hi, pos[instance.getAncestral(i).second]);
-  }
-
-  return std::make_pair(lo, hi);
-}
-
-
-Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> &scores) const {
-  int n = instance.getN(), m = instance.getM(), curNumSat;
   tries++;
 
-  int stepsWithoutImprove = 0;
+  std::vector<int> bestGraph = parents;
 
-  std::pair<int, int> range = constraintRange(ordering);
-
-  while (stepsWithoutImprove < 5) {
-
+  while(true) {
     // Consider all feasible parent sets
 
     Types::Bitset pred(n, 0);
+    int bestNumSat = -100000000;
+    Types::Score bestSc;
 
+    int bestVar, bestParent;
+ 
+    int curNumSat = numConstraintsSatisfied(bestGraph);
 
-    for (int i=0; i <= range.first; i++) {
-      pred[ordering.get(i)] = 1;
+    //std::cout << "Constraints satisfied: " << curNumSat << std::endl;
+    if (curNumSat == m) {
+      // Compute the final score of the graph.
+      hits++;
+
+      Types::Score finalSc = 0LL;
+      for (int i=0; i<n; i++) {
+        finalSc += instance.getVar(i).getParent(bestGraph[i]).getScore();
+        //scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
+      }
+
+      return finalSc;
     }
 
-    int bestC = -10000000, bestVar, bestPar;
-    Types::Score bestSc = 223372036854775807LL;
 
-    
-    curNumSat = numConstraintsSatisfied(parents, ordering);
-
-    for (int i = range.first+1; i <= range.second; i++) {
-
+    for (int i=0; i<n; i++) {
       int cur = ordering.get(i);
       const Variable &var = instance.getVar(cur);
 
@@ -213,50 +181,33 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
       for (int j=0; j < numParents; j++) {
         const ParentSet &p = var.getParent(j);
 
-        if (j != parents[cur] && p.subsetOf(pred)) {
-          int oldPar = parents[cur];
-          parents[cur] = j;
+        if (j != bestGraph[cur] && p.subsetOf(pred)) {
+          int oldPar = bestGraph[cur];
+          bestGraph[cur] = j;
 
-          int numSat = numConstraintsSatisfied(parents, ordering) - curNumSat;
+          int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
           Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
 
-          parents[cur] = oldPar;
+          bestGraph[cur] = oldPar;
 
-          if (numSat > bestC || (numSat == bestC && sc < bestSc)) {
-            bestC = numSat;
+          if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
+            bestNumSat = numSat;
             bestSc = sc;
             bestVar = cur;
-            bestPar = j;
+            bestParent = j;
           }
-        } 
-      } 
 
+          
+        } 
+      }
       pred[cur] = 1;
     }
 
-    // Check if at least one constraint is satisfied
-    if (bestC > 0) {
-      stepsWithoutImprove = 0;
-    } else if (bestC == 0 && bestSc <= 0) {
-      stepsWithoutImprove++;
-    } else {
+    bestGraph[bestVar] = bestParent;
+
+    if (bestNumSat <= 0) {
       return 223372036854775807LL;
-    } 
-
-    parents[bestVar] = bestPar;
-  }
-
-  if (curNumSat == m) {
-    // Compute the final score of the graph.
-
-    Types::Score finalSc = 0LL;
-    for (int i=0; i<n; i++) {
-      finalSc += instance.getVar(i).getParent(parents[i]).getScore();
-      //scores[i] = instance.getVar(i).getParent(parents[i]).getScore();
     }
-
-    hits++;
-    return finalSc;
   }
 
 
@@ -376,7 +327,6 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
   }
   std::cout << "Done generating initial population" << std::endl;
 
-  int iters = 0;
   do {
     //std::cout << "Time: " << rr.check() << " Starting generation " << numGenerations << std::endl;
     //DBG(population);
@@ -409,9 +359,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       best = curBest;
     }
     numGenerations++;
-    iters++;
-    std::cout << iters << std::endl;
-  } while (iters < 100); //rr.check() < cutoffTime);
+  } while (rr.check() < cutoffTime);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

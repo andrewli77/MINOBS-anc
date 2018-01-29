@@ -40,9 +40,9 @@ class LocalSearch {
     Types::Bitset getPred(const Ordering &ordering, int idx) const;
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const;
 
-    int numConstraintsSatisfied(const std::vector<int> &parents, const Ordering &ordering) const;
-    bool hasDipath(const std::vector<int> &parents, int x, int y, const Ordering &ordering) const;
-    Types::Score modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> &scores) const;
+    int numConstraintsSatisfied(const std::vector<int> &parents) const;
+    bool hasDipath(const std::vector<int> &parents, int x, int y) const;
+    Types::Score modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> scores) const;
     SearchResult hillClimb(const Ordering &ordering);
       Types::Score findBestScoreRange(const Ordering &o, int start, int end);
     SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
