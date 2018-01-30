@@ -145,9 +145,12 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
 
   tries++;
 
-  std::vector<int> bestGraph = parents;
+  int curNumSat;
 
-  while(true) {
+  std::vector<int> bestGraph = parents;
+  int nonImprovingSteps = 0;
+
+  while(nonImprovingSteps < 3) {
     // Consider all feasible parent sets
 
     Types::Bitset pred(n, 0);
@@ -156,21 +159,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
 
     int bestVar, bestParent;
  
-    int curNumSat = numConstraintsSatisfied(bestGraph);
-
-    //std::cout << "Constraints satisfied: " << curNumSat << std::endl;
-    if (curNumSat == m) {
-      // Compute the final score of the graph.
-      hits++;
-
-      Types::Score finalSc = 0LL;
-      for (int i=0; i<n; i++) {
-        finalSc += instance.getVar(i).getParent(bestGraph[i]).getScore();
-        //scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
-      }
-
-      return finalSc;
-    }
+    curNumSat = numConstraintsSatisfied(bestGraph);
 
 
     for (int i=0; i<n; i++) {
@@ -203,13 +192,30 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
       pred[cur] = 1;
     }
 
-    bestGraph[bestVar] = bestParent;
-
-    if (bestNumSat <= 0) {
-      return 223372036854775807LL;
+    if (bestNumSat > 0) {
+      nonImprovingSteps = 0;
+    } else if (bestNumSat == 0 && bestSc < 0) {
+      nonImprovingSteps ++;
+    } else {
+      break;
     }
+
+    bestGraph[bestVar] = bestParent;
   }
 
+
+  if (curNumSat == m) {
+    // Compute the final score of the graph.
+    hits++;
+
+    Types::Score finalSc = 0LL;
+    for (int i=0; i<n; i++) {
+      finalSc += instance.getVar(i).getParent(bestGraph[i]).getScore();
+      //scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
+    }
+
+    return finalSc;
+  }
 
   return 223372036854775807LL;
 }
