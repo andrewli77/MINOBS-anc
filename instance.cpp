@@ -47,6 +47,7 @@ Instance::Instance(std::string fileName) {
       int a, b;
       file >> a >> b;
       ancestralConstraints[i] = std::make_pair(a, b);
+      orderConstraints.insert(a * n + b); // A basic hash
     }
   } else {
     throw "Could not open file";
@@ -60,6 +61,10 @@ int Instance::getN() const {
 
 int Instance::getM() const {
   return m;
+}
+
+bool Instance::isConstraint(int a, int b) const {
+  return (orderConstraints.count(a * n + b));
 }
 
 Variable &Instance::getVar(int i) {

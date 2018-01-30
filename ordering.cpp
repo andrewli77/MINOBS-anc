@@ -58,8 +58,6 @@ Ordering Ordering::randomOrdering(Instance &instance) {
     o.set(i, shuffled[i]);
   }
 
-  return o;
-/*
   // Add a while loop so that we only start with valid orderings.
   // Note: make this better when adding topological constraints.
   while (true) {
@@ -85,7 +83,6 @@ Ordering Ordering::randomOrdering(Instance &instance) {
 
     if (sat) return o;
   }
-*/
 }
 
 int Ordering::findSmallestConsistentWithOrdering(const int &m, Instance &instance) {

@@ -9,11 +9,6 @@
 #include "movetabulist.h"
 #include "swaptabulist.h"
 
-int LocalSearch::hits = 0;
-int LocalSearch::tries = 0;
-Types::Score LocalSearch::scoreDiff = 0;
-
-
 LocalSearch::LocalSearch(Instance &instance) : instance(instance) { 
 }
 
@@ -86,6 +81,10 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) const {
 Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
   
+  if (!consistentWithAncestral(ordering)) {
+    return 223372036854775807LL; 
+  }
+
   Types::Bitset pred(n, 0);
   Types::Score score = 0;
   for (int i = 0; i < n; i++) {
@@ -96,14 +95,11 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
     pred[ordering.get(i)] = 1;
   }
 
-  if (consistentWithAncestral(ordering) && m != 0) {
-    Types::Score modScore = modifiedDAGScore(ordering, parents, scores);
-    if (modScore != 223372036854775807LL) {
-      scoreDiff += modScore - score;
-    }
+  if (m == 0) {
+    return score;
+  } else {
+    return modifiedDAGScore(ordering, parents, scores);
   }
-
-  return score;
 }
 
 // CAN BE OPTIMIZED
@@ -140,10 +136,8 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const 
 
 // GREEDY HILL-CLIMBING METHOD (Best Improvement)
 // Optimize solution by number of constraints satisfied, using score as a tiebreaker.
-Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> parents, std::vector<Types::Score> scores) const {
+Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
-
-  tries++;
 
   int curNumSat;
 
@@ -206,14 +200,14 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
 
   if (curNumSat == m) {
     // Compute the final score of the graph.
-    hits++;
 
     Types::Score finalSc = 0LL;
     for (int i=0; i<n; i++) {
       finalSc += instance.getVar(i).getParent(bestGraph[i]).getScore();
-      //scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
+      scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
     }
 
+    parents = bestGraph;
     return finalSc;
   }
 
@@ -233,6 +227,144 @@ Types::Score LocalSearch::findBestScoreRange(const Ordering &o, int start, int e
     used[o.get(i)] = 1;
   }
   return curScore;
+}
+
+void LocalSearch::bestSwapForward(
+  int pivot,
+  Ordering o,
+  std::vector<int> &parents,
+  std::vector<Types::Score> &scores,
+  Ordering &bestOrdering,
+  Types::Score &bestSc
+) const
+{
+  int n = instance.getN();
+  std::vector<int> tmpParents = parents;
+  std::vector<Types::Score> tmpScores = scores;
+
+
+
+  Types::Bitset pred(n, 0);
+
+  for (int i = 0; i < pivot; i++) {
+    pred[i] = 1;
+  }
+
+
+  for (int j = pivot; j < n-1; j++) {
+    // First check that the swap results in a valid ordering.
+    // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
+    // Furthermore, if O[j] -> O[j+1] IS an ancestral constraint all further forward swaps are invalid.
+
+    if (instance.isConstraint(o.get(j), o.get(j+1))) {
+      break;
+    }
+
+    pred[j+1] = 1;
+
+    // Check if O_{j+1} still has a feasible parent set (feasible iff it does not contain O_j)
+    const Variable &v = instance.getVar(o.get(j+1));
+    const ParentSet &ps = v.getParent(tmpParents[o.get(j+1)]);
+
+    if (ps.hasElement(o.get(j))) {
+      // Replace the current parent set of O_{j+1} with some valid replacement.
+
+      int numParents = v.numParents();
+      bool feasible = false;
+      for (int l = 0; l < numParents; l++) {
+        const ParentSet &newP = v.getParent(l);
+
+        if (newP.subsetOf(pred)) {
+          tmpParents[o.get(j+1)] = newP.getId();
+          tmpScores[o.get(j+1)] = newP.getScore();
+          feasible = true;
+          break;
+        }
+      }
+
+      if (!feasible) {
+        exit(0);
+      }
+    }
+
+    o.swap(j, j+1);
+    Types::Score sc = modifiedDAGScore(o, tmpParents, tmpScores);
+
+    if (sc < bestSc) {
+      bestSc = sc;
+      parents = tmpParents;
+      scores = tmpScores;
+      bestOrdering = o;
+    }
+  }
+}
+
+void LocalSearch::bestSwapBackward(
+  int pivot,
+  Ordering o,
+  std::vector<int> &parents,
+  std::vector<Types::Score> &scores,
+  Ordering &bestOrdering,
+  Types::Score &bestSc
+) const
+{
+  int n = instance.getN();
+  std::vector<int> tmpParents = parents;
+  std::vector<Types::Score> tmpScores = scores;
+
+  Types::Bitset pred(n, 0);
+
+  for (int i = 0; i < pivot; i++) {
+    pred[i] = 1;
+  }
+
+
+  for (int j = pivot-1; j >= 0; j--) {
+    // First check that the swap results in a valid ordering.
+    // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
+    // Furthermore, if O[j] -> O[j+1] IS an ancestral constraint all further forward swaps are invalid.
+
+    if (instance.isConstraint(o.get(j), o.get(j+1))) {
+      break;
+    }
+
+    pred[j] = 0;
+
+    // Check if O_{j+1} still has a feasible parent set (feasible iff it does not contain O_j)
+    const Variable &v = instance.getVar(o.get(j+1));
+    const ParentSet &ps = v.getParent(tmpParents[o.get(j+1)]);
+
+    if (ps.hasElement(o.get(j))) {
+      // Replace the current parent set of O_{j+1} with some valid replacement.
+
+      int numParents = v.numParents();
+      bool feasible = false;
+      for (int l = 0; l < numParents; l++) {
+        const ParentSet &newP = v.getParent(l);
+
+        if (newP.subsetOf(pred)) {
+          tmpParents[o.get(j+1)] = newP.getId();
+          tmpScores[o.get(j+1)] = newP.getScore();
+          feasible = true;
+          break;
+        }
+      }
+
+      if (!feasible) {
+        exit(0);
+      }
+    }
+
+    o.swap(j, j+1);
+    Types::Score sc = modifiedDAGScore(o, tmpParents, tmpScores);
+
+    if (sc < bestSc) {
+      bestSc = sc;
+      parents = tmpParents;
+      scores = tmpScores;
+      bestOrdering = o;
+    }
+  }
 }
 
 SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
@@ -259,23 +391,9 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
       Ordering bestOrdering;
       Types::Score bestSc = 223372036854775807LL;
 
-      for (int j=0; j < n; j++) {
-        if (j == pivot) continue;
+      bestSwapForward(pivot, cur, bestParents, bestScores, bestOrdering, bestSc);
 
-        std::vector<int> curParents(n);
-        std::vector<Types::Score> curScores(n);
-        cur.swap(pivot, j);
-        Types::Score sc = getBestScoreWithParents(cur, curParents, curScores);
-
-        if (sc < bestSc) {
-          bestSc = sc;
-          bestParents = curParents;
-          bestScores = curScores;
-          bestOrdering = cur;
-        }
-
-        cur.swap(pivot, j); // Undo the previous swap.
-      }
+      bestSwapBackward(pivot, cur, bestParents, bestScores, bestOrdering, bestSc);
 
       if (bestSc < curScore) {
         steps += 1;
@@ -403,23 +521,9 @@ void LocalSearch::checkSolution(const Ordering &o) {
   std::string validStr = valid ? "Good" : "Bad";
   std::cout << "Validity Check: " << validStr << std::endl;
 
-/*
   if (numConstraintsSatisfied(parents) == m) {
     std::cout << "Ancestral constraints check: Good" << std::endl;
   } else {
     std::cout << "Ancestral constraints check: Bad" << std::endl;
   }
-*/
-  std::cout << "Hits: " << hits << std::endl;
-  std::cout << "Tries: " << tries << std::endl;
-  std::cout << "Hit rate: " << (double)hits/tries << std::endl;
-
-  std::cout << "Average score difference: ";
-  if (hits != 0) {
-    std::cout << (double)scoreDiff/hits << std::endl;
-  } else {
-    std::cout << "N.A." << std::endl;
-  }
-  
-
 }
