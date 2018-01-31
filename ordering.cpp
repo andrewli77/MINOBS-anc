@@ -81,7 +81,9 @@ Ordering Ordering::randomOrdering(Instance &instance) {
       }
     }
 
-    if (sat) return o;
+    if (sat) {
+      return o;
+    }
   }
 }
 

@@ -1,3 +1,6 @@
+This file only tests the accuracy of the "modifiedDAGScore" method in LocalSearch.cpp.
+
+
 ASIA:
 
 1) 3 -> 5

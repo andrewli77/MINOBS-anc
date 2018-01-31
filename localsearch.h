@@ -45,8 +45,8 @@ class LocalSearch {
     Types::Score modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const;
    
 
-    void bestSwapBackward(int pivot, Ordering o, std::vector<int> &parents, std::vector<Types::Score> &scores, Ordering &bestOrdering, Types::Score &bestSc) const;
-    void bestSwapForward(int pivot, Ordering o, std::vector<int> &parents, std::vector<Types::Score> &scores, Ordering &bestOrdering, Types::Score &bestSc) const;
+    void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, const std::vector<Types::Score> &scores, Ordering &bestOrdering, std::vector<int> &bestParents, std::vector<Types::Score>&bestScores, Types::Score &bestSc) const;
+    void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, const std::vector<Types::Score> &scores, Ordering &bestOrdering, std::vector<int> &bestParents, std::vector<Types::Score>&bestScores, Types::Score &bestSc) const;
     SearchResult hillClimb(const Ordering &ordering);
     Types::Score findBestScoreRange(const Ordering &o, int start, int end);
     SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
@@ -56,6 +56,7 @@ class LocalSearch {
 
   private:
     Instance &instance;
+    static int climbs;
 };
 
 #endif /* LOCALSEARCH_H */
