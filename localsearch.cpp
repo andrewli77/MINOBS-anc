@@ -225,6 +225,48 @@ Types::Score LocalSearch::findBestScoreRange(const Ordering &o, int start, int e
   return curScore;
 }
 
+
+void LocalSearch::findBestParent(
+  int j,
+  const Ordering &ordering,
+  const Types::Bitset &pred,
+  std::vector<int> &parents,
+  std::vector<Types::Score> &scores
+) const
+{
+  int cur = ordering.get(j);
+  const Variable &v = instance.getVar(cur);
+
+  int numParents = v.numParents();
+  bool feasible = false;
+
+  int bestSat = -1000000;
+  Types::Score bestSc;
+
+  for (int l = 0; l < numParents; l++) {
+    const ParentSet &newP = v.getParent(l);
+
+    if (newP.subsetOf(pred)) {
+      int oldPar = parents[cur];
+      parents[cur] = l;
+
+      int sat = numConstraintsSatisfied(parents);
+      Types::Score sc = newP.getScore();
+      parents[cur] = oldPar;
+
+      if (sat > bestSat || (sat == bestSat && sc < bestSc)) {
+        bestSat = sat;
+        bestSc = sc;
+        parents[cur] = newP.getId();
+        scores[cur] = newP.getScore();
+        feasible = true;
+      }
+    }
+  }
+
+  assert(feasible);
+}
+
 void LocalSearch::bestSwapForward(
   int pivot,
   Ordering o,
@@ -263,43 +305,16 @@ void LocalSearch::bestSwapForward(
 
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
-
-      int numParents = v.numParents();
-      bool feasible = false;
-
-      int bestSat = -1000000;
-      Types::Score bestSatSc;
-
-      for (int l = 0; l < numParents; l++) {
-        const ParentSet &newP = v.getParent(l);
-
-        if (newP.subsetOf(pred)) {
-          int oldPar = tmpParents[o.get(j+1)];
-
-          tmpParents[o.get(j+1)] = l;
-          int sat = numConstraintsSatisfied(tmpParents);
-          Types::Score sc = newP.getScore();
-          tmpParents[o.get(j+1)] = oldPar;
-
-          if (sat > bestSat || (sat == bestSat && sc < bestSatSc)) {
-            bestSat = sat;
-            bestSatSc = sc;
-            tmpParents[o.get(j+1)] = newP.getId();
-            tmpScores[o.get(j+1)] = newP.getScore();
-            feasible = true;
-          }
-        }
-      }
-
-      if (!feasible) {
-        exit(0);
-      }
+      // Note that here pred[o.get(j)] = 0.
+      findBestParent(j+1, o, pred, tmpParents, tmpScores);
     }
 
 
     o.swap(j, j+1);
 
+    findBestParent(j+1, o, pred, tmpParents, tmpScores);
     Types::Score sc = modifiedDAGScore(o, tmpParents, tmpScores);
+
 
     if (sc < bestSc) {
       bestSc = sc;
@@ -350,39 +365,12 @@ void LocalSearch::bestSwapBackward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
 
-      int bestSat = -1000000;
-      Types::Score bestSatSc;
-
-      int numParents = v.numParents();
-      bool feasible = false;
-      for (int l = 0; l < numParents; l++) {
-        const ParentSet &newP = v.getParent(l);
-
-        if (newP.subsetOf(pred)) {
-          int oldPar = tmpParents[o.get(j+1)];
-
-          tmpParents[o.get(j+1)] = l;
-          int sat = numConstraintsSatisfied(tmpParents);
-          Types::Score sc = newP.getScore();
-          tmpParents[o.get(j+1)] = oldPar;
-
-          if (sat > bestSat || (sat == bestSat && sc < bestSatSc)) {
-            bestSat = sat;
-            bestSatSc = sc;
-            tmpParents[o.get(j+1)] = newP.getId();
-            tmpScores[o.get(j+1)] = newP.getScore();
-            feasible = true;
-          }
-        }
-      }
-
-      if (!feasible) {
-        exit(0);
-      }
+      findBestParent(j+1, o, pred, tmpParents, tmpScores);
     }
 
     o.swap(j, j+1);
 
+    findBestParent(j+1, o, pred, tmpParents, tmpScores);
     Types::Score sc = modifiedDAGScore(o, tmpParents, tmpScores);
 
     if (sc < bestSc) {

@@ -43,7 +43,7 @@ class LocalSearch {
     int numConstraintsSatisfied(const std::vector<int> &parents) const;
     bool hasDipath(const std::vector<int> &parents, int x, int y) const;
     Types::Score modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const;
-   
+    void findBestParent(int j, const Ordering &ordering, const Types::Bitset &pred, std::vector<int> &parents, std::vector<Types::Score> &scores) const;
 
     void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, const std::vector<Types::Score> &scores, Ordering &bestOrdering, std::vector<int> &bestParents, std::vector<Types::Score>&bestScores, Types::Score &bestSc) const;
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, const std::vector<Types::Score> &scores, Ordering &bestOrdering, std::vector<int> &bestParents, std::vector<Types::Score>&bestScores, Types::Score &bestSc) const;
