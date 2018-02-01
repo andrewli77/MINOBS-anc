@@ -136,26 +136,40 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const 
   return count;
 }
 
-// GREEDY HILL-CLIMBING METHOD (Best Improvement)
+// GREEDY HILL-CLIMBING METHOD (First Strict Improvement)
 // Optimize solution by number of constraints satisfied, using score as a tiebreaker.
 Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
+  int curNumSat = numConstraintsSatisfied(parents);
 
-  int curNumSat;
+  if (curNumSat == m) {
+    // Compute the final score of the graph.
+
+    Types::Score finalSc = 0LL;
+    for (int i=0; i<n; i++) {
+      finalSc += scores[i];
+    }
+    return finalSc;
+  }
+
+
+  Types::Bitset pred[n];
 
   std::vector<int> bestGraph = parents;
+
+
+  Types::Bitset curPred(n, 0);
+
+  for (int i = 0; i < n; i++) {
+    pred[ordering.get(i)] = curPred;
+    curPred[ordering.get(i)] = 1;
+  }
 
   while(true) {
     climbs++;
     // Consider all feasible parent sets
 
-    Types::Bitset pred(n, 0);
-    int bestNumSat = -100000000;
-    Types::Score bestSc;
-
     int bestVar, bestParent;
- 
-    curNumSat = numConstraintsSatisfied(bestGraph);
 
     if (curNumSat == m) {
       // Compute the final score of the graph.
@@ -170,41 +184,41 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
       return finalSc;
     }
 
-    for (int i=0; i<n; i++) {
-      int cur = ordering.get(i);
+    bool foundImproving = false;
+
+    std::list< std::pair<int, int> >  &allParents = instance.getParentList();
+    for (auto it = allParents.begin(); it != allParents.end(); it++) {
+      int cur = it->first, par = it->second;
       const Variable &var = instance.getVar(cur);
+      const ParentSet &p = var.getParent(par);
+      if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
+        int oldPar = bestGraph[cur];
+        bestGraph[cur] = par;
 
-      int numParents = var.numParents();
-      for (int j=0; j < numParents; j++) {
-        const ParentSet &p = var.getParent(j);
+        int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
+        Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
 
-        if (j != bestGraph[cur] && p.subsetOf(pred)) {
-          int oldPar = bestGraph[cur];
-          bestGraph[cur] = j;
+        bestGraph[cur] = oldPar;
 
-          int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
-          Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
+        if (numSat > 0) {
+          bestVar = cur;
+          bestParent = par;
+          foundImproving = true;
 
-          bestGraph[cur] = oldPar;
-
-          if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
-            bestNumSat = numSat;
-            bestSc = sc;
-            bestVar = cur;
-            bestParent = j;
-          }
-
-          
-        } 
+          // Move-to-front heuristic.
+          allParents.erase(it);
+          allParents.push_front(std::make_pair(cur, par));
+          break;
+        }
       }
-      pred[cur] = 1;
     }
 
-    if (bestNumSat <= 0) {
-      return 223372036854775807LL;
+    if (!foundImproving) {
+      return 223372036854775807LL; 
     }
 
     bestGraph[bestVar] = bestParent;
+    curNumSat = numConstraintsSatisfied(bestGraph);
   }
 
   return 223372036854775807LL;

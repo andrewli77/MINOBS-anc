@@ -52,7 +52,29 @@ Instance::Instance(std::string fileName) {
   } else {
     throw "Could not open file";
   }
+
+  // Initialize the allParentSets array
+  for (int i = 0; i < n; i++) {
+    const Variable &v = getVar(i);
+    for (int j=0; j < v.numParents(); j++) {
+      allParentSets.push_back(std::make_pair(i, j));
+    }
+  }
+
+  sortAllParents();
+
   DBG("Read in " << countParents << " parent sets.");
+}
+
+void Instance::sortAllParents() {
+  allParentSets.sort([&](std::pair<int,int> a, std::pair<int,int> b) {
+      const Variable &aVar = getVar(a.first), &bVar = getVar(b.first);
+      return aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore();
+    });
+}
+
+std::list< std::pair<int, int> > &Instance::getParentList() {
+  return allParentSets;
 }
 
 int Instance::getN() const {
