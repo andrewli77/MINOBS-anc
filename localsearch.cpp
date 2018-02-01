@@ -186,31 +186,40 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
 
     bool foundImproving = false;
 
-    std::list< std::pair<int, int> >  &allParents = instance.getParentList();
-    for (auto it = allParents.begin(); it != allParents.end(); it++) {
-      int cur = it->first, par = it->second;
+    std::list<int>  &varList = instance.getVarList();
+
+    for (auto it = varList.begin(); it != varList.end(); it++) {
+      int cur = *it;
       const Variable &var = instance.getVar(cur);
-      const ParentSet &p = var.getParent(par);
-      if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
-        int oldPar = bestGraph[cur];
-        bestGraph[cur] = par;
+      int numParents = var.numParents();
 
-        int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
-        Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
+      for (int j = 0; j < numParents; j++) {
 
-        bestGraph[cur] = oldPar;
+        const ParentSet &p = var.getParent(j);
 
-        if (numSat > 0) {
-          bestVar = cur;
-          bestParent = par;
-          foundImproving = true;
+        if (j != bestGraph[cur] && p.subsetOf(pred[cur])) {
+          int oldPar = bestGraph[cur];
+          bestGraph[cur] = j;
 
-          // Move-to-front heuristic.
-          allParents.erase(it);
-          allParents.push_front(std::make_pair(cur, par));
-          break;
+          int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
+          Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
+
+          bestGraph[cur] = oldPar;
+
+          if (numSat > 0) {
+            bestVar = cur;
+            bestParent = j;
+            foundImproving = true;
+
+            // Transpose heuristic
+            varList.erase(it);
+            varList.push_front(cur);
+            break;
+          }
         }
       }
+
+      if (foundImproving) break;
     }
 
     if (!foundImproving) {

@@ -16,9 +16,7 @@ class Instance {
     int getM() const;
     bool isConstraint(int a, int b) const;
 
-    void sortAllParents();
-    std::list< std::pair<int, int> > &getParentList();
-    int numParents() const;
+    std::list< int > &getVarList();
 
     Variable &getVar(int i);
     const Ancestral &getAncestral(int i) const;
@@ -28,7 +26,7 @@ class Instance {
 
   private:
     int n, m;
-    std::list< std::pair<int,int> > allParentSets;
+    std::list< int > varList;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
     std::unordered_set<int> orderConstraints;
