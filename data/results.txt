@@ -1,0 +1,74 @@
+ASIA:
+
+1) 3 -> 5
+2) 2 -> 4
+3) 2 -> 3, 3 -> 6
+4) 4 -> 7, 0 -> 5, 3 -> 5, 5 -> 6
+5) 0 -> 5, 5 -> 7, 0 -> 6
+6) 3 -> 5, 2 -> 4, 2 -> 3
+
+
+ALARM:
+
+1) 24 -> 33
+2) 13 -> 36, 14 -> 11
+3) 23 -> 8, 30 -> 34, 18 -> 9
+4) 29 -> 15, 14 -> 9, 12 -> 35, 33 -> 11
+5) 4 -> 1
+
+#Steps=============================================================
+
+- For each test, run on random seed = 1 for 20 seconds and record the hit rate/average score difference.
+- For small cases (i.e. Asia) use unpruned parent set scores.
+
+
+#Results################################################################
+
+#Greedy Hill Climbing-v1====================================================
+
+	- At each stage, goes to a neighbour optimizing # of constraints satisfied, using score as a tiebreaker.
+	- Stops when it finds any solution satisfying all constraints OR returns infeasible if no neighbour improves
+		the number of satisfied constraints.
+
+Asia
+
+1) HR = 292399/292399 = 100%, ASD = 0
+2) HR = 531880/531880 = 100%, ASD = 0
+3) HR = 122933/122933 = 100%, ASD = 2.08 e6
+4) HR = 32028/32028 = 100%, ASD = 2.68 e5
+5) HR = 106509/106509 = 100%, ASD = 6.41 e5
+6) HR = 54814/54814 = 100%, ASD = 0
+
+Alarm
+
+1) HR = 132543/138694 = 95.6%, ASD = 2.87 e7
+2) HR = 29427/29427 = 100%, ASD = 4.92 e8
+3) HR = 22313/40488 = 55.1%, ASD = 6.65 e8
+4) HR = 0/33035 = 0%, ASD = N.A.
+5) HR = 155551/155551 = 100%, ASD = 0
+
+
+#Greedy Hill Climbing-v2====================================================
+
+	- Modify Greedy Hill Climbing-v1 to allow for "lateral" choices that do not improve # of satisfied constraints but
+		improves the overall DAG score (v1 would have returned infeasible if the best neighbour was a "lateral" improvement).
+	- Allows at most 3 "lateral" choices in a row before returning infeasible.
+	- No longer returns immediately when finding a solution satisfying all constraints. Attempts to optimize the score first. 
+
+Asia
+
+1) HR = 164670/164670 = 100%, ASD = 0
+2) HR = 217250/217250 = 100%, ASD = 0
+3) HR = 88863/88863 = 100%, ASD = 2.08 e6
+4) HR = 29071/29071 = 100%, ASD = 2.69 e5
+5) HR = 80263/80263 = 100%, ASD = 6.37 e5
+6) HR = 47853/47853 = 100%, ASD = 0
+
+
+Alarm
+
+1) HR = 54027/56992 = 94.8%, ASD = 1.95 e7
+2) HR = 24583/24583 = 100%, ASD = 5.16 e8
+3) HR = 22313 / 40488 = 55.1%, ASD = 6.03 e8
+4) HR = 0/32085 = 0%, ASD = N.A.
+5) HR = 109846/109846 = 100%, ASD = 0
