@@ -28,24 +28,24 @@ ALARM:
 - When considering a swap neighbour for an ordering, recomputes the score of the neighbour from scratch
 - Uses a greedy hill-climbing method to find an DAG satisfying the ancestral constraints.
 
-ASIA:
+ASIA: (Optimal unconstrained score = 2303188316)
 	SCORE 	  |	Generations
-1) 2303188316 | 168
-2) 2303188316 | 165
-3) 2305384690 | 58
-4) 2303500242 | 96
-5) 2303500242 | 81
-6) 2305384690 | 279
 
-ALARM:
+1) 2303188316 | 412
+2) 2303188316 | 415
+3) 2305384690 | 167
+4) 2303500242 | 279
+5) 2303500242 | 191
+6) 2305384690 | 740
+
+ALARM: (Optimal unconstrained score = 11174144919)
 	SCORE 	   | Generations | Time to generate first generation
-1) 11174203782 | 2 | 11.7
-2) 11176511251 | 2 | 25.453
-3) 11211517964 | 2 | 53.686
+
+1) 11175819873 | 3 | 5.513
+2) 11183729168 | 2 | 6.926
+3) 11213441220 | 2 | 11.935
 4) Inf
-5) 11181421699 | 2 | 9.722
-
-
+5) 11174203782 | 4 | 4.017
 
 #Fast Swap Method#
 
