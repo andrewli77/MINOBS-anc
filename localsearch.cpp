@@ -12,6 +12,9 @@
 LocalSearch::LocalSearch(Instance &instance) : instance(instance) { 
 }
 
+const Types::Score INF = 223372036854775807LL;
+const Types::Score PENALTY = 100000000000000LL;
+
 int LocalSearch::climbs = 0;
 
 const ParentSet &LocalSearch::bestParent(const Ordering &ordering, const Types::Bitset pred, int idx) const {
@@ -82,9 +85,9 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) const {
 // New code
 Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const {
   int n = instance.getN(), m = instance.getM();
-  
+
   if (!consistentWithAncestral(ordering)) {
-    return 223372036854775807LL; 
+    return INF;
   }
 
   Types::Bitset pred(n, 0);
@@ -171,19 +174,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
 
     int bestVar, bestParent;
 
-    if (curNumSat == m) {
-      // Compute the final score of the graph.
-
-      Types::Score finalSc = 0LL;
-      for (int i=0; i<n; i++) {
-        finalSc += instance.getVar(i).getParent(bestGraph[i]).getScore();
-        scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
-      }
-
-      parents = bestGraph;
-      return finalSc;
-    }
-
     bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
@@ -215,14 +205,28 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
     }
 
     if (!foundImproving) {
-      return 223372036854775807LL; 
+      break;
     }
 
     bestGraph[bestVar] = bestParent;
     curNumSat = numConstraintsSatisfied(bestGraph);
+
+    if (curNumSat == m) {
+      break;
+    }
   }
 
-  return 223372036854775807LL;
+  Types::Score finalSc = 0LL;
+  for (int i=0; i<n; i++) {
+    scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
+    finalSc += scores[i];
+  }
+
+  // Add a penalty for each broken constraint.
+  finalSc += PENALTY * (m - curNumSat);
+  parents = bestGraph;
+
+  return finalSc;
 }
 
 Types::Score LocalSearch::findBestScoreRange(const Ordering &o, int start, int end) {
@@ -308,6 +312,7 @@ void LocalSearch::bestSwapForward(
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
     // Furthermore, if O[j] -> O[j+1] IS an ancestral constraint all further forward swaps are invalid.
 
+
     if (instance.isConstraint(o.get(j), o.get(j+1))) {
       break;
     }
@@ -367,9 +372,11 @@ void LocalSearch::bestSwapBackward(
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
     // Furthermore, if O[j] -> O[j+1] IS an ancestral constraint all further forward swaps are invalid.
 
+
     if (instance.isConstraint(o.get(j), o.get(j+1))) {
       break;
     }
+
 
     pred[o.get(j)] = 0;
 
@@ -409,7 +416,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   std::iota(positions.begin(), positions.end(), 0);
 
-  if (curScore == 223372036854775807LL) {
+  if (curScore >= PENALTY) {
     return SearchResult(curScore, cur);
   }
 
@@ -424,7 +431,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
       std::vector<int> bestParents(n);
       std::vector<Types::Score> bestScores(n);
       Ordering bestOrdering;
-      Types::Score bestSc = 223372036854775807LL;
+      Types::Score bestSc = INF;
 
       bestSwapForward(pivot, cur, parents, scores, bestOrdering, bestParents, bestScores, bestSc);
       bestSwapBackward(pivot, cur, parents, scores, bestOrdering, bestParents, bestScores, bestSc);
