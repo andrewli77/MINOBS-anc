@@ -168,8 +168,10 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
     curPred[ordering.get(i)] = 1;
   }
 
+  int climbs = 0;
   while(true) {
     climbs++;
+
     // Consider all feasible parent sets
 
     int bestVar, bestParent;
@@ -177,6 +179,9 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
     bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
+
+    int bestNumSat = -1;
+    Types::Score bestSc;
 
     for (auto it = allParents.begin(); it != allParents.end(); it++) {
       int cur = it->first, par = it->second;
@@ -186,25 +191,25 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
         int oldPar = bestGraph[cur];
         bestGraph[cur] = par;
 
-        int numSat = numConstraintsSatisfied(bestGraph) - curNumSat;
-        Types::Score sc = p.getScore() - var.getParent(oldPar).getScore();
+        int numSat = numConstraintsSatisfied(bestGraph);
+        Types::Score sc = p.getScore();
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > 0) {
+        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
           bestVar = cur;
           bestParent = par;
-          foundImproving = true;
+          bestNumSat = numSat;
+          bestSc = sc;
 
           // Move-to-front heuristic.
           //allParents.erase(it);
           //allParents.push_front(std::make_pair(cur, par));
-          break;
         }
       }
     }
 
-    if (!foundImproving) {
+    if (bestNumSat <= curNumSat) {
       break;
     }
 
@@ -216,6 +221,8 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, std::vector
     }
   }
 
+
+  //std::cout << "Climbs: " << climbs << std::endl;
   Types::Score finalSc = 0LL;
   for (int i=0; i<n; i++) {
     scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
