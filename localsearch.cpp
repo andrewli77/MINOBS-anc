@@ -170,7 +170,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     curPred[ordering.get(i)] = 1;
   }
 
-  int climbs = 0;
   while(true) {
     climbs++;
 
@@ -181,9 +180,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
-
-    int bestNumSat = -1;
-    Types::Score bestSc;
 
     for (auto it = allParents.begin(); it != allParents.end(); it++) {
       int cur = it->first, par = it->second;
@@ -198,20 +194,21 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
+        if (numSat > curNumSat) {
           bestVar = cur;
           bestParent = par;
-          bestNumSat = numSat;
-          bestSc = sc;
+          foundImproving = true;
 
           // Move-to-front heuristic.
-          //allParents.erase(it);
-          //allParents.push_front(std::make_pair(cur, par));
+          allParents.erase(it);
+          allParents.push_front(std::make_pair(cur, par));
+
+          break;
         }
       }
     }
 
-    if (bestNumSat <= curNumSat) {
+    if (!foundImproving) {
       break;
     }
 
@@ -223,10 +220,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     }
   }
 
-  if (climbs > 1) {
-    std::cout << "Climbs: " << climbs << std::endl;
-  }
-  
   Types::Score finalSc = 0LL;
   for (int i=0; i<n; i++) {
       const Variable &v = instance.getVar(i);
@@ -249,7 +242,8 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     Types::Score finalSc = 0LL;
     for (int i=0; i<n; i++) {
-      finalSc += scores[i];
+      const Variable &v = instance.getVar(i);
+      finalSc += v.getParent(parents[i]).getScore();
     }
     return finalSc;
   }
@@ -267,7 +261,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     curPred[ordering.get(i)] = 1;
   }
 
-  int climbs = 0;
   while(true) {
     climbs++;
 
@@ -278,9 +271,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
-
-    int bestNumSat = -1;
-    Types::Score bestSc;
 
     for (auto it = allParents.begin(); it != allParents.end(); it++) {
       int cur = it->first, par = it->second;
@@ -295,20 +285,21 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
+        if (numSat > curNumSat) {
           bestVar = cur;
           bestParent = par;
-          bestNumSat = numSat;
-          bestSc = sc;
+          foundImproving = true;
 
           // Move-to-front heuristic.
-          //allParents.erase(it);
-          //allParents.push_front(std::make_pair(cur, par));
+          allParents.erase(it);
+          allParents.push_front(std::make_pair(cur, par));
+
+          break;
         }
       }
     }
 
-    if (bestNumSat <= curNumSat) {
+    if (!foundImproving) {
       break;
     }
 
@@ -320,18 +311,17 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     }
   }
 
-
-  //std::cout << "Climbs: " << climbs << std::endl;
   Types::Score finalSc = 0LL;
   for (int i=0; i<n; i++) {
-    scores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
-    finalSc += scores[i];
+      const Variable &v = instance.getVar(i);
+      scores[i] = v.getParent(bestGraph[i]).getScore();
+      finalSc += scores[i];
   }
+
+  parents = bestGraph;
 
   // Add a penalty for each broken constraint.
   finalSc += PENALTY * (m - curNumSat);
-  parents = bestGraph;
-
   return finalSc;
 }
 
