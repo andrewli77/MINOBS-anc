@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
   int n = instance.getN();
   int initPopulationSize = 20;
   int numCrossovers = 20;
-  int numMutations = 10;
+  int numMutations = 6;
   int mutationPower = ceil(n*0.01);
   int divLookahead = 32;
   int numKeep = 4;
