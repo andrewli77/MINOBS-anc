@@ -53,7 +53,8 @@ class LocalSearch {
     void checkSolution(const Ordering &o);
     bool consistentWithAncestral(const Ordering &ordering) const;
     std::pair<int, int> constraintRange(const Ordering &ordering) const;
-
+    bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) const;
+    Types::Score getBestScore(const Ordering &ordering) const;
   private:
     Instance &instance;
     static int climbs;

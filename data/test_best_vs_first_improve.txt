@@ -1,0 +1,91 @@
+We test the performance of the following DAG hill-climbing techniques. Note that an "improving" DAG for our purposes is one
+that satisfies a strictly higher number of ancestral constraints than the current DAG.
+
+
+1) Best Improvement
+	- Search through all candidate parent sets and return the one satisfying the most ancestral constraints
+		(taking the lowest scoring DAG in the case of a tie).
+
+2) First Improvement
+	- Sort all candidate parent sets by score, and iterate through until you find the first one that leads to an
+		improving DAG.
+
+3) First Improvement with Move-to-front Heuristic
+	- Initially sort all candidate parent sets by score
+	- Iterate through all parent sets until you find one leading to an improving DAG,
+		then move that parent set to the head of the list
+
+4) First Improvement with Transpose Heuristic
+	- Initially sort all candidate parent sets by score
+	- Iterate through until you find an improving DAG,
+		then swap that parent set with its predecessor in the list.
+
+
+
+#############################################################################
+
+Time limits:
+	asia: 10 seconds
+	alarm: 20 seconds
+	hailfinder: 40 seconds
+
+
+==============================================================================
+Score | Time to generate initial population | Generations
+
+
+First Improvement with Move-to-front Heuristic
+
+
+asia:
+
+1) 2303188316 | 0.009 | 11758
+2) 2303188316 | 0.007 | 12361
+3) 2305384690 | 0.005 | 16160
+4) 2304886753 | 0.008 | 30307
+5) 2304054023 | 0.006 | 7614
+6) 2305384690 | 0.005 | 28591
+
+---------------------------------------
+
+alarm_500:
+
+1) 5828543466 | 0.211 | 141
+2) 5828543466 | 0.414 | 47
+3) 5835945010 | 0.058 | 21
+4) 5835945010 | 0.345 | 19
+5) 5828543466 | 0.085 | 379
+
+alarm_1000:
+
+1) 11174144919 | 0.136 | 175
+2) 11176375351 | 0.176 | 225
+3) 11207904988 | 0.348 | 21
+4) 100011174144919* | 0.01 | 1842
+5) 11174144919 | 0.082 | 311
+
+----------------------------------------
+
+hailfinder_500:
+
+1) 27151105988 | 0.7 | 153
+2) 27151835957 | 0.264 | 155
+3) 100027156548483* | 0.005 | 12945
+4) 200027151835957* | 0.008 | 12718
+5) 200027182729843* | 0.006 | 13151
+
+hailfinder_1000:
+
+1) 52458179497 | 0.294 | 489
+2) 52457553766 | 0.089 | 673
+3) 100052510433961* | 0.005 | 9075
+4) 100052542006349* | 0.005 | 9722
+5) 100052465653749* | 0.007 | 9256
+
+hailfinder_10000:
+
+1) 497349711308 | 0.29 | 274
+2) 497365014862 | 0.201 | 302
+3) 497515397938 | 1.309 | 29
+4) 497663924583 | 1.631 | 17
+5) 497556632370 | 0.432 | 25
