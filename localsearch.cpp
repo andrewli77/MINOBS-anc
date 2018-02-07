@@ -199,10 +199,15 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
           bestParent = par;
           foundImproving = true;
 
-          // Move-to-front heuristic.
-          allParents.erase(it);
-          allParents.push_front(std::make_pair(cur, par));
+          // Transpose Heuristic
+          if (it != allParents.begin()) {
+            auto it2 = it;
+            it2--;
+            std::iter_swap(it, it2);
 
+            //assert(!(it->first == cur && it->second == par));
+            //assert(it2->first == cur);
+          }
           break;
         }
       }
@@ -289,10 +294,15 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
           bestParent = par;
           foundImproving = true;
 
-          // Move-to-front heuristic.
-          allParents.erase(it);
-          allParents.push_front(std::make_pair(cur, par));
+          // Transpose Heuristic
+          if (it != allParents.begin()) {
+            auto it2 = it;
+            it2--;
+            std::iter_swap(it, it2);
 
+            //assert(!(it->first == cur && it->second == par));
+            //assert(it2->first == cur);
+          }
           break;
         }
       }
