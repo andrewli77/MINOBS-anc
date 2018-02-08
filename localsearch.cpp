@@ -175,9 +175,8 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent;
-
-    bool foundImproving = false;
+    int bestVar, bestParent, bestNumSat = -1;
+    Types::Score bestSc;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -194,16 +193,16 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > curNumSat) {
+        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
           bestVar = cur;
           bestParent = par;
-          foundImproving = true;
-          break;
+          bestNumSat = numSat;
+          bestSc = sc;
         }
       }
     }
 
-    if (!foundImproving) {
+    if (bestNumSat <= curNumSat) {
       break;
     }
 
@@ -260,9 +259,8 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent;
-
-    bool foundImproving = false;
+    int bestVar, bestParent, bestNumSat = -1;
+    Types::Score bestSc;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -279,16 +277,16 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > curNumSat) {
+        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
           bestVar = cur;
           bestParent = par;
-          foundImproving = true;
-          break;
+          bestNumSat = numSat;
+          bestSc = sc;
         }
       }
     }
 
-    if (!foundImproving) {
+    if (bestNumSat <= curNumSat) {
       break;
     }
 
