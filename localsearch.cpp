@@ -198,16 +198,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
           bestVar = cur;
           bestParent = par;
           foundImproving = true;
-
-          // Transpose Heuristic
-          if (it != allParents.begin()) {
-            auto it2 = it;
-            it2--;
-            std::iter_swap(it, it2);
-
-            //assert(!(it->first == cur && it->second == par));
-            //assert(it2->first == cur);
-          }
           break;
         }
       }
@@ -293,16 +283,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
           bestVar = cur;
           bestParent = par;
           foundImproving = true;
-
-          // Transpose Heuristic
-          if (it != allParents.begin()) {
-            auto it2 = it;
-            it2--;
-            std::iter_swap(it, it2);
-
-            //assert(!(it->first == cur && it->second == par));
-            //assert(it2->first == cur);
-          }
           break;
         }
       }
