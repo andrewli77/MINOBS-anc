@@ -507,11 +507,16 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
 
   std::iota(positions.begin(), positions.end(), 0);
 
-
+/*
   if (curScore >= PENALTY) {
     return SearchResult(curScore, cur);
   }
+*/
 
+  if (!consistentWithAncestral(cur)) {
+    return SearchResult(curScore, cur);
+  }
+  
   DBG("Inits: " << cur);
   do {
     improving = false;
