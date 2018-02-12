@@ -1,4 +1,8 @@
+from random import *
+from math import *
+
 n = 37
+p = 0.05
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
@@ -65,6 +69,22 @@ for i in range(n):
 	ancestors(i, i)
 
 
-print(len(allConstraints))
+print("Total number of positive constraints: " + str(len(allConstraints)))
+
+constraints = []
+
 for each in allConstraints:
-	print("%d %d"%(each[0], each[1]))
+	constraints.append(each)
+
+shuffle(constraints)
+
+
+n0 = int(ceil(len(allConstraints) * p))
+
+print("Printing %d constraints" %(n0))
+
+for i in range(n0):
+	print("%d %d"%(constraints[i][0], constraints[i][1]))
+
+# for each in allConstraints:
+# 	print("%d %d"%(each[0], each[1]))
