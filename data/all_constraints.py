@@ -1,14 +1,14 @@
 from random import *
 from math import *
 
-n = 8
-p = 0.5
+n = 37
+p = 0.1
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
 
 
-file = open("asia.net", "r")
+file = open("alarm.net", "r")
 
 for i in range(n): 
 	s = file.readline()
@@ -81,7 +81,7 @@ shuffle(constraints)
 
 n0 = int(ceil(len(allConstraints) * p))
 
-print("Printing %d constraints" %(n0))
+print(n0)
 
 for i in range(n0):
 	print("%d %d"%(constraints[i][0], constraints[i][1]))

@@ -177,9 +177,8 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent;
-
-    bool foundImproving = false;
+    int bestVar, bestParent, bestNumSat = -1;
+    Types::Score bestSc;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -196,28 +195,25 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > curNumSat) {
+        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
           bestVar = cur;
           bestParent = par;
-          foundImproving = true;
-
-          // Transpose Heuristic
-          if (it != allParents.begin()) {
-            auto it2 = it;
-            it2--;
-            std::iter_swap(it, it2);
-
-            //assert(!(it->first == cur && it->second == par));
-            //assert(it2->first == cur);
-          }
-
-          break;
+          bestNumSat = numSat;
+          bestSc = sc;
         }
       }
     }
 
-    if (!foundImproving) {
+    if (bestNumSat < curNumSat) {
       break;
+    }
+
+    if (bestNumSat == curNumSat) {
+      Variable &var = instance.getVar(bestVar);
+
+      if (var.getParent(bestParent).getScore() > var.getParent(bestGraph[bestVar]).getScore()) {
+        break;
+      }
     }
 
     bestGraph[bestVar] = bestParent;
@@ -273,9 +269,8 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent;
-
-    bool foundImproving = false;
+    int bestVar, bestParent, bestNumSat = -1;
+    Types::Score bestSc;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -292,28 +287,25 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > curNumSat) {
+        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
           bestVar = cur;
           bestParent = par;
-          foundImproving = true;
-
-          // Transpose Heuristic
-          if (it != allParents.begin()) {
-            auto it2 = it;
-            it2--;
-            std::iter_swap(it, it2);
-
-            //assert(!(it->first == cur && it->second == par));
-            //assert(it2->first == cur);
-          }
-
-          break;
+          bestNumSat = numSat;
+          bestSc = sc;
         }
       }
     }
 
-    if (!foundImproving) {
+    if (bestNumSat < curNumSat) {
       break;
+    }
+
+    if (bestNumSat == curNumSat) {
+      Variable &var = instance.getVar(bestVar);
+
+      if (var.getParent(bestParent).getScore() > var.getParent(bestGraph[bestVar]).getScore()) {
+        break;
+      }
     }
 
     bestGraph[bestVar] = bestParent;
@@ -511,13 +503,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
 
   std::iota(positions.begin(), positions.end(), 0);
 
-/*
   if (curScore >= PENALTY) {
-    return SearchResult(curScore, cur);
-  }
-*/
-
-  if (!consistentWithAncestral(cur)) {
     return SearchResult(curScore, cur);
   }
 
@@ -668,6 +654,8 @@ void LocalSearch::checkSolution(const Ordering &o) {
   } else {
     std::cout << "Ancestral constraints check: Bad" << std::endl;
   }
+
+  std::cout << "Num constraints satisfied: " << numConstraintsSatisfied(parents) << std::endl;
 
   std::cout << "Climbs: " << climbs << std::endl;
 
