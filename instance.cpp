@@ -8,6 +8,8 @@ Instance::Instance(std::string fileName) {
   const int SCORE_SCALE = -1000000;
     int countParents = 0;
   std::ifstream file(fileName);
+  this->fileName = fileName;
+
   if (file.is_open()) {
     file >> n;
     vars.resize(n);
@@ -61,6 +63,8 @@ Instance::Instance(std::string fileName) {
     }
   }
 
+  std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
+
   sortAllParents();
 
   DBG("Read in " << countParents << " parent sets.");
@@ -83,6 +87,10 @@ int Instance::getN() const {
 
 int Instance::getM() const {
   return m;
+}
+
+std::string Instance::getFileName() const {
+  return fileName;
 }
 
 bool Instance::isConstraint(int a, int b) const {

@@ -2,7 +2,9 @@
 #include "debug.h"
 #include <numeric>
 #include <utility>
+#include <string>
 #include <deque>
+#include <fstream>
 #include <cmath>
 #include "tabulist.h"
 #include "util.h"
@@ -208,6 +210,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
             //assert(!(it->first == cur && it->second == par));
             //assert(it2->first == cur);
           }
+
           break;
         }
       }
@@ -303,6 +306,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
             //assert(!(it->first == cur && it->second == par));
             //assert(it2->first == cur);
           }
+
           break;
         }
       }
@@ -516,7 +520,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   if (!consistentWithAncestral(cur)) {
     return SearchResult(curScore, cur);
   }
-  
+
   DBG("Inits: " << cur);
   do {
     improving = false;
@@ -627,6 +631,9 @@ void LocalSearch::checkSolution(const Ordering &o) {
   int n = instance.getN(), m = instance.getM();
   std::vector<int> parents(n), unconstrainedParents(n);
   std::vector<Types::Score> scores(n);
+
+  instance.sortAllParents();
+
   long long sc = getBestScoreWithParents(o, parents, scores, unconstrainedParents);
   long long scoreFromScores = 0;
   long long scoreFromParents = 0;
@@ -663,6 +670,9 @@ void LocalSearch::checkSolution(const Ordering &o) {
   }
 
   std::cout << "Climbs: " << climbs << std::endl;
+
+
+  printModelString(parents);
 }
 
 bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) const {
@@ -700,4 +710,56 @@ Types::Score LocalSearch::getBestScore(const Ordering &ordering) const {
   }
 
   return score;
+}
+
+
+void LocalSearch::printModelString(const std::vector<int> &parents) const {
+  int n = instance.getN();
+  std::ifstream file;
+
+  if (instance.getFileName().find("asia") != std::string::npos) {
+    file = std::ifstream("data/mappings/asia.mapping");
+  } else if (instance.getFileName().find("alarm") != std::string::npos) {
+    file = std::ifstream("data/mappings/alarm.mapping");
+  } else if (instance.getFileName().find("hailfinder") != std::string::npos) {
+    file = std::ifstream("data/mappings/hailfinder.mapping");
+  } else {
+    std::cout << "No suitable mapping found!" << std::endl;
+    exit(0);
+  }
+
+
+  std::vector<std::string> vars(n);
+
+  for (int i=0; i < n; i++) {
+    getline(file, vars[i]);
+  }
+
+
+  // Print the network.
+
+  std::cout << "Model string: ";
+
+  for (int i = 0; i < n; i++) {
+    std::cout << "[" + vars[i];
+
+    const Variable &varI = instance.getVar(i);
+    const ParentSet &par = varI.getParent(parents[i]);
+    const std::vector<int> parVec = par.getParentsVec();
+
+    if (parVec.size() != 0) {
+      std::cout << "|";
+    }
+
+    for (int j = 0; j < parVec.size(); j++) {
+      std::cout << vars[parVec[j]];
+      if (j < parVec.size() - 1) {
+        std::cout << ":";
+      }
+    }
+
+    std::cout << "]";
+  }
+
+  std::cout << std::endl;
 }

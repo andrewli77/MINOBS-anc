@@ -14,6 +14,7 @@ class Instance {
     Instance(std::string fileName);
     int getN() const;
     int getM() const;
+    std::string getFileName() const;
     bool isConstraint(int a, int b) const;
 
     void sortAllParents();
@@ -32,6 +33,7 @@ class Instance {
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
     std::unordered_set<int> orderConstraints;
+    std::string fileName;
 };
 
 #endif /* INSTANCE_H */
