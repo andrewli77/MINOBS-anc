@@ -142,8 +142,6 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) const 
   return count;
 }
 
-// GREEDY HILL-CLIMBING METHOD (First Strict Improvement)
-// Optimize solution by number of constraints satisfied, using score as a tiebreaker.
 Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents) const {
   int n = instance.getN(), m = instance.getM();
   int curNumSat = numConstraintsSatisfied(parents);
@@ -177,8 +175,9 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent, bestNumSat = -1;
-    Types::Score bestSc;
+    int bestVar, bestParent;
+
+    bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -195,25 +194,28 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
+        if (numSat > curNumSat) {
           bestVar = cur;
           bestParent = par;
-          bestNumSat = numSat;
-          bestSc = sc;
+          foundImproving = true;
+/*
+          // Transpose Heuristic
+          if (it != allParents.begin()) {
+            auto it2 = it;
+            it2--;
+            std::iter_swap(it, it2);
+
+            //assert(!(it->first == cur && it->second == par));
+            //assert(it2->first == cur);
+          }
+*/
+          break;
         }
       }
     }
 
-    if (bestNumSat < curNumSat) {
+    if (!foundImproving) {
       break;
-    }
-
-    if (bestNumSat == curNumSat) {
-      Variable &var = instance.getVar(bestVar);
-
-      if (var.getParent(bestParent).getScore() > var.getParent(bestGraph[bestVar]).getScore()) {
-        break;
-      }
     }
 
     bestGraph[bestVar] = bestParent;
@@ -269,8 +271,9 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     // Consider all feasible parent sets
 
-    int bestVar, bestParent, bestNumSat = -1;
-    Types::Score bestSc;
+    int bestVar, bestParent;
+
+    bool foundImproving = false;
 
     std::list< std::pair<int, int> >  &allParents = instance.getParentList();
 
@@ -287,25 +290,29 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
         bestGraph[cur] = oldPar;
 
-        if (numSat > bestNumSat || (numSat == bestNumSat && sc < bestSc)) {
+        if (numSat > curNumSat) {
           bestVar = cur;
           bestParent = par;
-          bestNumSat = numSat;
-          bestSc = sc;
+          foundImproving = true;
+
+/*
+          // Transpose Heuristic
+          if (it != allParents.begin()) {
+            auto it2 = it;
+            it2--;
+            std::iter_swap(it, it2);
+
+            //assert(!(it->first == cur && it->second == par));
+            //assert(it2->first == cur);
+          }
+*/
+          break;
         }
       }
     }
 
-    if (bestNumSat < curNumSat) {
+    if (!foundImproving) {
       break;
-    }
-
-    if (bestNumSat == curNumSat) {
-      Variable &var = instance.getVar(bestVar);
-
-      if (var.getParent(bestParent).getScore() > var.getParent(bestGraph[bestVar]).getScore()) {
-        break;
-      }
     }
 
     bestGraph[bestVar] = bestParent;
@@ -711,6 +718,8 @@ void LocalSearch::printModelString(const std::vector<int> &parents) const {
     file = std::ifstream("data/mappings/alarm.mapping");
   } else if (instance.getFileName().find("hailfinder") != std::string::npos) {
     file = std::ifstream("data/mappings/hailfinder.mapping");
+  } else if (instance.getFileName().find("child") != std::string::npos) {
+    file = std::ifstream("data/mappings/child.mapping");
   } else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);
