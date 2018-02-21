@@ -615,7 +615,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       best = curBest;
     }
     numGenerations++;
-  } while (rr.check() < cutoffTime);
+  } while (numGenerations < 7);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

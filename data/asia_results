@@ -4,57 +4,53 @@ asia_1000_BIC.txt
 0%:
 
 0
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"
 1%:
 
 1
-[asia][tub][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
+"[asia][tub][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"
 
 
 10%:
 
 2
-[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-
+"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"
 
 25%:
 
 5
-[asia][tub][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-
+"[asia][tub][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]"
 
 50%:
 
 9
-[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub][smoke|bronc][lung|smoke][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|bronc][lung|smoke][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]"
 
 100%:
 
 18
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
-[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]"

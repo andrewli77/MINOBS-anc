@@ -2,7 +2,7 @@ from random import *
 from math import *
 
 n = 20
-p = 0.25
+p = 0.5
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
