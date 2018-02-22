@@ -65,7 +65,6 @@ Ordering Ordering::randomOrdering(Instance &instance) {
 
 
   // Add a while loop so that we only start with valid orderings.
-  // Note: make this better when adding topological constraints.
   while (true) {
 
     bool sat = true;

@@ -1,12 +1,9 @@
 n = 20
 instance = "child"
 
-cmpModels = ["[BirthAsphyxia][HypDistrib|BirthAsphyxia][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|DuctFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|HypDistrib][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age]",
-"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypDistrib:HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting:Sick][Age|Disease][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age]",
-"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting:Sick][Age|Disease][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|ChestXray][LungFlow|Disease][Sick|Age]",
-"[BirthAsphyxia][HypDistrib|CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|BirthAsphyxia:LVH][LowerBodyO2|HypDistrib][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting][Age|Sick][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|ChestXray][LungFlow|Disease][Sick|Grunting]",
-"[BirthAsphyxia][HypDistrib|BirthAsphyxia:DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting][Age|Disease][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age]"]
-
+cmpModels = [
+"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|BirthAsphyxia:CO2][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench][LungFlow|ChestXray][Sick|Age]",
+"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting][Age|Disease][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|ChestXray][LungFlow|Disease][Sick|Age]"]
 
 
 mapFile = open("mappings/" + instance + ".mapping")

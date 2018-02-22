@@ -34,31 +34,35 @@ enum class SelectType {
 class LocalSearch {
   public:
     LocalSearch(Instance &instance);
-    const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset pred, int idx) const;
-    const ParentSet &bestParentVar(const Types::Bitset pred, const Variable &v) const;
-    const ParentSet *bestParentVarWithParent(const Types::Bitset pred, const Variable &a, const Variable &b, const Types::Score orig) const;
-    Types::Bitset getPred(const Ordering &ordering, int idx) const;
-    Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents) const;
+    const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset pred, int idx);
+    const ParentSet &bestParentVar(const Types::Bitset pred, const Variable &v);
+    Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
 
-    int numConstraintsSatisfied(const std::vector<int> &parents) const;
-    bool hasDipath(const std::vector<int> &parents, int x, int y) const;
-    Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents) const;
-    Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) const;
+    int numConstraintsSatisfied(const std::vector<int> &parents);
+    int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur);
+    bool hasDipath(const std::vector<int> &parents, int x, int y);
+    void alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
+    void dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
+    void getValidParentSets(const Ordering &ordering);
+    void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied);
 
-    void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc) const;
-    void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc) const;
+    Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);
+    Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
+
+    void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
+    void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);
-    Types::Score findBestScoreRange(const Ordering &o, int start, int end);
     SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
     void checkSolution(const Ordering &o);
-    bool consistentWithAncestral(const Ordering &ordering) const;
-    std::pair<int, int> constraintRange(const Ordering &ordering) const;
-    bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) const;
-    Types::Score getBestScore(const Ordering &ordering) const;
-    void printModelString(const std::vector<int> &parents) const;
+    bool consistentWithAncestral(const Ordering &ordering);
+    std::pair<int, int> constraintRange(const Ordering &ordering);
+    bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
+    Types::Score getBestScore(const Ordering &ordering);
+    void printModelString(const std::vector<int> &parents);
   private:
     Instance &instance;
     static int climbs;
+    std::list< std::pair<int,int> > allParents;
 };
 
 #endif /* LOCALSEARCH_H */
