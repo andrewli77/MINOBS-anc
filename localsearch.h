@@ -34,6 +34,7 @@ enum class SelectType {
 class LocalSearch {
   public:
     LocalSearch(Instance &instance);
+    ~LocalSearch();
     const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset pred, int idx);
     const ParentSet &bestParentVar(const Types::Bitset pred, const Variable &v);
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
@@ -41,9 +42,9 @@ class LocalSearch {
     int numConstraintsSatisfied(const std::vector<int> &parents);
     int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur);
     bool hasDipath(const std::vector<int> &parents, int x, int y);
+    bool hasDipathWithMemo(const std::vector<int> &parents, int x, int y, int **memo);
     void alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
     void dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
-    void getValidParentSets(const Ordering &ordering);
     void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied);
 
     Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);
@@ -63,6 +64,7 @@ class LocalSearch {
     Instance &instance;
     static int climbs;
     std::list< std::pair<int,int> > allParents;
+    bool **ancestor, **descendant, *satisfied;
 };
 
 #endif /* LOCALSEARCH_H */

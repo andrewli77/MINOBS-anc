@@ -1,9 +1,14 @@
-n = 20
-instance = "child"
+n = 8
+instance = "asia"
 
-cmpModels = [
-"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|BirthAsphyxia:CO2][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench][LungFlow|ChestXray][Sick|Age]",
-"[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LVH][GruntingReport|Grunting][Age|Disease][LVH|BirthAsphyxia][DuctFlow|Disease][CardiacMixing|Disease][LungParench|ChestXray][LungFlow|Disease][Sick|Age]"]
+cmpModels = ["[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"
+]
+
+
+
+
+
+
 
 
 mapFile = open("mappings/" + instance + ".mapping")
