@@ -11,14 +11,14 @@ typedef std::pair<int, int> Ancestral; // X --> Y is (X, Y)
 
 class Instance {
   public:
-    Instance(std::string fileName);
+    Instance(std::string fileName, std::string constraintsFileName);
     int getN() const;
     int getM() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
 
     void sortAllParents();
-    std::list< std::pair<int, int> > &getParentList();
+    std::vector< std::pair<int, int> > &getParentList();
     int numParents() const;
 
     Variable &getVar(int i);
@@ -29,7 +29,7 @@ class Instance {
 
   private:
     int n, m;
-    std::list< std::pair<int,int> > allParentSets;
+    std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
     std::unordered_set<int> orderConstraints;

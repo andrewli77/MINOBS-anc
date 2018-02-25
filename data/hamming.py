@@ -1,14 +1,11 @@
 n = 8
 instance = "asia"
 
-cmpModels = ["[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"
-]
 
 
 
 
-
-
+cmpModels = ["[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"]
 
 
 mapFile = open("mappings/" + instance + ".mapping")

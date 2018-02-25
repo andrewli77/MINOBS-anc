@@ -31,6 +31,11 @@ enum class SelectType {
   OLDHYBRID
 };
 
+const Types::Score INF = 223372036854775807LL;
+const Types::Score PENALTY = 100000000000000LL;
+const int tabuTenure = 3;
+
+
 class LocalSearch {
   public:
     LocalSearch(Instance &instance);
@@ -54,7 +59,7 @@ class LocalSearch {
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);
     SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
-    void checkSolution(const Ordering &o);
+    void checkSolution();
     bool consistentWithAncestral(const Ordering &ordering);
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
@@ -63,8 +68,17 @@ class LocalSearch {
   private:
     Instance &instance;
     static int climbs;
-    std::list< std::pair<int,int> > allParents;
+    std::vector< std::pair<int,int> > allParents;
     bool **ancestor, **descendant, *satisfied;
+
+    std::vector<int> globalOptimum;
+    Types::Score optimalScore = INF;
+    Ordering optimalOrdering;
+    std::vector<Types::Score> optimalScores;
+
+    double walkProb = 0;
+    double transposeProb = 0;
 };
 
 #endif /* LOCALSEARCH_H */
+  

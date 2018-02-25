@@ -16,7 +16,7 @@
 void usage() {
   std::cerr <<
     "Command without optinal arguemnts\n\n" <<
-    "\t./search <instance-file> <cutofftime (seconds)> <seed> <output file>\n\n" <<
+    "\t./search <instance-file> <constraints-file> <cutofftime (seconds)> <seed> <output file>\n\n" <<
     "If <seed> is -1, the current time will be used as the seed.\n" <<
     "Full command (with all optional arguments): \n\n" <<
     "\t./search  <instance-file> <cutofftime> <seed> <output file> -populationsize <pop size>\n\t-crossover <# of crossovers> -nummutation <# of mutations>\n\t-divlookahead <check paper> -numkeep <check paper>\n\t-crossovertype <check paper> -powerfactor <check paper>\n\n" <<
@@ -26,19 +26,20 @@ void usage() {
 } 
 
 int main(int argc, char* argv[]) {
-  if (argc < 5) {
+  if (argc < 6) {
     usage();
     return 0;
   }
   Types::Score opt;
   std::string fileName = argv[1];
-  float cutoffTime = atof(argv[2]);
-  int seed = atoi(argv[3]);
-  std::string outFile = argv[4];
+  std::string constraintsFileName = argv[2];
+  float cutoffTime = atof(argv[3]);
+  int seed = atoi(argv[4]);
+  std::string outFile = argv[5];
   seed = seed == -1 ? time(NULL) : seed;
   ResultRegister rr;
   srand(seed);
-  Instance instance(fileName);
+  Instance instance(fileName, constraintsFileName);
   rr.setOrigin();
   rr.set();
   LocalSearch localSearch(instance);
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
   float divTolerance = 0.001;
   int greediness = -1;
   CrossoverType crossoverType = CrossoverType::OB;
-  for (int i = 5; i < 22 && i < argc; i++) {
+  for (int i = 6; i < 23 && i < argc; i++) {
     std::string param(argv[i]);
     DBG(argv[i]);
     if (param == "-populationsize") {
@@ -84,7 +85,7 @@ int main(int argc, char* argv[]) {
     }
   }
   SearchResult sr = localSearch.genetic(cutoffTime, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
-  localSearch.checkSolution(sr.getOrdering());
+  localSearch.checkSolution();
   rr.dump(outFile, fileName, argc, argv, sr);
   return 0;
 }

@@ -1,13 +1,15 @@
 #include "instance.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include "debug.h"
 #include<boost/dynamic_bitset.hpp>
 
-Instance::Instance(std::string fileName) {
+Instance::Instance(std::string fileName, std::string constraintsFileName) {
   const int SCORE_SCALE = -1000000;
     int countParents = 0;
   std::ifstream file(fileName);
+  std::ifstream constraintsFile(constraintsFileName);
   this->fileName = fileName;
 
   if (file.is_open()) {
@@ -43,11 +45,11 @@ Instance::Instance(std::string fileName) {
       v.initParentsWithVar();
       vars[varId] = v;
     }
-    file >> m;
+    constraintsFile >> m;
     ancestralConstraints.resize(m);
     for (int i=0; i < m; i++) {
       int a, b;
-      file >> a >> b;
+      constraintsFile >> a >> b;
       ancestralConstraints[i] = std::make_pair(a, b);
       orderConstraints.insert(a * n + b); // A basic hash
     }
@@ -71,13 +73,13 @@ Instance::Instance(std::string fileName) {
 }
 
 void Instance::sortAllParents() {
-  allParentSets.sort([&](std::pair<int,int> a, std::pair<int,int> b) {
+  sort(allParentSets.begin(), allParentSets.end(), [&](std::pair<int,int> a, std::pair<int,int> b) {
       const Variable &aVar = getVar(a.first), &bVar = getVar(b.first);
       return aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore();
     });
 }
 
-std::list< std::pair<int, int> > &Instance::getParentList() {
+std::vector< std::pair<int, int> > &Instance::getParentList() {
   return allParentSets;
 }
 
