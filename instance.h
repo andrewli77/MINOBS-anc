@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <list>
-#include <unordered_set>
 #include "variable.h"
 #include "types.h"
 
@@ -32,7 +31,7 @@ class Instance {
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
-    std::unordered_set<int> orderConstraints;
+    std::vector<std::vector<bool>> orderConstraints;
     std::string fileName;
 };
 

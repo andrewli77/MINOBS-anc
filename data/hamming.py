@@ -1,11 +1,11 @@
-n = 11
-instance = "sachs"
+n = 20
+instance = "child"
 
 
 
 
 
-cmpModels = ["[Akt|Erk:PKA][Erk|Mek:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|PIP3:Plcg][PIP3|Plcg][PKA|PKC][PKC][Plcg][Raf|PKA:PKC]"]
+cmpModels = ["[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2][CO2][ChestXray|LungParench][Grunting][LVHreport|Disease][LowerBodyO2|LVH][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|DuctFlow][GruntingReport|Grunting][Age][LVH|LVHreport][DuctFlow|LungFlow][CardiacMixing][LungParench|Grunting][LungFlow|ChestXray][Sick]"]
 
 
 mapFile = open("mappings/" + instance + ".mapping")

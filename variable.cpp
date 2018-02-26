@@ -1,7 +1,7 @@
 #include "variable.h"
 #include "debug.h"
-Variable::Variable(int numParents, int varId, int n) :
-  parentsWithVar(), nParents(numParents),  varId(varId) { }
+Variable::Variable(int varId, int n) :
+  parentsWithVar(), varId(varId) { }
 
 Variable::Variable() { };
 
@@ -42,6 +42,10 @@ void Variable::parentSort() {
 
 int Variable::numParents() const {
   return nParents;
+}
+
+void Variable::setNumParents(int n) {
+  nParents = n;
 }
 
 std::ostream& operator<<(std::ostream &os, const Variable& v) {

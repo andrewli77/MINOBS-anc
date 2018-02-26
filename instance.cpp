@@ -7,13 +7,59 @@
 
 Instance::Instance(std::string fileName, std::string constraintsFileName) {
   const int SCORE_SCALE = -1000000;
-    int countParents = 0;
+  int countParents = 0, pruned = 0;;
   std::ifstream file(fileName);
   std::ifstream constraintsFile(constraintsFileName);
   this->fileName = fileName;
 
   if (file.is_open()) {
     file >> n;
+
+
+    orderConstraints = std::vector<std::vector<bool>>(n);
+
+    for (int i = 0; i < n; i++) {
+      orderConstraints[i].resize(n);
+
+      for (int j = 0; j < n; j++) {
+        orderConstraints[i][j] = false;
+      }
+    }
+
+    // Read ancestral constraints.
+
+    constraintsFile >> m;
+    ancestralConstraints.resize(m);
+    for (int i=0; i < m; i++) {
+      int a, b;
+      constraintsFile >> a >> b;
+      ancestralConstraints[i] = std::make_pair(a, b);
+      orderConstraints[a][b] = true; // A basic hash
+    }
+
+    // like Bellman-Ford to generate all possible inferred constraints.
+    for (int iters = 0; iters < n; iters++) {
+      bool improvement = false;
+
+      for (int i = 0; i < n; i++) {
+        for (int j = i+1; j < n; j++) {
+          if (orderConstraints[i][j]) {
+            for (int k = j+1; k < n; k++) {
+              if (orderConstraints[j][k]) {
+                if (! orderConstraints[i][k]) {
+                  improvement = true;
+                  orderConstraints[i][k] = true;
+                } 
+              }
+            }
+          }
+        }
+      }
+
+      if (!improvement) break;
+    }
+
+    // Read parent set scores.
     vars.resize(n);
     for (int i = 0; i < n; i++) {
       DBG("Working on var: " << i);
@@ -22,36 +68,44 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       file >> varId >> numParents;
       countParents += numParents;
       DBG(numParents);
-      Variable v(numParents, varId, n);
+      Variable v(varId, n);
 
-      for (int j = 0; j < numParents; j++) {
+      int j = 0;
+      while (j < numParents) {
         double doubleScore;
         int parentSize;
         Types::Bitset set(n, 0);
         std::vector<int> parentsVec;
         file >> doubleScore >> parentSize;
         Types::Score score = (Types::Score)(doubleScore * SCORE_SCALE);
+
+        bool valid = true;
         for (int k = 0; k < parentSize; k++) {
           int parentVar;
           file >> parentVar;
           set[parentVar] = 1;
           parentsVec.push_back(parentVar);
+
+          if (orderConstraints[varId][parentVar]) {
+            valid = false;
+          }
         }
-        ParentSet parentSet(score, set, varId, j, parentsVec);
-        v.addParentSet(parentSet);
+
+        if (valid) {
+          ParentSet parentSet(score, set, varId, j, parentsVec);
+          v.addParentSet(parentSet);
+          j++;
+        } else {
+          numParents--;
+          pruned++;
+        }
       }
+
+      v.setNumParents(numParents);
       v.parentSort();
       v.resetParentIds();
       v.initParentsWithVar();
       vars[varId] = v;
-    }
-    constraintsFile >> m;
-    ancestralConstraints.resize(m);
-    for (int i=0; i < m; i++) {
-      int a, b;
-      constraintsFile >> a >> b;
-      ancestralConstraints[i] = std::make_pair(a, b);
-      orderConstraints.insert(a * n + b); // A basic hash
     }
   } else {
     throw "Could not open file";
@@ -66,7 +120,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   }
 
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
-
+  std::cout << "Pruned parent sets: " << pruned << std::endl;
   sortAllParents();
 
   DBG("Read in " << countParents << " parent sets.");
@@ -98,7 +152,7 @@ std::string Instance::getFileName() const {
 }
 
 bool Instance::isConstraint(int a, int b) const {
-  return (orderConstraints.count(a * n + b));
+  return (orderConstraints[a][b]);
 }
 
 Variable &Instance::getVar(int i) {

@@ -7,7 +7,7 @@
 
 class Variable {
   public:
-    Variable(int numParents, int varId, int n);
+    Variable(int varId, int n);
     Variable();
     void addParentSet(ParentSet parentSet);
     void addDescendant(int i); 
@@ -16,6 +16,7 @@ class Variable {
     int numAncestors() const;
     void clearAncestry();
     int numParents() const;
+    void setNumParents(int n);
     const ParentSet &getParent(int i) const;
     const std::vector<int> &getAncestors() const;
     const std::vector<int> &getDescendants() const;
@@ -27,6 +28,7 @@ class Variable {
     std::unordered_map<int, std::vector<int>>::const_iterator parentsWithVarId(int i) const;
     int getId() const;
     std::unordered_map<int, std::vector<int>> parentsWithVar;
+
   private:
     int nParents;
     std::vector<ParentSet> parents;
