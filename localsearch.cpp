@@ -351,7 +351,9 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
           bestGraph[cur] = oldPar;
 
 
-          if (numSat > curNumSat || (numSat == curNumSat && sc < var.getParent(oldPar).getScore())) {
+          if (numSat > curNumSat || 
+             (numSat == curNumSat && sc < var.getParent(oldPar).getScore()) || 
+             (numSat == curNumSat && sc == var.getParent(oldPar).getScore() && p.size() < var.getParent(oldPar).size())) {
             bestGraph[cur] = par;
             curNumSat = numSat;
             foundImproving = true;
@@ -490,7 +492,9 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
           bestGraph[cur] = oldPar;
 
 
-          if (numSat > curNumSat || (numSat == curNumSat && sc < var.getParent(oldPar).getScore())) {
+          if (numSat > curNumSat || 
+             (numSat == curNumSat && sc < var.getParent(oldPar).getScore()) || 
+             (numSat == curNumSat && sc == var.getParent(oldPar).getScore() && p.size() < var.getParent(oldPar).size())) {
             bestGraph[cur] = par;
             curNumSat = numSat;
             foundImproving = true;

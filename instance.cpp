@@ -75,7 +75,9 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 void Instance::sortAllParents() {
   sort(allParentSets.begin(), allParentSets.end(), [&](std::pair<int,int> a, std::pair<int,int> b) {
       const Variable &aVar = getVar(a.first), &bVar = getVar(b.first);
-      return aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore();
+      return aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore()
+        || (aVar.getParent(a.second).getScore() == bVar.getParent(b.second).getScore() && 
+                aVar.getParent(a.second).size() < bVar.getParent(b.second).getScore());
     });
 }
 
