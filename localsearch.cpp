@@ -914,6 +914,9 @@ void LocalSearch::printModelString(const std::vector<int> &parents) {
   } else if (instance.getFileName().find("child") != std::string::npos) {
     file = std::ifstream("data/mappings/child.mapping");
     outF.open("data/child_results", std::ios_base::app);
+  } else if (instance.getFileName().find("sachs") != std::string::npos) {
+    file = std::ifstream("data/mappings/sachs.mapping");
+    outF.open("data/sachs_results", std::ios_base::app);
   } else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);

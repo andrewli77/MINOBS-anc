@@ -1,4 +1,4 @@
-base = "asia"
+base = "sachs"
 
 inF = open("constraints/" + base + ".txt")
 

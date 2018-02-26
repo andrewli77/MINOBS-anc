@@ -1,0 +1,6 @@
+0
+[Akt|Mek][Erk|Akt:PKA][Jnk|PKA:PKC][Mek|Raf][P38|PKA][PIP2|Plcg][PIP3][PKA|Mek:Raf][PKC|PKA:Raf][Plcg|PIP3][Raf]
+11
+[Akt|Erk:PKA][Erk|Mek:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|Plcg][PIP3][PKA|PKC][PKC][Plcg|PIP3][Raf|PKA:PKC]
+11
+[Akt|Mek][Erk|Akt:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|Plcg][PIP3][PKA|PKC][PKC][Plcg|PIP3][Raf|PKA:PKC]
