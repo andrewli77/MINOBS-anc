@@ -229,6 +229,16 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
   return count;
 }
 
+
+void LocalSearch::markAllAncestors(const std::vector<std::vector<int>> &parents, int node, bool **arr, int j) {
+  if (arr[node][j]) return;
+  arr[node][j] = true;
+
+  for (int i = 0; i < parents[node].size(); i++) {
+    markAllAncestors(parents, parents[node][i], arr, j);
+  }
+}
+
 void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied) {
   int n = instance.getN(), m = instance.getM();
 
@@ -236,26 +246,37 @@ void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **
     satisfied[j] = false;
   }
 
-  int **memo = new int*[n];
-
-  for (int i = 0; i < n; i++) {
-    memo[i] = new int[n](); // Value initialized to 0.
-  }
-
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      ancestor[i][j] = hasDipathWithMemo(parents, instance.getAncestral(j).first, i, memo);
-      descendant[i][j] = hasDipathWithMemo(parents, i, instance.getAncestral(j).second, memo);
-      if (ancestor[i][j] && descendant[i][j]) {
-        satisfied[j] = true;
-      }
+      ancestor[i][j] = false;
+      descendant[i][j] = false;
     }
   }
 
+
+  std::vector<std::vector<int>> graph(n), rgraph(n);
+
   for (int i = 0; i < n; i++) {
-    delete[] memo[i];
+    const Variable &var = instance.getVar(i);
+    const std::vector<int> &ps = var.getParent(parents[i]).getParentsVec();
+    for (int j = 0; j < ps.size(); j++) {
+      graph[i].push_back(ps[j]);
+      rgraph[ps[j]].push_back(i);
+    }
   }
-  delete[] memo;
+
+
+  for (int j = 0; j < m; j++) {
+    markAllAncestors(graph, instance.getAncestral(j).second, descendant, j);
+    markAllAncestors(rgraph, instance.getAncestral(j).first, ancestor, j);
+
+    for (int i = 0; i < n; i++) {
+      if (ancestor[i][j] && descendant[i][j]) {
+        satisfied[j] = true;
+        break;
+      }
+    }
+  }
 }
 
 
@@ -802,7 +823,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.25, walkProb + 0.005);
     }
 
-  } while (rr.check() < cutoffTime);
+  } while (numGenerations < 10);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

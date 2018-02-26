@@ -2,11 +2,7 @@ n = 20
 instance = "child"
 
 
-
-
-
-cmpModels = ["[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2][CO2][ChestXray|LungParench][Grunting][LVHreport|Disease][LowerBodyO2|LVH][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|DuctFlow][GruntingReport|Grunting][Age][LVH|LVHreport][DuctFlow|LungFlow][CardiacMixing][LungParench|Grunting][LungFlow|ChestXray][Sick]"]
-
+cmpModels = ["[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|CO2Report][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|CO2][LungFlow|ChestXray][Sick|Age]"]
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()

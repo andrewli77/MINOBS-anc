@@ -50,6 +50,7 @@ class LocalSearch {
     bool hasDipathWithMemo(const std::vector<int> &parents, int x, int y, int **memo);
     void alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
     void dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
+    void markAllAncestors(const std::vector<std::vector<int>> &parents, int node, bool **arr, int j);
     void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied);
 
     Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);

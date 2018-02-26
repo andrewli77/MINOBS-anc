@@ -1,2 +1,12 @@
 0
-[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2][CO2][ChestXray|LungParench][Grunting][LVHreport|Disease][LowerBodyO2|LVH][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|DuctFlow][GruntingReport|Grunting][Age][LVH|LVHreport][DuctFlow|LungFlow][CardiacMixing][LungParench|Grunting][LungFlow|ChestXray][Sick]
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|CO2Report][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|CO2][LungFlow|ChestXray][Sick|Age]
+1
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|CO2Report][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|CO2][LungFlow|ChestXray][Sick|Age]
+1
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|CardiacMixing][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing][LungParench|ChestXray][LungFlow|Disease][Sick|Age]
+1
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungFlow][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|CardiacMixing][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing][LungParench|ChestXray][LungFlow|Disease][Sick|Age]
+0
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|CO2Report][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|CO2][LungFlow|ChestXray][Sick|Age]
+0
+[BirthAsphyxia][HypDistrib|DuctFlow][HypoxiaInO2|CardiacMixing][CO2|CO2Report][ChestXray|LungParench][Grunting|LungParench][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|CO2][LungFlow|ChestXray][Sick|Age]
