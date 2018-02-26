@@ -77,7 +77,7 @@ class LocalSearch {
     std::vector<Types::Score> optimalScores;
 
     double walkProb = 0;
-    double transposeProb = 0;
+    double transposeProb = 0.2;
 };
 
 #endif /* LOCALSEARCH_H */
