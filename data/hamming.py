@@ -5,7 +5,7 @@ instance = "sachs"
 
 
 
-cmpModels = ["[Akt|Erk][Erk|Mek][Jnk|PKA][Mek|Raf][P38|PKA][PIP2|PIP3:Plcg][PIP3|Plcg][PKA|PKC][PKC][Plcg][Raf|PKA]"]
+cmpModels = ["[Akt|Erk:PKA][Erk|Mek:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|PIP3:Plcg][PIP3|Plcg][PKA|PKC][PKC][Plcg][Raf|PKA:PKC]"]
 
 
 mapFile = open("mappings/" + instance + ".mapping")
