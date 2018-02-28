@@ -5,6 +5,7 @@
 #include <string>
 #include <deque>
 #include <fstream>
+#include <stack>
 #include <cmath>
 #include "tabulist.h"
 #include "util.h"
@@ -116,8 +117,6 @@ void LocalSearch::dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisf
   delete[] satisfied;
 }
 
-
-// CAN BE OPTIMIZED
 bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y) {
   if (x == y) {
     return true;
@@ -136,14 +135,13 @@ bool LocalSearch::hasDipath(const std::vector<int> &parents, int x, int y) {
   return false;
 }
 
-bool LocalSearch::hasDipathWithMemo(const std::vector<int> &parents, int x, int y, int **memo) {
+
+bool LocalSearch::hasDipathWithOrdering(const std::vector<int> &parents, int x, int y, const std::vector<int> &positions) {
   if (x == y) {
     return true;
   }
 
-  if (memo[x][y] == 1) {
-    return true;
-  } else if (memo[x][y] == -1) {
+  if (positions[y] < positions[x]) {
     return false;
   }
 
@@ -152,17 +150,13 @@ bool LocalSearch::hasDipathWithMemo(const std::vector<int> &parents, int x, int 
   const std::vector<int> &pars = p.getParentsVec();
 
   for (int i=0; i < pars.size(); i++) {
-    if (hasDipath(parents, x, pars[i])) {
-      memo[x][y] = 1;
+    if (hasDipathWithOrdering(parents, x, pars[i], positions)) {
       return true;
     }
   }
 
-  memo[x][y] = -1;
   return false;
 }
-
-
 
 int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) {
   int n = instance.getN(), m = instance.getM(), count = 0;
@@ -177,7 +171,8 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) {
   return count;
 }
 
-int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur) {
+
+int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions) {
   int n = instance.getN(), m = instance.getM(), count = 0, par = newParents[cur];
 
   const ParentSet &p = instance.getVar(cur).getParent(par); 
@@ -186,7 +181,9 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
 
     // Check if a satisfied constraint is now unsatisfied
     if (satisfied[i]) {
-      if (ancestor[cur][i] && descendant[cur][i]) {
+      if (!(positions[instance.getAncestral(i).first] <= positions[cur] <= positions[instance.getAncestral(i).second])) {
+        count++;
+      } else if (ancestor[cur][i] && descendant[cur][i]) {
         // Maybe do a check here later for if cur has a parent who has X_i has an ancestor
         const std::vector<int> &curPars = p.getParentsVec();
         bool connected = false;
@@ -199,7 +196,7 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
 
         if (connected) {
           count++;
-        } else if (hasDipath(newParents, instance.getAncestral(i).first, instance.getAncestral(i).second)) {
+        } else if (hasDipathWithOrdering(newParents, instance.getAncestral(i).first, instance.getAncestral(i).second, positions)) {
           count++;
         }
       } else {
@@ -209,7 +206,7 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
 
     // Check if an unsatisfied constraint is now satisfied.
     else {
-      if (descendant[cur][i]) {
+      if (positions[instance.getAncestral(i).first] <= positions[cur] <= positions[instance.getAncestral(i).second] && descendant[cur][i]) {
         const std::vector<int> &curPars = p.getParentsVec();
         bool connected = false;
         for (int j = 0; j < curPars.size(); j++) {
@@ -225,21 +222,12 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
       }
     }
   }
-
+  
   return count;
 }
 
 
-void LocalSearch::markAllAncestors(const std::vector<std::vector<int>> &parents, int node, bool **arr, int j) {
-  if (arr[node][j]) return;
-  arr[node][j] = true;
-
-  for (int i = 0; i < parents[node].size(); i++) {
-    markAllAncestors(parents, parents[node][i], arr, j);
-  }
-}
-
-void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied) {
+void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied, const std::vector<int> &positions) {
   int n = instance.getN(), m = instance.getM();
 
   for (int j = 0; j < m; j++) {
@@ -248,32 +236,10 @@ void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      ancestor[i][j] = false;
-      descendant[i][j] = false;
-    }
-  }
-
-
-  std::vector<std::vector<int>> graph(n), rgraph(n);
-
-  for (int i = 0; i < n; i++) {
-    const Variable &var = instance.getVar(i);
-    const std::vector<int> &ps = var.getParent(parents[i]).getParentsVec();
-    for (int j = 0; j < ps.size(); j++) {
-      graph[i].push_back(ps[j]);
-      rgraph[ps[j]].push_back(i);
-    }
-  }
-
-
-  for (int j = 0; j < m; j++) {
-    markAllAncestors(graph, instance.getAncestral(j).second, descendant, j);
-    markAllAncestors(rgraph, instance.getAncestral(j).first, ancestor, j);
-
-    for (int i = 0; i < n; i++) {
+      ancestor[i][j] = hasDipathWithOrdering(parents, instance.getAncestral(j).first, i, positions);
+      descendant[i][j] = hasDipathWithOrdering(parents, i, instance.getAncestral(j).second, positions);
       if (ancestor[i][j] && descendant[i][j]) {
         satisfied[j] = true;
-        break;
       }
     }
   }
@@ -283,7 +249,13 @@ void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **
 Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents) {
   int n = instance.getN(), m = instance.getM();
   std::vector<int> bestGraph(parents);
-  computeAncestralGraph(bestGraph, ancestor, descendant, satisfied);
+
+  std::vector<int> positions(n);
+
+  for (int i = 0; i < n; i++) {
+    positions[ordering.get(i)] = i;
+  }
+  computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
   int curNumSat = 0;
 
   for (int i = 0; i < m; i++) {
@@ -346,7 +318,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
         if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
           lastRandomWalk[cur] = iters;
           bestGraph[cur] = par;
-          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur);
+          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
           foundImproving = true;
           break;
         }
@@ -368,7 +340,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
         if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
           bestGraph[cur] = par;
-          int numSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur);
+          int numSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
           bestGraph[cur] = oldPar;
 
 
@@ -378,12 +350,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
             bestGraph[cur] = par;
             curNumSat = numSat;
             foundImproving = true;
-
-            if (i != 0 && (double)rand() / RAND_MAX < transposeProb) {
-              // Transpose heuristic.
-              std::swap(allParents[i], allParents[i-1]);
-            }
-
             break;
           }
         }
@@ -393,7 +359,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     if (!foundImproving) {
       break;
     }
-    computeAncestralGraph(bestGraph, ancestor, descendant, satisfied);
+    computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
     iters++;
   }
 
@@ -427,7 +393,15 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) {
   int n = instance.getN(), m = instance.getM();
   std::vector<int> bestGraph(parents);
-  computeAncestralGraph(bestGraph, ancestor, descendant, satisfied);
+
+  std::vector<int> positions(n);
+
+  for (int i = 0; i < n; i++) {
+    positions[ordering.get(i)] = i;
+  }
+
+  computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
+
   int curNumSat = 0;
 
   for (int i = 0; i < m; i++) {
@@ -487,7 +461,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
           lastRandomWalk[cur] = iters;
           bestGraph[cur] = par;
-          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur);
+          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
           foundImproving = true;
           break;
         }
@@ -509,7 +483,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
         if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
           bestGraph[cur] = par;
-          int numSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur);
+          int numSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
           bestGraph[cur] = oldPar;
 
 
@@ -519,12 +493,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
             bestGraph[cur] = par;
             curNumSat = numSat;
             foundImproving = true;
-
-            if (i != 0 && (double)rand() / RAND_MAX < transposeProb) {
-              // Transpose heuristic.
-              std::swap(allParents[i], allParents[i-1]);
-            }
-
             break;
           }
         }
@@ -534,7 +502,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     if (!foundImproving) {
       break;
     }
-    computeAncestralGraph(bestGraph, ancestor, descendant, satisfied);
+    computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
     iters++;
   }
 
@@ -730,7 +698,6 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
     for (int s = 0; s < n && !improving; s++) {
       int pivot = positions[s];
 
-
       std::vector<int> bestUnconstrainedParents(n);
       Ordering bestOrdering;
       Types::Score bestSc = INF;
@@ -820,10 +787,10 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     if (optimalScore < initialSc) {
       walkProb = std::max(0.0, walkProb - 0.005);
     } else {
-      walkProb = std::min(0.25, walkProb + 0.005);
+      walkProb = std::min(0.1, walkProb + 0.005);
     }
 
-  } while (numGenerations < 10);
+  } while (numGenerations < 60);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

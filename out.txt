@@ -1,12 +1,10 @@
-data/child_500.BIC
-data/child_500.BIC
-data/constraints/child/child.0-1
-100
--1
+data/asia_1000.BIC
+data/asia_1000.BIC
+data/constraints/asia/asia.18-22
+10
+1
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-0	7120511993
-4 17 5 12 3 18 11 16 2 7 8 15 1 10 14 6 0 9 13 19 
-6	7120511963
-9 3 17 4 10 5 18 11 15 13 19 12 14 6 1 16 2 7 8 0 
+4	2318513208
+2 4 0 3 1 5 6 7 

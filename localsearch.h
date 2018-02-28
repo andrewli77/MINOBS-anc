@@ -45,13 +45,12 @@ class LocalSearch {
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
 
     int numConstraintsSatisfied(const std::vector<int> &parents);
-    int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur);
+    int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions);
     bool hasDipath(const std::vector<int> &parents, int x, int y);
-    bool hasDipathWithMemo(const std::vector<int> &parents, int x, int y, int **memo);
+    bool hasDipathWithOrdering(const std::vector<int> &parents, int x, int y, const std::vector<int> &positions);
     void alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
     void dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
-    void markAllAncestors(const std::vector<std::vector<int>> &parents, int node, bool **arr, int j);
-    void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied);
+    void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied,  const std::vector<int> &positions);
 
     Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);
     Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
@@ -78,7 +77,7 @@ class LocalSearch {
     std::vector<Types::Score> optimalScores;
 
     double walkProb = 0;
-    double transposeProb = 0.2;
+    double transposeProb = 0;
 };
 
 #endif /* LOCALSEARCH_H */

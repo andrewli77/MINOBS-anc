@@ -66,12 +66,10 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int varId;
       int numParents;
       file >> varId >> numParents;
-      countParents += numParents;
-      DBG(numParents);
       Variable v(varId, n);
 
-      int j = 0;
-      while (j < numParents) {
+      int idx = 0, trueNumParents = 0;
+      for (int j = 0; j < numParents; j++) {
         double doubleScore;
         int parentSize;
         Types::Bitset set(n, 0);
@@ -79,32 +77,29 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
         file >> doubleScore >> parentSize;
         Types::Score score = (Types::Score)(doubleScore * SCORE_SCALE);
 
-        bool valid = true;
         for (int k = 0; k < parentSize; k++) {
           int parentVar;
           file >> parentVar;
           set[parentVar] = 1;
           parentsVec.push_back(parentVar);
-
-          if (orderConstraints[varId][parentVar]) {
-            valid = false;
-          }
         }
 
-        if (valid) {
-          ParentSet parentSet(score, set, varId, j, parentsVec);
+        if (!canPruneParent(varId, parentsVec)) {
+          ParentSet parentSet(score, set, varId, idx, parentsVec);
           v.addParentSet(parentSet);
-          j++;
+          idx++;
+          trueNumParents++;
         } else {
-          numParents--;
           pruned++;
         }
       }
 
+      numParents = trueNumParents;
+      countParents += numParents;
+
       v.setNumParents(numParents);
       v.parentSort();
       v.resetParentIds();
-      v.initParentsWithVar();
       vars[varId] = v;
     }
   } else {
@@ -122,16 +117,50 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
   std::cout << "Pruned parent sets: " << pruned << std::endl;
   sortAllParents();
-
-  DBG("Read in " << countParents << " parent sets.");
 }
 
+
+bool Instance::canPruneParent(int node, const std::vector<int> &parents) const {
+  // Pruning rules-------------
+  // 1) If X--->Y, P is a parent set of X containing Y, P can be eliminated.
+  // 2) If X--->Y, P is a parent set of Y and each W in P precedes X in every ordering, P can be eliminated.
+
+
+  for (int i = 0; i < parents.size(); i++) {
+    if (orderConstraints[node][parents[i]]) {
+      return true;
+    }
+
+  }
+
+
+  for (int x = 0; x < n; x++) {
+    if (orderConstraints[x][node]) {
+      bool allPrecedes = true;
+
+      for (int i = 0; i < parents.size(); i++) {
+        if (!orderConstraints[parents[i]][x]) {
+          allPrecedes = false;
+          break;
+        }
+      }
+
+      if (allPrecedes) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+
 void Instance::sortAllParents() {
-  sort(allParentSets.begin(), allParentSets.end(), [&](std::pair<int,int> a, std::pair<int,int> b) {
+  std::sort(allParentSets.begin(), allParentSets.end(), [&](const std::pair<int,int> a, const std::pair<int,int> b) -> bool {
       const Variable &aVar = getVar(a.first), &bVar = getVar(b.first);
-      return aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore()
+      return (aVar.getParent(a.second).getScore() < bVar.getParent(b.second).getScore()
         || (aVar.getParent(a.second).getScore() == bVar.getParent(b.second).getScore() && 
-                aVar.getParent(a.second).size() < bVar.getParent(b.second).getScore());
+                aVar.getParent(a.second).size() < bVar.getParent(b.second).size()));
     });
 }
 

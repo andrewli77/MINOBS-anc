@@ -62,22 +62,6 @@ void Variable::resetParentIds() {
   }
 }
 
-void Variable::initParentsWithVar() {
-  int n = numParents();
-  for (int i = 0; i < n; i++) {
-    const std::vector<int> &parentsVec = getParent(i).getParentsVec();
-    int m = parentsVec.size();
-    for (int j = 0; j < m; j++) {
-      int parentVarId = parentsVec[j];
-      parentsWithVar[parentVarId].push_back(getParent(i).getId()); // Should just be i, but just in case)
-    }
-  }
-}
-
-std::unordered_map<int, std::vector<int>>::const_iterator Variable::parentsWithVarId(int i)  const {
-  return parentsWithVar.find(i);
-}
-
 int Variable::getId() const {
   return varId;
 }

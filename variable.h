@@ -24,8 +24,6 @@ class Variable {
     void parentSort();
     friend std::ostream& operator<<(std::ostream &os, const Variable& v);
     void resetParentIds();
-    void initParentsWithVar();
-    std::unordered_map<int, std::vector<int>>::const_iterator parentsWithVarId(int i) const;
     int getId() const;
     std::unordered_map<int, std::vector<int>> parentsWithVar;
 

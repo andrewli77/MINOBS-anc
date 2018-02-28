@@ -15,6 +15,7 @@ class Instance {
     int getM() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
+    bool canPruneParent(int node, const std::vector<int> &parents) const;
 
     void sortAllParents();
     std::vector< std::pair<int, int> > &getParentList();
