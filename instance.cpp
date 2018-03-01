@@ -188,7 +188,7 @@ bool Instance::canPruneParent(int node, int j) {
   for (int i = 0; i < var.numParents(); i++) {
     const ParentSet &other = var.getParent(i);
 
-    if (i != j && 2*other.getScore() < ps.getScore() && other.subsetOf(pred)) {
+    if (i != j && pruneFactor * other.getScore() < ps.getScore() && other.subsetOf(pred)) {
       return true;
     }
   }

@@ -2,9 +2,6 @@ n = 11
 instance = "sachs"
 
 
-
-cmpModels = ["[Akt|Erk:PKA][Erk|Mek:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|PIP3:Plcg][PIP3|Plcg][PKA|PKC][PKC][Plcg][Raf|PKA:PKC]"
-]
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
 rmapping = dict()
@@ -61,30 +58,35 @@ def hammingDAG(trueBN, learnedBN):
 				if learnedBN[j][i] != 1:
 					numMissing += 1
 
-	print("Number of missing arcs: ", numMissing)
-	print("Number of extra arcs: ", numExtra)
-	print("Number of reversed arcs: ", numReversed)
-	print("Hamming distance: ", numMissing + numExtra + numReversed)
-
-	return (numMissing, numExtra, numReversed, numMissing + numExtra + numReversed)
+	return numMissing + numExtra + numReversed
 
 
 trueBN = model2network(modelStringCache[instance])
-missing = 0
-extra = 0
-reversed = 0
-shd = 0
 
 
-for cmpModel in cmpModels:
-	learnedBN = model2network(cmpModel)
-	a,b,c,d = hammingDAG(trueBN, learnedBN)
-	missing += a
-	extra += b
-	reversed += c
-	shd += d
 
-print("Avg Missing Edges: ", missing/len(cmpModels))
-print("Avg Extra Edges: ", extra/len(cmpModels))
-print("Avg Reversed Edges: ", reversed/len(cmpModels))
-print("Avg SHD: ", shd/len(cmpModels))
+modelFile = open(instance + "_results")
+
+scoreTotals = [0 for i in range(200)]
+shdTotals = [0 for i in range(200)]
+counts = [0 for i in range(200)]
+
+while True:
+	line1 = modelFile.readline()
+	if (line1.strip() == ""):
+		break
+
+	model = modelFile.readline()
+	line3 = modelFile.readline()
+
+	size = int(line1)
+	score = int(line3)
+
+	scoreTotals[size] += score
+	shdTotals[size] += hammingDAG(trueBN, model2network(model))
+	counts[size] += 1
+
+for i in range(200):
+	if counts[i] != 0:
+		assert(counts[i] == 1 or counts[i] == 5)
+		print("Size: %d \t Avg Score: %f \t Avg SHD %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i]))

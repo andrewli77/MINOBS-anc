@@ -20,7 +20,7 @@ const ParentSet &Variable::getParent(int i) const {
 
 void Variable::parentSort() {
   std::sort(parents.begin(), parents.end(), [](ParentSet a, ParentSet b) {
-    return a.getScore() < b.getScore();
+    return a.getScore() < b.getScore() || (a.getScore() == b.getScore() && a.size() < b.size());
   });
 }
 

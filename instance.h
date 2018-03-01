@@ -8,6 +8,8 @@
 
 typedef std::pair<int, int> Ancestral; // X --> Y is (X, Y)
 
+const double pruneFactor = 2;
+
 class Instance {
   public:
     Instance(std::string fileName, std::string constraintsFileName);
