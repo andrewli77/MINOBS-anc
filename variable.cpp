@@ -9,25 +9,9 @@ void Variable::addParentSet(ParentSet parentSet) {
   parents.push_back(parentSet);
 }
 
-void Variable::addDescendant(int i) {
-  descendants.push_back(i);
-}
-
-int Variable::numDescendants() const {
-  return descendants.size();
-}
-
-void Variable::addAncestor(int i) {
-  ancestors.push_back(i);
-}
-
-void Variable::clearAncestry() {
-  ancestors.clear();
-  descendants.clear();
-}
-
-int Variable::numAncestors() const {
-  return ancestors.size();
+void Variable::clearParentSets() {
+  parents.clear();
+  nParents = 0;
 }
 
 const ParentSet &Variable::getParent(int i) const {
@@ -57,6 +41,7 @@ std::ostream& operator<<(std::ostream &os, const Variable& v) {
 }
 
 void Variable::resetParentIds() {
+  assert(nParents == parents.size());
   for (int j = 0; j < nParents; j++) {
     parents[j].setId(j);
   }
@@ -64,19 +49,4 @@ void Variable::resetParentIds() {
 
 int Variable::getId() const {
   return varId;
-}
-
-const std::vector<int> &Variable::getAncestors() const {
-  return ancestors;
-}
-
-const std::vector<int> &Variable::getDescendants() const {
-  return descendants;
-}
-
-bool Variable::hasDescendant(int i) const {
-  for (int j=0; j < descendants.size(); j++) {
-    if (descendants[j] == i) return true;
-  }
-  return false;
 }

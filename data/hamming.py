@@ -1,9 +1,10 @@
-n = 8
-instance = "asia"
+n = 11
+instance = "sachs"
 
 
 
-cmpModels = ["[asia][tub|smoke][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]"]
+cmpModels = ["[Akt|Erk:PKA][Erk|Mek:PKA][Jnk|PKA:PKC][Mek|PKA:Raf][P38|PKA][PIP2|PIP3:Plcg][PIP3|Plcg][PKA|PKC][PKC][Plcg][Raf|PKA:PKC]"
+]
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
 rmapping = dict()

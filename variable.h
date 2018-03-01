@@ -10,17 +10,10 @@ class Variable {
     Variable(int varId, int n);
     Variable();
     void addParentSet(ParentSet parentSet);
-    void addDescendant(int i); 
-    int numDescendants() const;
-    void addAncestor(int i);
-    int numAncestors() const;
-    void clearAncestry();
+    void clearParentSets();
     int numParents() const;
     void setNumParents(int n);
     const ParentSet &getParent(int i) const;
-    const std::vector<int> &getAncestors() const;
-    const std::vector<int> &getDescendants() const;
-    bool hasDescendant(int i) const;
     void parentSort();
     friend std::ostream& operator<<(std::ostream &os, const Variable& v);
     void resetParentIds();
@@ -30,7 +23,6 @@ class Variable {
   private:
     int nParents;
     std::vector<ParentSet> parents;
-    std::vector<int> descendants, ancestors;
     int varId;
 };
 

@@ -40,12 +40,13 @@ class LocalSearch {
   public:
     LocalSearch(Instance &instance);
     ~LocalSearch();
-    const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset pred, int idx);
-    const ParentSet &bestParentVar(const Types::Bitset pred, const Variable &v);
+    const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset &pred, int idx);
+    const ParentSet &bestParentVar(const Types::Bitset &pred, const Variable &v);
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
 
     int numConstraintsSatisfied(const std::vector<int> &parents);
     int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions);
+    bool improving(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions, int curNumSat, int oldPar, int &numSat);
     bool hasDipath(const std::vector<int> &parents, int x, int y);
     bool hasDipathWithOrdering(const std::vector<int> &parents, int x, int y, const std::vector<int> &positions);
     void alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
@@ -64,7 +65,7 @@ class LocalSearch {
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
-    void printModelString(const std::vector<int> &parents);
+    void printModelString(const std::vector<int> &parents, bool valid);
   private:
     Instance &instance;
     static int climbs;
