@@ -66,6 +66,7 @@ class LocalSearch {
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
     void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
+    void printTrueBN();
   private:
     Instance &instance;
     static int climbs;
@@ -79,6 +80,7 @@ class LocalSearch {
 
     double walkProb = 0;
     double transposeProb = 0;
+    double total_time = 0;
 };
 
 #endif /* LOCALSEARCH_H */

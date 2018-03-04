@@ -21,7 +21,12 @@ Types::Score ParentSet::getScore() const {
 }
 
 bool ParentSet::subsetOf(const Types::Bitset &set) const {
-  return (set & parents) == parents;
+  for (int i = 0; i < parentsVec.size(); i++) {
+    if (!set.test(parentsVec[i])) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool ParentSet::supersetOf(const Types::Bitset &set) const {

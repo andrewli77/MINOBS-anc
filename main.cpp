@@ -46,13 +46,13 @@ int main(int argc, char* argv[]) {
   int n = instance.getN();
   int initPopulationSize = 20;
   int numCrossovers = 20;
-  int numMutations = 12;
+  int numMutations = 6;
   int mutationPower = ceil(n*0.01);
   int divLookahead = 32;
   int numKeep = 4;
   float divTolerance = 0.001;
   int greediness = -1;
-  CrossoverType crossoverType = CrossoverType::OB;
+  CrossoverType crossoverType = CrossoverType::RK;
   for (int i = 6; i < 23 && i < argc; i++) {
     std::string param(argv[i]);
     DBG(argv[i]);

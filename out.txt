@@ -1,12 +1,10 @@
-data/sachs_1000.BIC
-data/sachs_1000.BIC
-data/constraints/sachs//sachs.6-16
-1
+data/child_5000.BIC
+data/child_5000.BIC
+data/constraints/child/child.7-20
+10
 -1
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-3	7664500730
-6 9 8 7 10 3 1 5 2 0 4 
-14	7664500729
-6 9 4 7 8 10 3 1 0 2 5 
+150	62823919065
+0 11 18 14 19 17 3 4 16 5 12 2 8 9 7 15 6 1 13 10 

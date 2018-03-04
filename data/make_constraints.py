@@ -1,4 +1,4 @@
-base = "sachs"
+base = "child"
 
 inF = open("constraints/" + base + ".txt")
 

@@ -1,5 +1,5 @@
-n = 11
-instance = "sachs"
+n = 20
+instance = "child"
 
 
 mapFile = open("mappings/" + instance + ".mapping")
@@ -63,8 +63,6 @@ def hammingDAG(trueBN, learnedBN):
 
 trueBN = model2network(modelStringCache[instance])
 
-
-
 modelFile = open(instance + "_results")
 
 scoreTotals = [0 for i in range(200)]
@@ -88,5 +86,5 @@ while True:
 
 for i in range(200):
 	if counts[i] != 0:
-		assert(counts[i] == 1 or counts[i] == 5)
+		#assert(counts[i] == 1 or counts[i] == 5)
 		print("Size: %d \t Avg Score: %f \t Avg SHD %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i]))

@@ -1,14 +1,14 @@
 from random import *
 from math import *
 
-n = 11
-p = 1
+n = 20
+p = 0.3
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
 
 
-file = open("sachs.net", "r")
+file = open("child.net", "r")
 
 for i in range(n): 
 	s = file.readline()
