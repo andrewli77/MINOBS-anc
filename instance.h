@@ -8,7 +8,7 @@
 
 typedef std::pair<int, int> Ancestral; // X --> Y is (X, Y)
 
-const double pruneFactor = 1.1;
+const double pruneFactor = 2;
 
 class Instance {
   public:

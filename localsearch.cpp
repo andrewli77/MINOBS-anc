@@ -274,17 +274,8 @@ bool LocalSearch::improving(const std::vector<int> &newParents, bool **ancestor,
 
     if (satisfied[i]) {
       if (ancestor[cur][i] && descendant[cur][i]) {
-        // Maybe do a check here later for if cur has a parent who has X_i has an ancestor
-        const std::vector<int> &curPars = p.getParentsVec();
-        bool connected = false;
-        for (int j = 0; j < curPars.size(); j++) {
-          if (ancestor[curPars[j]][i]) {
-            connected = true;
-            break;
-          }
-        }
 
-        if (!connected && !(hasDipathWithOrdering(newParents, instance.getAncestral(i).first, instance.getAncestral(i).second, positions))) {
+        if (!(hasDipathWithOrdering(newParents, instance.getAncestral(i).first, instance.getAncestral(i).second, positions))) {
           count--;
         }
       }
@@ -336,6 +327,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     curNumSat += (satisfied[i]);
   }
 
+/*
   if (curNumSat == m) {
     // Compute the final score of the graph.
 
@@ -356,6 +348,7 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     }
     return finalSc;
   }
+*/
 
   std::vector<Types::Bitset> pred(n);
 
@@ -479,6 +472,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     curNumSat += (satisfied[i]);
   }
 
+/*
   if (curNumSat == m) {
     // Compute the final score of the graph.
 
@@ -497,6 +491,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     return finalSc;
   }
+*/
 
   std::vector<Types::Bitset> pred(n);
   Types::Bitset curPred(n, 0);
@@ -641,6 +636,7 @@ void LocalSearch::bestSwapForward(
 
     o.swap(j, j+1);
 
+/*
     // Find the optimal new parent set for X_j.
     // We need only consider those that contain X_{j+1}.
 
@@ -659,8 +655,10 @@ void LocalSearch::bestSwapForward(
         break;
       }
     }
+*/
 
-    Types::Score sc = modifiedDAGScore(o, tmpParents);
+    std::vector<Types::Score> scores(n); // We don't actually use this.
+    Types::Score sc = modifiedDAGScoreWithParents(o, tmpParents, scores);
     if (sc < bestSc) {
       bestSc = sc;
       bestParents = tmpParents;
@@ -714,8 +712,7 @@ void LocalSearch::bestSwapBackward(
 
     o.swap(j, j+1);
 
-    pred[o.get(j)] = 1;
-
+/*
     // Find the optimal new parent set for X_j.
     // We need only consider those that contain X_{j+1}.
     const Variable &other = instance.getVar(o.get(j+1));
@@ -733,10 +730,11 @@ void LocalSearch::bestSwapBackward(
         break;
       }
     }
-
+*/
     pred[o.get(j)] = 0;
 
-    Types::Score sc = modifiedDAGScore(o, tmpParents);
+    std::vector<Types::Score> scores(n); // We don't actually use this.
+    Types::Score sc = modifiedDAGScoreWithParents(o, tmpParents, scores);
 
     if (sc < bestSc) {
       bestSc = sc;
@@ -861,7 +859,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.1, walkProb + 0.01);
     }
 
-  } while (numGenerations < 20);
+  } while (numGenerations < 50);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
