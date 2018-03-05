@@ -98,6 +98,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
     throw "Could not open file";
   }
 
+  std::cout << countParents << std::endl;
+
   pruned = pruneParentSets();
 
   // Initialize the allParentSets array

@@ -859,7 +859,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.1, walkProb + 0.01);
     }
 
-  } while (numGenerations < 50);
+  } while (numGenerations < 40);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

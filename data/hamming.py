@@ -1,5 +1,5 @@
-n = 20
-instance = "child"
+n = 8
+instance = "asia"
 
 
 mapFile = open("mappings/" + instance + ".mapping")
