@@ -45,6 +45,7 @@ class LocalSearch {
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
 
     int numConstraintsSatisfied(const std::vector<int> &parents);
+    int numConstraintsSatisfied(const std::vector<int> &parents, const std::vector<int> &positions);
     int numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions);
     bool improving(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions, int curNumSat, int oldPar, int &numSat);
     bool hasDipath(const std::vector<int> &parents, int x, int y);
@@ -56,6 +57,7 @@ class LocalSearch {
     Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);
     Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
 
+    int bestConstrainedParent(std::vector<int> &parents, int node, const Types::Bitset &pred, const std::vector<int> &positions);
     void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);

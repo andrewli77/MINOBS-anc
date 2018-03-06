@@ -173,6 +173,19 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) {
   return count;
 }
 
+int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const std::vector<int> &positions) {
+  int n = instance.getN(), m = instance.getM(), count = 0;
+
+  for (int i=0; i < m; i++) {
+    const Ancestral &cons = instance.getAncestral(i);
+    if (hasDipathWithOrdering(parents, cons.first, cons.second, positions)) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
 int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions) {
   int n = instance.getN(), m = instance.getM(), count = 0, par = newParents[cur];
 
@@ -595,6 +608,39 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
   return finalSc;
 }
 
+
+// Return the parent of node that satisfies the most ancestral constraints.
+// Score is used to tiebreak.
+int LocalSearch::bestConstrainedParent(std::vector<int> &parents, int node, const Types::Bitset &pred, const std::vector<int> &positions) {
+  int n = instance.getN();
+  int bestNumSat = -1, bestSize, bestParent;
+  Types::Score bestSc;
+
+  const Variable &var = instance.getVar(node);
+
+  for (int i = 0; i < var.numParents(); i++) {
+    const ParentSet &ps = var.getParent(i);
+
+    if (ps.subsetOf(pred)) {
+      int oldPar = parents[node];
+      parents[node] = i;
+      int numSat = numConstraintsSatisfied(parents, positions);
+      parents[node] = oldPar;
+
+      if (numSat > bestNumSat ||
+         (numSat == bestNumSat && ps.getScore() < bestSc) || 
+         (numSat == bestNumSat && ps.getScore() == bestSc && ps.size() < bestSize)) {
+        bestNumSat = numSat;
+        bestSc = ps.getScore();
+        bestSize = ps.size();
+        bestParent = i;
+      }
+    }
+  }
+
+  return bestParent;
+}
+
 void LocalSearch::bestSwapForward(
   int pivot,
   Ordering o,
@@ -610,6 +656,12 @@ void LocalSearch::bestSwapForward(
 
   for (int i = 0; i < pivot; i++) {
     pred[o.get(i)] = 1;
+  }
+
+
+  std::vector<int> positions(n);
+  for (int i = 0; i < n; i++) {
+    positions[o.get(i)] = i;
   }
 
   for (int j = pivot; j < n-1; j++) {
@@ -631,31 +683,12 @@ void LocalSearch::bestSwapForward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
-      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId();
+      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
     }
 
+    positions[o.get(j)]++;
+    positions[o.get(j+1)]--;
     o.swap(j, j+1);
-
-/*
-    // Find the optimal new parent set for X_j.
-    // We need only consider those that contain X_{j+1}.
-
-    const Variable &other = instance.getVar(o.get(j+1));
-
-    int nParents = other.numParents();
-    for (int l = 0; l < nParents; l++) {
-      const ParentSet &par = other.getParent(l);
-
-      if (par.getScore() >= other.getParent(tmpParents[o.get(j+1)]).getScore()) {
-        break;
-      }
-
-      if (par.hasElement(o.get(j)) && par.subsetOf(pred)) {
-        tmpParents[o.get(j+1)] = par.getId();
-        break;
-      }
-    }
-*/
 
     std::vector<Types::Score> scores(n); // We don't actually use this.
     Types::Score sc = modifiedDAGScoreWithParents(o, tmpParents, scores);
@@ -685,6 +718,10 @@ void LocalSearch::bestSwapBackward(
     pred[o.get(i)] = 1;
   }
 
+  std::vector<int> positions(n);
+  for (int i = 0; i < n; i++) {
+    positions[o.get(i)] = i;
+  }
 
   for (int j = pivot-1; j >= 0; j--) {
     // First check that the swap results in a valid ordering.
@@ -706,31 +743,13 @@ void LocalSearch::bestSwapBackward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
-      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId();
+      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
     }
 
-
+    positions[o.get(j)]++;
+    positions[o.get(j+1)]--;
     o.swap(j, j+1);
 
-/*
-    // Find the optimal new parent set for X_j.
-    // We need only consider those that contain X_{j+1}.
-    const Variable &other = instance.getVar(o.get(j+1));
-
-    int nParents = other.numParents();
-    for (int l = 0; l < nParents; l++) {
-      const ParentSet &par = other.getParent(l);
-
-      if (par.getScore() >= other.getParent(tmpParents[o.get(j+1)]).getScore()) {
-        break;
-      }
-
-      if (par.hasElement(o.get(j)) && par.subsetOf(pred)) {
-        tmpParents[o.get(j+1)] = par.getId();
-        break;
-      }
-    }
-*/
     pred[o.get(j)] = 0;
 
     std::vector<Types::Score> scores(n); // We don't actually use this.
