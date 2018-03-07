@@ -340,29 +340,6 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
     curNumSat += (satisfied[i]);
   }
 
-/*
-  if (curNumSat == m) {
-    // Compute the final score of the graph.
-
-    Types::Score finalSc = 0LL;
-    for (int i=0; i<n; i++) {
-      const Variable &v = instance.getVar(i);
-      finalSc += v.getParent(parents[i]).getScore();
-    }
-
-    if (finalSc < optimalScore) {
-      optimalScore = finalSc;
-      optimalOrdering = ordering;
-      globalOptimum = bestGraph;
-
-      for (int i = 0; i < n; i++) {
-        optimalScores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
-      }
-    }
-    return finalSc;
-  }
-*/
-
   std::vector<Types::Bitset> pred(n);
 
   Types::Bitset curPred(n, 0);
@@ -385,57 +362,76 @@ Types::Score LocalSearch::modifiedDAGScore(const Ordering &ordering, const std::
 
     bool foundImproving = false;
 
-    // Take a random walk.
-    if ((double)rand() / RAND_MAX < walkProb) {
-      while (true) {
-        int i = rand() % allParents.size();
+    for (int i = 0; i < allParents.size(); i++) {
+      int cur = allParents[i].first, par = allParents[i].second;
+      int oldPar = bestGraph[cur];
+      const Variable &var = instance.getVar(cur);
+      const ParentSet &p = var.getParent(par);
+      const ParentSet &oldP = var.getParent(oldPar);
+      Types::Score sc = p.getScore();
+      
+      if (curNumSat == m && sc > oldP.getScore()) {
+        continue;
+      }
 
-        int cur = allParents[i].first, par = allParents[i].second;
-        const Variable &var = instance.getVar(cur);
-        const ParentSet &p = var.getParent(par);
+      if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
+        bestGraph[cur] = par;
+        int numSat;
+        bool improv = improving(bestGraph, ancestor, descendant, satisfied, cur, positions, curNumSat, oldPar, numSat);
+        bestGraph[cur] = oldPar;
 
-        if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
-          lastRandomWalk[cur] = iters;
+        if (improv) {
           bestGraph[cur] = par;
-          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
+          curNumSat = numSat;
           foundImproving = true;
           break;
         }
       }
     }
 
-    else {
-      for (int i = 0; i < allParents.size(); i++) {
-        int cur = allParents[i].first, par = allParents[i].second;
-        int oldPar = bestGraph[cur];
-        const Variable &var = instance.getVar(cur);
-        const ParentSet &p = var.getParent(par);
-        const ParentSet &oldP = var.getParent(oldPar);
-        Types::Score sc = p.getScore();
-        
-        if (curNumSat == m && sc > oldP.getScore()) {
-          continue;
+    if (!foundImproving) {
+      // Take a random walk.
+      if ((double)rand() / RAND_MAX < walkProb) {
+
+        Types::Score finalSc = 0LL;
+        for (int i=0; i<n; i++) {
+          const Variable &v = instance.getVar(i);
+          finalSc += v.getParent(bestGraph[i]).getScore();
         }
 
-        if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
-          bestGraph[cur] = par;
-          int numSat;
-          bool improv = improving(bestGraph, ancestor, descendant, satisfied, cur, positions, curNumSat, oldPar, numSat);
-          bestGraph[cur] = oldPar;
+        // Add a penalty for each broken constraint.
+        finalSc += PENALTY * (m - curNumSat);
 
-          if (improv) {
+        if (finalSc < optimalScore) {
+          optimalScore = finalSc;
+          optimalOrdering = ordering;
+          globalOptimum = bestGraph;
+
+          for (int i = 0; i < n; i++) {
+            optimalScores[i] = instance.getVar(i).getParent(bestGraph[i]).getScore();
+          }
+        }
+
+        while (true) {
+          int i = rand() % allParents.size();
+
+          int cur = allParents[i].first, par = allParents[i].second;
+          const Variable &var = instance.getVar(cur);
+          const ParentSet &p = var.getParent(par);
+
+          if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
+            lastRandomWalk[cur] = iters;
             bestGraph[cur] = par;
-            curNumSat = numSat;
+            curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
             foundImproving = true;
             break;
           }
         }
-      }
+      } else {
+        break;
+      } 
     }
 
-    if (!foundImproving) {
-      break;
-    }
     computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
     iters++;
   }
@@ -485,27 +481,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     curNumSat += (satisfied[i]);
   }
 
-/*
-  if (curNumSat == m) {
-    // Compute the final score of the graph.
-
-    Types::Score finalSc = 0LL;
-    for (int i=0; i<n; i++) {
-      const Variable &v = instance.getVar(i);
-      finalSc += v.getParent(bestGraph[i]).getScore();
-    }
-
-    if (finalSc < optimalScore) {
-      optimalScore = finalSc;
-      optimalScores = scores;
-      optimalOrdering = ordering;
-      globalOptimum = bestGraph;
-    }
-
-    return finalSc;
-  }
-*/
-
   std::vector<Types::Bitset> pred(n);
   Types::Bitset curPred(n, 0);
 
@@ -520,67 +495,81 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
     lastRandomWalk[i] = -tabuTenure-1;
   }
 
-
-
   int iters = 0;
   while(true) {
 
     bool foundImproving = false;
 
-    // Take a random walk.
-    if ((double)rand() / RAND_MAX < walkProb) {
+    for (int i = 0; i < allParents.size(); i++) {
+      int cur = allParents[i].first, par = allParents[i].second;
+      int oldPar = bestGraph[cur];
+      const Variable &var = instance.getVar(cur);
+      const ParentSet &p = var.getParent(par);
+      const ParentSet &oldP = var.getParent(oldPar);
+      Types::Score sc = p.getScore();
+      
 
-      while (true) {
-        int i = rand() % allParents.size();
+      if (curNumSat == m && sc > oldP.getScore()) {
+        continue;
+      }
 
-        int cur = allParents[i].first, par = allParents[i].second;
-        const Variable &var = instance.getVar(cur);
-        const ParentSet &p = var.getParent(par);
+      if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
+        bestGraph[cur] = par;
+        int numSat;
+        bool improv = improving(bestGraph, ancestor, descendant, satisfied, cur, positions, curNumSat, oldPar, numSat);
+        bestGraph[cur] = oldPar;
 
-        if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
-          lastRandomWalk[cur] = iters;
+
+        if (improv) {
           bestGraph[cur] = par;
-          curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
+          curNumSat = numSat;
           foundImproving = true;
           break;
         }
       }
     }
 
-    else {
-      for (int i = 0; i < allParents.size(); i++) {
-        int cur = allParents[i].first, par = allParents[i].second;
-        int oldPar = bestGraph[cur];
-        const Variable &var = instance.getVar(cur);
-        const ParentSet &p = var.getParent(par);
-        const ParentSet &oldP = var.getParent(oldPar);
-        Types::Score sc = p.getScore();
-        
+    if (!foundImproving) {
+      // Take a random walk.
+      if ((double)rand() / RAND_MAX < walkProb) {
 
-        if (curNumSat == m && sc > oldP.getScore()) {
-          continue;
+        Types::Score finalSc = 0LL;
+        for (int i=0; i<n; i++) {
+            const Variable &v = instance.getVar(i);
+            scores[i] = v.getParent(bestGraph[i]).getScore();
+            finalSc += scores[i];
         }
 
-        if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
-          bestGraph[cur] = par;
-          int numSat;
-          bool improv = improving(bestGraph, ancestor, descendant, satisfied, cur, positions, curNumSat, oldPar, numSat);
-          bestGraph[cur] = oldPar;
+        // Add a penalty for each broken constraint.
+        finalSc += PENALTY * (m - curNumSat);
 
+        if (finalSc < optimalScore) {
+          optimalScore = finalSc;
+          optimalScores = scores;
+          optimalOrdering = ordering;
+          globalOptimum = bestGraph;
+        }
 
-          if (improv) {
+        while (true) {
+          int i = rand() % allParents.size();
+
+          int cur = allParents[i].first, par = allParents[i].second;
+          const Variable &var = instance.getVar(cur);
+          const ParentSet &p = var.getParent(par);
+
+          if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
+            lastRandomWalk[cur] = iters;
             bestGraph[cur] = par;
-            curNumSat = numSat;
+            curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
             foundImproving = true;
             break;
           }
         }
-      }
+      } else {
+        break;
+      } 
     }
 
-    if (!foundImproving) {
-      break;
-    }
     computeAncestralGraph(bestGraph, ancestor, descendant, satisfied, positions);
     iters++;
   }
@@ -803,14 +792,12 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
-    if (greediness == -1) {
+
+    do {
       o = hillClimb(Ordering::randomOrdering(instance));
-    } else {
-      o = hillClimb(Ordering::greedyOrdering(instance, greediness));
-    }
-  /*
-   * Added to show a solution early.
-   */
+    } while (o.getScore() >= PENALTY);
+
+
     std::cout << "Time: " << rr.check() <<  " i = " << i << " The score is: " << o.getScore() << std::endl;
     std::vector<int> parents(n);
     std::vector<Types::Score> scores(n);
@@ -858,12 +845,14 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
 
     if (optimalScore < initialSc) {
-      walkProb = std::max(0.0, walkProb - 0.01);
+      walkProb = std::max(0.0, walkProb - 0.025);
     } else {
-      walkProb = std::min(0.1, walkProb + 0.01);
+      walkProb = std::min(0.25, walkProb + 0.05);
     }
 
-  } while (numGenerations < 10);
+    std::cout << "Finished generation: " << numGenerations << std::endl;
+
+  } while (numGenerations < 5);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -919,7 +908,6 @@ void LocalSearch::checkSolution() {
 
 
   printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
-  //printTrueBN();
   std::cout << "Time: " << total_time << std::endl;
 }
 

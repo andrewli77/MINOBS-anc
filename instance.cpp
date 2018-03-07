@@ -223,7 +223,12 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  return 1 + (double)2 * m / (n * (n-1));
+  //return 1 + (double) m / (n * (n-1));
+  if (m == 0) {
+    return 1;
+  }
+
+  return 1.05;
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {

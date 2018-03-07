@@ -59,7 +59,8 @@ def hammingDAG(trueBN, learnedBN):
 				if learnedBN[j][i] != 1:
 					numMissing += 1
 
-	return numMissing + numExtra + numReversed
+
+	return (numMissing + numExtra + numReversed, numMissing, numExtra, numReversed)
 
 
 trueBN = model2network(modelStringCache[instance])
@@ -68,6 +69,9 @@ modelFile = open(instance + "_results")
 
 scoreTotals = [0 for i in range(200)]
 shdTotals = [0 for i in range(200)]
+missingTotals = [0 for i in range(200)]
+extraTotals = [0 for i in range(200)]
+reversedTotals = [0 for i in range(200)]
 counts = [0 for i in range(200)]
 
 while True:
@@ -82,10 +86,13 @@ while True:
 	score = int(line3)
 
 	scoreTotals[size] += score
-	shdTotals[size] += hammingDAG(trueBN, model2network(model))
+	shdTotals[size] += hammingDAG(trueBN, model2network(model)) [0]
+	missingTotals[size] += hammingDAG(trueBN, model2network(model)) [1]
+	extraTotals[size] += hammingDAG(trueBN, model2network(model)) [2]
+	reversedTotals[size] += hammingDAG(trueBN, model2network(model)) [3]
 	counts[size] += 1
 
 for i in range(200):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
-		print("Size: %d \t Avg Score: %f \t Avg SHD %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i]))
+		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
