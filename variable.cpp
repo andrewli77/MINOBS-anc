@@ -1,7 +1,7 @@
 #include "variable.h"
 #include "debug.h"
-Variable::Variable(int varId, int n) :
-  parentsWithVar(), varId(varId) { }
+Variable::Variable(int numParents, int varId, int n) :
+  parentsWithVar(), nParents(numParents),  varId(varId) { }
 
 Variable::Variable() { };
 

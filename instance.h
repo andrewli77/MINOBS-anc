@@ -8,8 +8,6 @@
 
 typedef std::pair<int, int> Ancestral; // X --> Y is (X, Y)
 
-const double pruneFactor = 1.1;
-
 class Instance {
   public:
     Instance(std::string fileName, std::string constraintsFileName);
@@ -17,8 +15,11 @@ class Instance {
     int getM() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
-    bool canPruneParent(int node, int j);
-    int pruneParentSets();
+    bool canPruneParentLossless(int node, int j);
+    bool canPruneParentHeuristic(int node, int j);
+    int pruneParentSetsLossless();
+    int pruneParentSetsHeuristic();
+    double pruneFactor() const;
 
     void sortAllParents();
     std::vector< std::pair<int, int> > &getParentList();

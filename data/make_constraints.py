@@ -1,4 +1,4 @@
-base = "child"
+base = "insurance"
 
 inF = open("constraints/" + base + ".txt")
 

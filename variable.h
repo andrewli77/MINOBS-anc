@@ -7,7 +7,7 @@
 
 class Variable {
   public:
-    Variable(int varId, int n);
+    Variable(int numParents, int varId, int n);
     Variable();
     void addParentSet(ParentSet parentSet);
     void clearParentSets();

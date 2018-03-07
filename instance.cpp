@@ -66,7 +66,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int varId;
       int numParents;
       file >> varId >> numParents;
-      Variable v(varId, n);
+
+      Variable v(varId, numParents, n);
 
       for (int j = 0; j < numParents; j++) {
         double doubleScore;
@@ -100,7 +101,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
   std::cout << countParents << std::endl;
 
-  pruned = pruneParentSets();
+  pruned += pruneParentSetsLossless();
+  pruned += pruneParentSetsHeuristic();
 
   // Initialize the allParentSets array
   for (int i = 0; i < n; i++) {
@@ -112,10 +114,12 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
   std::cout << "Pruned parent sets: " << pruned << std::endl;
+  std::cout << "Number of constraints: " << m << std::endl;
+  std::cout << "Pruning factor: " << pruneFactor() << std::endl;
   sortAllParents();
 }
 
-int Instance::pruneParentSets() {
+int Instance::pruneParentSetsLossless() {
   int pruned = 0;
 
   for (int i = 0; i < n; i++) {
@@ -123,7 +127,7 @@ int Instance::pruneParentSets() {
     std::vector<ParentSet> validParents;
 
     for (int j = 0; j < var.numParents(); j++) {
-      if (!canPruneParent(i, j)) {
+      if (!canPruneParentLossless(i, j)) {
         validParents.push_back(var.getParent(j));
       } else {
         pruned++;
@@ -135,9 +139,12 @@ int Instance::pruneParentSets() {
     for (int l = 0; l < validParents.size(); l++) {
       var.addParentSet(validParents[l]);
     }
+
     var.setNumParents(validParents.size());
     var.parentSort();
     var.resetParentIds();
+
+
     
   }
   
@@ -145,7 +152,7 @@ int Instance::pruneParentSets() {
 }
 
 
-bool Instance::canPruneParent(int node, int j) {
+bool Instance::canPruneParentLossless(int node, int j) {
   // Pruning rules-------------
   // 1) If X--->Y, P is a parent set of X containing Y, P can be eliminated.
   // 2) If X--->Y, P is a parent set of Y and each W in P precedes X in every ordering, P can be eliminated.
@@ -181,6 +188,54 @@ bool Instance::canPruneParent(int node, int j) {
     }
   }
 
+  return false;
+}
+
+
+int Instance::pruneParentSetsHeuristic() {
+  int pruned = 0;
+
+  for (int i = 0; i < n; i++) {
+    Variable &var = getVar(i);
+    std::vector<ParentSet> validParents;
+
+    for (int j = 0; j < var.numParents(); j++) {
+      if (!canPruneParentHeuristic(i, j)) {
+        validParents.push_back(var.getParent(j));
+      } else {
+        pruned++;
+      }
+    }
+
+    var.clearParentSets();
+
+    for (int l = 0; l < validParents.size(); l++) {
+      var.addParentSet(validParents[l]);
+    }
+
+    var.setNumParents(validParents.size());
+    var.parentSort();
+    var.resetParentIds();
+  }
+  
+  return pruned;
+}
+
+
+double Instance::pruneFactor() const {
+  return 1 + (double)2 * m / (n * (n-1));
+}
+
+bool Instance::canPruneParentHeuristic(int node, int j) {
+  // Pruning rules-------------
+  // 1) If X--->Y, P is a parent set of X containing Y, P can be eliminated.
+  // 2) If X--->Y, P is a parent set of Y and each W in P precedes X in every ordering, P can be eliminated.
+  // 3) If P \subset P' are parent sets for Y and 2*sc(P) < sc(P'), prune P'. This is a heuristic.
+
+  const Variable &var = getVar(node);
+  const ParentSet &ps = var.getParent(j);
+  const std::vector<int> &parents = ps.getParentsVec();
+
   // Rule 3
   Types::Bitset pred(n, 0);
   for (int i = 0; i < parents.size(); i++) {
@@ -190,7 +245,7 @@ bool Instance::canPruneParent(int node, int j) {
   for (int i = 0; i < var.numParents(); i++) {
     const ParentSet &other = var.getParent(i);
 
-    if (i != j && pruneFactor * other.getScore() < ps.getScore() && other.subsetOf(pred)) {
+    if (i != j && pruneFactor() * other.getScore() < ps.getScore() && other.subsetOf(pred)) {
       return true;
     }
   }

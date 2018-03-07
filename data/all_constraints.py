@@ -1,14 +1,14 @@
 from random import *
 from math import *
 
-n = 20
+n = 27
 p = 1
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
 
 
-file = open("child.net", "r")
+file = open("insurance.net", "r")
 
 for i in range(n): 
 	s = file.readline()

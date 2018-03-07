@@ -658,12 +658,6 @@ void LocalSearch::bestSwapForward(
     pred[o.get(i)] = 1;
   }
 
-
-  std::vector<int> positions(n);
-  for (int i = 0; i < n; i++) {
-    positions[o.get(i)] = i;
-  }
-
   for (int j = pivot; j < n-1; j++) {
     // First check that the swap results in a valid ordering.
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
@@ -686,8 +680,6 @@ void LocalSearch::bestSwapForward(
       tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
     }
 
-    positions[o.get(j)]++;
-    positions[o.get(j+1)]--;
     o.swap(j, j+1);
 
     std::vector<Types::Score> scores(n); // We don't actually use this.
@@ -718,11 +710,6 @@ void LocalSearch::bestSwapBackward(
     pred[o.get(i)] = 1;
   }
 
-  std::vector<int> positions(n);
-  for (int i = 0; i < n; i++) {
-    positions[o.get(i)] = i;
-  }
-
   for (int j = pivot-1; j >= 0; j--) {
     // First check that the swap results in a valid ordering.
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
@@ -746,8 +733,6 @@ void LocalSearch::bestSwapBackward(
       tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
     }
 
-    positions[o.get(j)]++;
-    positions[o.get(j+1)]--;
     o.swap(j, j+1);
 
     pred[o.get(j)] = 0;
@@ -878,7 +863,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.1, walkProb + 0.01);
     }
 
-  } while (numGenerations < 40);
+  } while (numGenerations < 10);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -975,74 +960,6 @@ Types::Score LocalSearch::getBestScore(const Ordering &ordering) {
   return score;
 }
 
-
-void LocalSearch::printTrueBN() {
-  int n = instance.getN();
-
-  std::vector<int> n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10;
-
-  n0.push_back(1);
-  n0.push_back(7);
-
-  n1.push_back(3);
-  n1.push_back(7);
-
-  n2.push_back(7);
-  n2.push_back(8);
-
-  n3.push_back(7);
-  n3.push_back(8);
-  n3.push_back(10);
-
-  n4.push_back(7);
-  n4.push_back(8);
-
-  n5.push_back(6);
-  n5.push_back(9);
-
-  n6.push_back(9);
-
-  n7.push_back(8);
-
-  n10.push_back(7);
-  n10.push_back(8);
-
-
-  std::vector< std::vector<int> > trueBN;
-
-  trueBN.push_back(n0);
-  trueBN.push_back(n1);
-  trueBN.push_back(n2);
-  trueBN.push_back(n3);
-  trueBN.push_back(n4);
-  trueBN.push_back(n5);
-  trueBN.push_back(n6);
-  trueBN.push_back(n7);
-  trueBN.push_back(n8);
-  trueBN.push_back(n9);
-  trueBN.push_back(n10);
-
-
-  Types::Score total = 0;
-
-  for (int i = 0; i < n; i++) {
-    const Variable &var = instance.getVar(i);
-
-    for (int j = 0 ; j < var.numParents(); j++) {
-      if (var.getParent(j).size() == trueBN[i].size()) {
-        if (std::equal(trueBN[i].begin(), trueBN[i].end(), var.getParent(j).getParentsVec().begin())) {
-          total += var.getParent(j).getScore();
-          break;
-        }
-      }
-    }
-  }
-
-  std::cout << "Score of true BN: " << total << std::endl;
-
-}
-
-
 void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score) {
   int n = instance.getN();
   std::ifstream file;
@@ -1063,6 +980,9 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   } else if (instance.getFileName().find("sachs") != std::string::npos) {
     file = std::ifstream("data/mappings/sachs.mapping");
     outF.open("data/sachs_results", std::ios_base::app);
+  } else if (instance.getFileName().find("insurance") != std::string::npos) {
+    file = std::ifstream("data/mappings/insurance.mapping");
+    outF.open("data/insurance_results", std::ios_base::app);
   } else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);
