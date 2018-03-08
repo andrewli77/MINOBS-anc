@@ -816,7 +816,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     std::vector<SearchResult> offspring;
     population.addCrossovers(NUM_CROSSOVERS, crossoverType, offspring);
     //DBG(population);
-    population.mutate(NUM_MUTATIONS, MUTATION_POWER, offspring);
+    population.mutate(NUM_MUTATIONS, MUTATION_POWER, offspring, instance);
     //DBG(population);
     population.append(offspring);
     population.filterBest(INIT_POPULATION_SIZE);
@@ -833,7 +833,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
         fitnesses.clear();
       }
     }
-    DBG("Fitness: " << population.getAverageFitness());
+    std::cout << "Fitness: " << population.getAverageFitness() << std::endl;
     SearchResult curBest = population.getSpecimen(0);
     Types::Score curScore = curBest.getScore();
     if (curScore < best.getScore()) {
@@ -847,12 +847,12 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     if (optimalScore < initialSc) {
       walkProb = std::max(0.0, walkProb - 0.025);
     } else {
-      walkProb = std::min(0.25, walkProb + 0.05);
+      walkProb = std::min(0.20, walkProb + 0.05);
     }
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 5);
+  } while (numGenerations < 15);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

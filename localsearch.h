@@ -79,7 +79,7 @@ class LocalSearch {
     Ordering optimalOrdering;
     std::vector<Types::Score> optimalScores;
 
-    double walkProb = 0.05;
+    double walkProb = 0.075;
     double transposeProb = 0;
     double total_time = 0;
 };

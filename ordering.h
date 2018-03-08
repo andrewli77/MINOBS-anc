@@ -18,7 +18,7 @@ class Ordering {
     int findSmallestConsistentWithOrdering(const int &i, Instance &instance);
     int findSmallestConsistentWithOrderingRandom(const int &i, Instance &instance, int greediness);
     void insert(const int &i, const int &j);
-    void perturb(int PERTURB_FACTOR);
+    void perturb(int PERTURB_FACTOR, const Instance &instance);
     int getSize() const;
     bool equals(const Ordering &o) const;
   private:

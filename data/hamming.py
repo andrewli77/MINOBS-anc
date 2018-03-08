@@ -59,7 +59,7 @@ def hammingDAG(trueBN, learnedBN):
 				if learnedBN[j][i] != 1:
 					numMissing += 1
 
-
+	print(numMissing + numExtra + numReversed)
 	return (numMissing + numExtra + numReversed, numMissing, numExtra, numReversed)
 
 
@@ -86,10 +86,13 @@ while True:
 	score = int(line3)
 
 	scoreTotals[size] += score
-	shdTotals[size] += hammingDAG(trueBN, model2network(model)) [0]
-	missingTotals[size] += hammingDAG(trueBN, model2network(model)) [1]
-	extraTotals[size] += hammingDAG(trueBN, model2network(model)) [2]
-	reversedTotals[size] += hammingDAG(trueBN, model2network(model)) [3]
+
+
+	info = hammingDAG(trueBN, model2network(model))
+	shdTotals[size] +=  info[0]
+	missingTotals[size] += info [1]
+	extraTotals[size] += info [2]
+	reversedTotals[size] += info [3]
 	counts[size] += 1
 
 for i in range(200):

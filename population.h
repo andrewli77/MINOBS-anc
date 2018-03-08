@@ -21,7 +21,7 @@ class Population {
     void addCrossovers(int n, CrossoverType crossoverType, std::vector<SearchResult> &offspring);
     Ordering crossoverOB(const Ordering &o1, const Ordering &o2);
     Ordering crossoverCX(const Ordering &o1, const Ordering &o2);
-    void mutate(int NUM_MUTATIONS, int MUTATION_POWER, std::vector<SearchResult> &offspring);
+    void mutate(int NUM_MUTATIONS, int MUTATION_POWER, std::vector<SearchResult> &offspring, const Instance &instance);
     void filterBest(int n);
     Types::Score getAverageFitness();
     void diversify(int numKeep, Instance &instance);

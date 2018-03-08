@@ -84,12 +84,12 @@ Ordering Population::crossoverOB(const Ordering &o1, const Ordering &o2) {
   return crossed;
 }
 
-void Population::mutate(int NUM_MUTATIONS, int MUTATION_POWER, std::vector<SearchResult> &offspring) {
+void Population::mutate(int NUM_MUTATIONS, int MUTATION_POWER, std::vector<SearchResult> &offspring, const Instance &instance) {
   assert(specimens.size() > 0);
   for (int i = 0; i < NUM_MUTATIONS; i++) {
     Ordering mutated = specimens[rand()%getSize()].getOrderingRef();
     DBG(mutated);
-    mutated.perturb(MUTATION_POWER);
+    mutated.perturb(MUTATION_POWER, instance);
     DBG(mutated);
     SearchResult climbed = localSearch.hillClimb(mutated);
     DBG("Mutated: " << climbed);

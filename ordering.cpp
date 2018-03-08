@@ -161,9 +161,28 @@ void Ordering::insert(const int &i, const int &j) {
   }
 }
 
-void Ordering::perturb(int PERTURB_FACTOR) {
+void Ordering::perturb(int PERTURB_FACTOR, const Instance &instance) {
   for (int i = 0; i < PERTURB_FACTOR; i++) {
-    swap(rand()%size, rand()%size);
+
+    const int MAX_ITERS = 1000;
+    int iters = 0;
+
+    while (true) {
+      int a = rand()%size, b = rand()%size;
+      
+      if (a != b && !instance.isConstraint(get(a), get(b))) {
+        swap(a, b);
+        break;
+      }
+
+      iters++;
+
+      if (iters == MAX_ITERS) {
+        std::cout << "Warning: no valid perturbations....only one feasible ordering specified." << std::endl;
+        break;
+      }
+    }
+    
   }
 }
 
