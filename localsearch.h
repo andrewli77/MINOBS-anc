@@ -54,7 +54,6 @@ class LocalSearch {
     void dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied);
     void computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied,  const std::vector<int> &positions);
 
-    Types::Score modifiedDAGScore(const Ordering &ordering, const std::vector<int> &parents);
     Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
 
     int bestConstrainedParent(std::vector<int> &parents, int node, const Types::Bitset &pred, const std::vector<int> &positions);
@@ -79,7 +78,7 @@ class LocalSearch {
     Ordering optimalOrdering;
     std::vector<Types::Score> optimalScores;
 
-    double walkProb = 0.075;
+    double walkProb = 0.05;
     double transposeProb = 0;
     double total_time = 0;
 };

@@ -1,12 +1,12 @@
-data/insurance_4000.BIC
-data/insurance_4000.BIC
-data/constraints/insurance/insurance.0-1
+data/child_1000.BIC
+data/child_1000.BIC
+data/constraints/child/child.7-5
 10
 -1
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-48	54758359703
-2 0 1 13 3 17 12 9 21 4 7 5 20 22 18 25 8 24 16 14 6 11 19 15 10 23 26 
-110	54650620750
-2 0 1 13 8 3 12 9 7 21 4 16 22 25 10 17 26 24 6 5 18 11 20 14 15 23 19 
+34	12783913621
+0 17 5 11 15 14 12 6 18 4 13 19 16 2 1 8 10 3 9 7 
+880	12783862474
+0 17 11 15 13 18 14 19 3 9 16 4 5 2 1 6 7 12 10 8 

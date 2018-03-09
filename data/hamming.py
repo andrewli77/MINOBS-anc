@@ -1,5 +1,5 @@
-n = 27
-instance = "insurance"
+n = 20
+instance = "child"
 
 
 mapFile = open("mappings/" + instance + ".mapping")
