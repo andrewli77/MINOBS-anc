@@ -1,6 +1,6 @@
-n = 20
-instance = "child"
-
+n = 32
+instance = "water"
+N = 16000
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -60,13 +60,12 @@ def hammingDAG(trueBN, learnedBN):
 				if learnedBN[j][i] != 1:
 					numMissing += 1
 
-	print(numMissing + numExtra + numReversed)
 	return (numMissing + numExtra + numReversed, numMissing, numExtra, numReversed)
 
 
 trueBN = model2network(modelStringCache[instance])
 
-modelFile = open(instance + "_results")
+modelFile = open(instance + "_" + str(N)+ "_results")
 
 scoreTotals = [0 for i in range(200)]
 shdTotals = [0 for i in range(200)]
@@ -75,19 +74,39 @@ extraTotals = [0 for i in range(200)]
 reversedTotals = [0 for i in range(200)]
 counts = [0 for i in range(200)]
 
+
+lastSz = -1
+
+
+print("#" + instance + "_" + str(N))
+
 while True:
 	line1 = modelFile.readline()
-	if (line1.strip() == ""):
+
+	if (not line1):
 		break
+
+	if (line1.strip() == "" or line1[0] == "#"):
+		continue
+
+
 
 	model = modelFile.readline()
 	line3 = modelFile.readline()
+
+	
 
 	size = int(line1)
 	score = int(line3)
 
 	scoreTotals[size] += score
 
+
+	if (size != lastSz):
+		print("#" + str(size))
+		lastSz = size
+
+	print("\"" + model.strip() + "\",")
 
 	info = hammingDAG(trueBN, model2network(model))
 	shdTotals[size] +=  info[0]
