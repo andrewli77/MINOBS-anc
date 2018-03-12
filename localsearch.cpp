@@ -701,7 +701,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
         fitnesses.clear();
       }
     }
-    std::cout << "Fitness: " << population.getAverageFitness() << std::endl;
+    //std::cout << "Fitness: " << population.getAverageFitness() << std::endl;
     SearchResult curBest = population.getSpecimen(0);
     Types::Score curScore = curBest.getScore();
     if (curScore < best.getScore()) {
@@ -718,9 +718,9 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.20, walkProb + 0.025);
     }
 
-    std::cout << "Finished generation: " << numGenerations << std::endl;
+    //std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 15);
+  } while (numGenerations < 20);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -839,7 +839,12 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   } else if (instance.getFileName().find("insurance") != std::string::npos) {
     file = std::ifstream("data/mappings/insurance.mapping");
     outF.open("data/insurance_results", std::ios_base::app);
-  } else {
+  } else if (instance.getFileName().find("water") != std::string::npos) {
+    file = std::ifstream("data/mappings/water.mapping");
+    outF.open("data/water_results", std::ios_base::app);
+  }
+
+  else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);
   }

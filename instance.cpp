@@ -223,7 +223,7 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  const double omegaFactor = 1;
+  double omegaFactor = 0.5;
 
   return 1 + omegaFactor * m / (n * (n-1));
 }

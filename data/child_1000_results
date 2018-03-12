@@ -1,3 +1,5 @@
+#20 generations, omega=1
+
 0
 [BirthAsphyxia|Disease][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow][Sick|Age:LVH]
 12773627273
@@ -20,11 +22,11 @@
 [BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|BirthAsphyxia][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age:LVH]
 12773627793
 16
-[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|BirthAsphyxia][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungParench][GruntingReport|Grunting][Age|Disease:Sick][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Grunting][LungFlow|Disease][Sick|Disease]
-12792787033
+[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|GruntingReport][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungParench][GruntingReport|BirthAsphyxia][Age|Disease:Sick][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Grunting][LungFlow|Disease][Sick|Disease]
+12792784836
 16
-[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungParench][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|BirthAsphyxia][LungFlow|Disease][Sick|Age:LVH]
-12783862474
+[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|Grunting:CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|BirthAsphyxia][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age:LVH]
+12793510544
 16
 [BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|BirthAsphyxia][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Age:LVH]
 12773627793

@@ -1,3 +1,5 @@
+#15 generations, omega=1
+
 0
 [GoodStudent|SocioEcon][Age|GoodStudent:SocioEcon][SocioEcon][RiskAversion|Age:SeniorTrain][VehicleYear|SocioEcon][ThisCarDam|RuggedAuto:Accident][RuggedAuto|VehicleYear:MakeModel][Accident|DrivQuality][MakeModel|SocioEcon][DrivQuality|RiskAversion:DrivingSkill][Mileage|VehicleYear:CarValue][Antilock|VehicleYear:MakeModel][DrivingSkill|Age:SeniorTrain][SeniorTrain|Age][ThisCarCost|ThisCarDam:CarValue][Theft|ThisCarCost][CarValue|VehicleYear:MakeModel][HomeBase|SocioEcon:RiskAversion][AntiTheft|SocioEcon:RiskAversion][PropCost|ThisCarCost:OtherCarCost][OtherCarCost|Accident][OtherCar|SocioEcon][MedCost|Accident][Cushioning|RuggedAuto:Airbag][Airbag|VehicleYear:MakeModel][ILiCost|Accident][DrivHist|RiskAversion:DrivingSkill]
 54650620750
