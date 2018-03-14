@@ -61,7 +61,7 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) {
 }
 
 // New code
-Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents) {
+Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) {
   int n = instance.getN(), m = instance.getM();
 
   if (!consistentWithAncestral(ordering)) {
@@ -74,7 +74,6 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
     const ParentSet &p = bestParent(ordering, pred, i);
     parents[ordering.get(i)] = p.getId();
     scores[ordering.get(i)] = p.getScore();
-    unconstrainedParents[ordering.get(i)] = p.getId();
     score += p.getScore();
     pred[ordering.get(i)] = 1;
   }
@@ -82,7 +81,7 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
   if (m == 0) {
 
 /*
-    if (((double) (score - 212663467346)) / 212663467346 < 0.00001) {
+    if (((double) (score - 205907722839)) / 205907722839 < 0.0005) {
       std::cout << "Printed" << std::endl;
       printModelString(parents, true, score);
     }
@@ -608,12 +607,14 @@ void LocalSearch::bestSwapBackward(
 SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   bool improving = false;
   int n = instance.getN();
-  std::vector<int> parents(n), unconstrainedParents(n);
+  std::vector<int> parents(n), initialDAG(n);
   std::vector<Types::Score> scores(n);
   int steps = 0;
   std::vector<int> positions(n);
   Ordering cur(ordering);
-  Types::Score curScore = getBestScoreWithParents(cur, parents, scores, unconstrainedParents);
+  Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
+  initialDAG = parents;
+
 
   std::iota(positions.begin(), positions.end(), 0);
 
@@ -628,19 +629,19 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
     for (int s = 0; s < n && !improving; s++) {
       int pivot = positions[s];
 
-      std::vector<int> bestUnconstrainedParents(n);
+      std::vector<int> bestDAG(n);
       Ordering bestOrdering;
       Types::Score bestSc = INF;
 
-      bestSwapForward(pivot, cur, unconstrainedParents, bestOrdering, bestUnconstrainedParents, bestSc);
-      bestSwapBackward(pivot, cur, unconstrainedParents, bestOrdering, bestUnconstrainedParents, bestSc);
+      bestSwapForward(pivot, cur, initialDAG, bestOrdering, bestDAG, bestSc);
+      bestSwapBackward(pivot, cur, initialDAG, bestOrdering, bestDAG, bestSc);
 
       if (bestSc < curScore) {
         steps += 1;
         improving = true;
         cur = bestOrdering;
         curScore = bestSc;
-        unconstrainedParents = bestUnconstrainedParents;
+        initialDAG = bestDAG;
       }
     }
     DBG("Cur Score: " << curScore);
@@ -718,9 +719,9 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
       walkProb = std::min(0.20, walkProb + 0.025);
     }
 
-    //std::cout << "Finished generation: " << numGenerations << std::endl;
+    std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 100);
+  } while (numGenerations < 3);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -888,4 +889,207 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   outF << std::endl;
 
   outF << score << std::endl;
+}
+
+
+void LocalSearch::getScoreOfTrueBN() {
+  int n = instance.getN(), m = instance.getM();
+
+  
+  std::vector< std::vector<int> > trueBN(n);
+  std::vector< int > trueParents(n);
+
+
+  const int arr0[] = {};
+  const int arr1[] = {0};
+  const int arr2[] = {};
+  const int arr3[] = {2};
+  const int arr4[] = {2};
+  const int arr5[] = {1, 3};
+  const int arr6[] = {5};
+  const int arr7[] = {4, 5};
+
+  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
+  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
+  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
+  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
+  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
+  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
+  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
+  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
+/*
+  // sachs
+  const int arr8[] = {};
+  const int arr9[] = {};
+  const int arr6[] = {9};
+  const int arr7[] = {8};
+  const int arr2[] = {7, 8};
+  const int arr4[] = {7, 8};
+  const int arr5[] = {6, 9};
+  const int arr10[] = {7, 8};
+  const int arr3[] = {7, 8, 10};
+  const int arr1[] = {3, 7};
+  const int arr0[] = {1, 7};
+*/
+/*
+  // child
+  const int arr0[] =  {};
+  const int arr11[] =  {0};
+  const int arr14[] =  {11};
+  const int arr15[] =  {11};
+  const int arr16[] =  {11};
+  const int arr17[] =  {11};
+  const int arr18[] =  {11};
+  const int arr19[] =  {11};
+  const int arr1[] =  {15, 16};
+  const int arr2[] =  {16, 17};
+  const int arr3[] =  {17};
+  const int arr4[] =  {17, 18};
+  const int arr5[] =  {17, 19};
+  const int arr6[] =  {14};
+  const int arr13[] =  {11, 19};
+  const int arr7[] =  {1, 2};
+  const int arr8[] =  {2};
+  const int arr9[] =  {3};
+  const int arr10[] =  {4};
+  const int arr12[] =  {5};
+*/
+
+/*
+  // insurance
+    const int arr1[] = {};
+    const int arr10[] = {};
+    const int arr2[] = {1};
+    const int arr0[] = {1, 2};
+    const int arr3[] = {1, 2};
+    const int arr21[] = {2};
+    const int arr4[] = {2, 3};
+    const int arr8[] = {2, 3};
+    const int arr13[] = {1, 3};
+    const int arr17[] = {2, 3};
+    const int arr18[] = {2, 3};
+    const int arr6[] = {4, 8};
+    const int arr11[] = {4, 8};
+    const int arr12[] = {1, 13};
+    const int arr16[] = {4, 8, 10};
+    const int arr24[] = {4, 8};
+    const int arr9[] = {3, 12};
+    const int arr15[] = {16, 17, 18};
+    const int arr23[] = {6, 24};
+    const int arr26[] = {3, 12};
+    const int arr7[] = {9, 10, 11};
+    const int arr5[] = {6, 7};
+    const int arr20[] = {6, 7};
+    const int arr22[] = {1, 7, 23};
+    const int arr25[] = {7};
+    const int arr14[] = {5, 15, 16};
+    const int arr19[] = {14, 20};
+/*
+  // water
+  const int arr0[] = {};
+  const int arr1[] = {};
+  const int arr2[] = {};
+  const int arr3[] = {};
+  const int arr4[] = {};
+  const int arr5[] = {};
+  const int arr6[] = {};
+  const int arr7[] = {};
+  const int arr8[] = {0};
+  const int arr9[] = {1};
+  const int arr10[] = {0,1,2,4,5 };
+  const int arr11[] = {1,3,6 };
+  const int arr12[] = {2,4,7};
+  const int arr13[] = {2,5,7 };
+  const int arr14[] = {3, 6 };
+  const int arr15[] = {4,5,6,7 };
+  const int arr16[] = {8 };
+  const int arr17[] = {9 };
+  const int arr18[] = {8,9,10,12,13};
+  const int arr19[] = {9,11,14 };
+  const int arr20[] = {10, 12,15 };
+  const int arr21[] = {10, 13, 15 };
+  const int arr22[] = {11, 14 };
+  const int arr23[] = {12, 13, 14, 15 };
+  const int arr24[] = {16 };
+  const int arr25[] = {17 };
+  const int arr26[] = {16, 17, 18, 20, 21 };
+  const int arr27[] = {17, 19, 22 };
+  const int arr28[] = {18, 20, 23 };
+  const int arr29[] = {18, 21, 23 };
+  const int arr30[] = {19, 22 };
+  const int arr31[] = {20, 21, 22, 23};
+
+  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
+  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
+  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
+  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
+  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
+  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
+  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
+  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
+  trueBN[8] = std::vector<int>(arr8, arr8 + sizeof(arr8) / sizeof(int));
+  trueBN[9] = std::vector<int>(arr9, arr9 + sizeof(arr9) / sizeof(int));
+  trueBN[10] = std::vector<int>(arr10, arr10 + sizeof(arr10) / sizeof(int));
+  trueBN[11] = std::vector<int>(arr11, arr11 + sizeof(arr11) / sizeof(int));
+  trueBN[12] = std::vector<int>(arr12, arr12 + sizeof(arr12) / sizeof(int));
+  trueBN[13] = std::vector<int>(arr13, arr13 + sizeof(arr13) / sizeof(int));
+  trueBN[14] = std::vector<int>(arr14, arr14 + sizeof(arr14) / sizeof(int));
+  trueBN[15] = std::vector<int>(arr15, arr15 + sizeof(arr15) / sizeof(int));
+  trueBN[16] = std::vector<int>(arr16, arr16 + sizeof(arr16) / sizeof(int));
+  trueBN[17] = std::vector<int>(arr17, arr17 + sizeof(arr17) / sizeof(int));
+  trueBN[18] = std::vector<int>(arr18, arr18 + sizeof(arr18) / sizeof(int));
+  trueBN[19] = std::vector<int>(arr19, arr19 + sizeof(arr19) / sizeof(int));
+  trueBN[20] = std::vector<int>(arr20, arr20 + sizeof(arr20) / sizeof(int));
+  trueBN[21] = std::vector<int>(arr21, arr21 + sizeof(arr21) / sizeof(int));
+  trueBN[22] = std::vector<int>(arr22, arr22 + sizeof(arr22) / sizeof(int));
+  trueBN[23] = std::vector<int>(arr23, arr23 + sizeof(arr23) / sizeof(int));
+  trueBN[24] = std::vector<int>(arr24, arr24 + sizeof(arr24) / sizeof(int));
+  trueBN[25] = std::vector<int>(arr25, arr25 + sizeof(arr25) / sizeof(int));
+  trueBN[26] = std::vector<int>(arr26, arr26 + sizeof(arr26) / sizeof(int));
+  trueBN[27] = std::vector<int>(arr27, arr27 + sizeof(arr27) / sizeof(int));
+  trueBN[28] = std::vector<int>(arr28, arr28 + sizeof(arr28) / sizeof(int));
+  trueBN[29] = std::vector<int>(arr29, arr29 + sizeof(arr29) / sizeof(int));
+  trueBN[30] = std::vector<int>(arr30, arr30 + sizeof(arr30) / sizeof(int));
+  trueBN[31] = std::vector<int>(arr31, arr31 + sizeof(arr31) / sizeof(int));
+*/
+
+  Types::Score totalScore = 0;
+  for (int i = 0; i < n; i++) {
+    const Variable &var = instance.getVar(i);
+
+    bool foundParent = false;
+    for (int j = 0; j < var.numParents(); j++) {
+      const ParentSet &parSet = var.getParent(j);
+      const std::vector<int> &ps = parSet.getParentsVec();
+
+      if (ps.size() == trueBN[i].size() && std::equal(ps.begin(), ps.end(), trueBN[i].begin())) {
+
+        std::cout << "Node " << i << ": ";
+        for (int k = 0; k < trueBN[i].size(); k++) {
+          std::cout << trueBN[i][k] << " ";
+        }
+        std::cout << std::endl;
+        totalScore += parSet.getScore();
+        foundParent = true;
+        trueParents[i] = j;
+        break;
+      }
+    }
+
+    if (!foundParent) {
+      std::cout << "No parent found for: " << i << std::endl;
+    }
+    assert(foundParent);
+  }
+
+  std::cout << "Score of true BN: " << totalScore << std::endl;
+
+  bool ancestralValid = (numConstraintsSatisfied(trueParents) == m);
+  if (ancestralValid) {
+    std::cout << "Ancestral constraints check: Good" << std::endl;
+  } else {
+    std::cout << "Ancestral constraints check: Bad" << std::endl;
+  }
+
+  std::cout << "Num constraints satisfied: " << numConstraintsSatisfied(trueParents) << std::endl;
 }

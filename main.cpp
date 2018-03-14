@@ -86,6 +86,7 @@ int main(int argc, char* argv[]) {
   }
   SearchResult sr = localSearch.genetic(cutoffTime, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
   localSearch.checkSolution();
+
   rr.dump(outFile, fileName, argc, argv, sr);
   return 0;
 }

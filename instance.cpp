@@ -117,6 +117,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   std::cout << "Number of constraints: " << m << std::endl;
   std::cout << "Pruning factor: " << pruneFactor() << std::endl;
   sortAllParents();
+
 }
 
 int Instance::pruneParentSetsLossless() {
@@ -223,7 +224,7 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  double omegaFactor = 2;
+  double omegaFactor = 0.1;
 
   return 1 + omegaFactor * m / (n * (n-1));
 }

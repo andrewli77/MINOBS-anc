@@ -1,0 +1,6 @@
+0
+[BirthAsphyxia|Disease][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow][Sick|Age:LVH]
+12773627273
+0
+[BirthAsphyxia|Disease][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|CO2][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting][Age|Disease][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow][Sick|Age:LVH]
+12773627273

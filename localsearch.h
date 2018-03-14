@@ -42,7 +42,7 @@ class LocalSearch {
     ~LocalSearch();
     const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset &pred, int idx);
     const ParentSet &bestParentVar(const Types::Bitset &pred, const Variable &v);
-    Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores, std::vector<int> &unconstrainedParents);
+    Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
 
     int numConstraintsSatisfied(const std::vector<int> &parents);
     int numConstraintsSatisfied(const std::vector<int> &parents, const std::vector<int> &positions);
@@ -67,6 +67,7 @@ class LocalSearch {
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
     void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
+    void getScoreOfTrueBN();
   private:
     Instance &instance;
     static int climbs;
