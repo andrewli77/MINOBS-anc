@@ -101,8 +101,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
   std::cout << countParents << std::endl;
 
-  pruned += pruneParentSetsLossless();
-  pruned += pruneParentSetsHeuristic();
+  //pruned += pruneParentSetsLossless();
+ // pruned += pruneParentSetsHeuristic();
 
   // Initialize the allParentSets array
   for (int i = 0; i < n; i++) {

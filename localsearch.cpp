@@ -899,7 +899,8 @@ void LocalSearch::getScoreOfTrueBN() {
   std::vector< std::vector<int> > trueBN(n);
   std::vector< int > trueParents(n);
 
-
+/*
+  //asia
   const int arr0[] = {};
   const int arr1[] = {0};
   const int arr2[] = {};
@@ -917,6 +918,7 @@ void LocalSearch::getScoreOfTrueBN() {
   trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
   trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
   trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
+*/
 /*
   // sachs
   const int arr8[] = {};
@@ -1052,6 +1054,81 @@ void LocalSearch::getScoreOfTrueBN() {
   trueBN[30] = std::vector<int>(arr30, arr30 + sizeof(arr30) / sizeof(int));
   trueBN[31] = std::vector<int>(arr31, arr31 + sizeof(arr31) / sizeof(int));
 */
+  const int arr3[] = {};
+  const int arr5[] = {};
+  const int arr7[] = {};
+  const int arr10[] = {};
+  const int arr12[] = {};
+  const int arr13[] = {};
+  const int arr16[] = {};
+  const int arr18[] = {};
+  const int arr22[] = {};
+  const int arr24[] = {};
+  const int arr26[] = {};
+  const int arr27[] = {};
+  const int arr0[] = {5};
+  const int arr4[] = {3, 5};
+  const int arr6[] = {3, 5};
+  const int arr14[] = {13};
+  const int arr21[] = {22};
+  const int arr23[] = {22, 24};
+  const int arr28[] = {27};
+  const int arr1[] = {4};
+  const int arr2[] = {4};
+  const int arr29[] = {26, 28};
+  const int arr25[] = {16, 24, 29};
+  const int arr30[] = {16, 24, 29};
+  const int arr17[] = {24, 30};
+  const int arr31[] = {24, 30};
+  const int arr19[] = {18, 31};
+  const int arr32[] = {31};
+  const int arr15[] = {30, 32};
+  const int arr20[] = {19, 23};
+  const int arr33[] = {12, 14, 20, 32};
+  const int arr34[] = {33};
+  const int arr8[] = {7, 34};
+  const int arr9[] = {10, 34};
+  const int arr11[] = {10, 34};
+  const int arr35[] = {6, 34};
+  const int arr36[] = {14, 35};
+
+  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
+  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
+  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
+  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
+  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
+  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
+  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
+  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
+  trueBN[8] = std::vector<int>(arr8, arr8 + sizeof(arr8) / sizeof(int));
+  trueBN[9] = std::vector<int>(arr9, arr9 + sizeof(arr9) / sizeof(int));
+  trueBN[10] = std::vector<int>(arr10, arr10 + sizeof(arr10) / sizeof(int));
+  trueBN[11] = std::vector<int>(arr11, arr11 + sizeof(arr11) / sizeof(int));
+  trueBN[12] = std::vector<int>(arr12, arr12 + sizeof(arr12) / sizeof(int));
+  trueBN[13] = std::vector<int>(arr13, arr13 + sizeof(arr13) / sizeof(int));
+  trueBN[14] = std::vector<int>(arr14, arr14 + sizeof(arr14) / sizeof(int));
+  trueBN[15] = std::vector<int>(arr15, arr15 + sizeof(arr15) / sizeof(int));
+  trueBN[16] = std::vector<int>(arr16, arr16 + sizeof(arr16) / sizeof(int));
+  trueBN[17] = std::vector<int>(arr17, arr17 + sizeof(arr17) / sizeof(int));
+  trueBN[18] = std::vector<int>(arr18, arr18 + sizeof(arr18) / sizeof(int));
+  trueBN[19] = std::vector<int>(arr19, arr19 + sizeof(arr19) / sizeof(int));
+  trueBN[20] = std::vector<int>(arr20, arr20 + sizeof(arr20) / sizeof(int));
+  trueBN[21] = std::vector<int>(arr21, arr21 + sizeof(arr21) / sizeof(int));
+  trueBN[22] = std::vector<int>(arr22, arr22 + sizeof(arr22) / sizeof(int));
+  trueBN[23] = std::vector<int>(arr23, arr23 + sizeof(arr23) / sizeof(int));
+  trueBN[24] = std::vector<int>(arr24, arr24 + sizeof(arr24) / sizeof(int));
+  trueBN[25] = std::vector<int>(arr25, arr25 + sizeof(arr25) / sizeof(int));
+  trueBN[26] = std::vector<int>(arr26, arr26 + sizeof(arr26) / sizeof(int));
+  trueBN[27] = std::vector<int>(arr27, arr27 + sizeof(arr27) / sizeof(int));
+  trueBN[28] = std::vector<int>(arr28, arr28 + sizeof(arr28) / sizeof(int));
+  trueBN[29] = std::vector<int>(arr29, arr29 + sizeof(arr29) / sizeof(int));
+  trueBN[30] = std::vector<int>(arr30, arr30 + sizeof(arr30) / sizeof(int));
+  trueBN[31] = std::vector<int>(arr31, arr31 + sizeof(arr31) / sizeof(int));
+  trueBN[32] = std::vector<int>(arr32, arr32 + sizeof(arr32) / sizeof(int));
+  trueBN[33] = std::vector<int>(arr33, arr33 + sizeof(arr33) / sizeof(int));
+  trueBN[34] = std::vector<int>(arr34, arr34 + sizeof(arr34) / sizeof(int));
+  trueBN[35] = std::vector<int>(arr35, arr35 + sizeof(arr35) / sizeof(int));
+  trueBN[36] = std::vector<int>(arr36, arr36 + sizeof(arr36) / sizeof(int));
 
   Types::Score totalScore = 0;
   for (int i = 0; i < n; i++) {

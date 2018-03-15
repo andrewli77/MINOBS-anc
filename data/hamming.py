@@ -29,8 +29,8 @@ def model2network(model):
 
 		
 		if (varStr.find("|") == -1):
-			#print("Parents of var ", mapping[varStr], ": ", end="")
-			#print("")
+			print("Parents of var ", mapping[varStr], ": ", end="")
+			print("")
 			continue
 
 		else:
@@ -39,13 +39,13 @@ def model2network(model):
 
 			intPars = []
 
-			#print("Parents of var ", mapping[var], ": ", end="")
+			print("Parents of var ", mapping[var], ": ", end="")
 			for par in pars:
 				intPars.append(mapping[par])
 
 				network[mapping[par]][mapping[var]] = 1
-			#intPars.sort()
-			#print(" ".join(map(str, intPars)))
+			intPars.sort()
+			print(" ".join(map(str, intPars)))
 
 	return network
 
@@ -75,52 +75,51 @@ def hammingDAG(trueBN, learnedBN):
 trueBN = model2network(modelStringCache[instance])
 
 
-modelFile = open(instance + "_results")
+# modelFile = open(instance + "_results")
 
-scoreTotals = [0 for i in range(300)]
-shdTotals = [0 for i in range(300)]
-missingTotals = [0 for i in range(300)]
-extraTotals = [0 for i in range(300)]
-reversedTotals = [0 for i in range(300)]
-counts = [0 for i in range(300)]
-
-
-lastSz = -1
-
-while True:
-	line1 = modelFile.readline()
-
-	if (not line1):
-		break
-
-	if (line1.strip() == "" or line1[0] == "#"):
-		continue
+# scoreTotals = [0 for i in range(300)]
+# shdTotals = [0 for i in range(300)]
+# missingTotals = [0 for i in range(300)]
+# extraTotals = [0 for i in range(300)]
+# reversedTotals = [0 for i in range(300)]
+# counts = [0 for i in range(300)]
 
 
+# lastSz = -1
 
-	model = modelFile.readline()
-	line3 = modelFile.readline()
+# while True:
+# 	line1 = modelFile.readline()
+
+# 	if (not line1):
+# 		break
+
+# 	if (line1.strip() == "" or line1[0] == "#"):
+# 		continue
+
+
+
+# 	model = modelFile.readline()
+# 	line3 = modelFile.readline()
 
 	
 
-	size = int(line1)
-	score = int(line3)
+# 	size = int(line1)
+# 	score = int(line3)
 
-	scoreTotals[size] += score
+# 	scoreTotals[size] += score
 
 
-	if (size != lastSz):
-		lastSz = size
+# 	if (size != lastSz):
+# 		lastSz = size
  
-	info = hammingDAG(trueBN, model2network(model))
-	print(info)
-	shdTotals[size] +=  info[0]
-	missingTotals[size] += info [1]
-	extraTotals[size] += info [2]
-	reversedTotals[size] += info [3]
-	counts[size] += 1
+# 	info = hammingDAG(trueBN, model2network(model))
+# 	shdTotals[size] +=  info[0]
+# 	missingTotals[size] += info [1]
+# 	extraTotals[size] += info [2]
+# 	reversedTotals[size] += info [3]
+# 	counts[size] += 1
 
-for i in range(300):
-	if counts[i] != 0:
-		#assert(counts[i] == 1 or counts[i] == 5)
-		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
+# for i in range(300):
+# 	if counts[i] != 0:
+# 		#assert(counts[i] == 1 or counts[i] == 5)
+# 		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
