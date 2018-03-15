@@ -1,4 +1,4 @@
-base = "water"
+base = "alarm"
 
 inF = open("constraints/" + base + ".txt")
 
