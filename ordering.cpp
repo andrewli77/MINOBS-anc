@@ -167,12 +167,28 @@ void Ordering::perturb(int PERTURB_FACTOR, const Instance &instance) {
     const int MAX_ITERS = 1000;
     int iters = 0;
 
+    std::vector<int> positions(size);
+
+    for (int j = 0; j < size; j++) {
+      positions[get(j)] = j;
+    }
+
     while (true) {
       int a = rand()%size, b = rand()%size;
+      if (a > b) {
+        std::swap(a,b);
+      }
       
       if (a != b && !instance.isConstraint(get(a), get(b))) {
-        swap(a, b);
-        break;
+        // Check if the swap results in a valid ordering.
+        std::swap(positions[get(a)], positions[get(b)]);
+
+        if (consistentWithAncestral(instance, positions)) {
+          swap(a, b);
+          break;
+        }
+
+        std::swap(positions[get(a)], positions[get(b)]);
       }
 
       iters++;
@@ -184,6 +200,19 @@ void Ordering::perturb(int PERTURB_FACTOR, const Instance &instance) {
     }
     
   }
+}
+
+bool Ordering::consistentWithAncestral(const Instance &instance, const std::vector<int> &pos) {
+  int n = instance.getN(), m = instance.getM();
+
+  for (int i=0; i < m; i++) {
+    int x = instance.getAncestral(i).first, y = instance.getAncestral(i).second;
+    if (pos[x] > pos[y]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 int Ordering::getSize() const {

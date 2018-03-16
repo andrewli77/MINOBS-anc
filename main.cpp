@@ -85,10 +85,9 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  localSearch.getScoreOfTrueBN();
-  // sr = localSearch.genetic(cutoffTime, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
-  //localSearch.checkSolution();
+  SearchResult sr = localSearch.genetic(cutoffTime, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
+  localSearch.checkSolution();
 
-  //rr.dump(outFile, fileName, argc, argv, sr);
+  rr.dump(outFile, fileName, argc, argv, sr);
   return 0;
 }

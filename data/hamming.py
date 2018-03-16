@@ -1,5 +1,5 @@
-n = 37
-instance = "alarm"
+n = 48
+instance = "barley"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -13,6 +13,8 @@ modelStringCache["child"] = "[BirthAsphyxia][Disease|BirthAsphyxia][LVH|Disease]
 modelStringCache["sachs"] = "[PKC][Plcg][PIP3|Plcg][PKA|PKC][Jnk|PKA:PKC][P38|PKA:PKC][PIP2|PIP3:Plcg][Raf|PKA:PKC][Mek|PKA:PKC:Raf][Erk|Mek:PKA][Akt|Erk:PKA]"
 modelStringCache["insurance"] = "[Age][Mileage][SocioEcon|Age][GoodStudent|SocioEcon:Age][RiskAversion|Age:SocioEcon][OtherCar|SocioEcon][VehicleYear|SocioEcon:RiskAversion][MakeModel|SocioEcon:RiskAversion][SeniorTrain|Age:RiskAversion][HomeBase|RiskAversion:SocioEcon][AntiTheft|RiskAversion:SocioEcon][RuggedAuto|MakeModel:VehicleYear][Antilock|MakeModel:VehicleYear][DrivingSkill|Age:SeniorTrain][CarValue|MakeModel:VehicleYear:Mileage][Airbag|MakeModel:VehicleYear][DrivQuality|DrivingSkill:RiskAversion][Theft|AntiTheft:HomeBase:CarValue][Cushioning|RuggedAuto:Airbag][DrivHist|DrivingSkill:RiskAversion][Accident|Antilock:Mileage:DrivQuality][ThisCarDam|Accident:RuggedAuto][OtherCarCost|Accident:RuggedAuto][MedCost|Accident:Age:Cushioning][ILiCost|Accident][ThisCarCost|ThisCarDam:CarValue:Theft][PropCost|OtherCarCost:ThisCarCost]"
 modelStringCache["water"] = "[C_NI_12_00][CKNI_12_00][CBODD_12_00][CKND_12_00][CNOD_12_00][CBODN_12_00][CKNN_12_00][CNON_12_00][C_NI_12_15|C_NI_12_00][CKNI_12_15|CKNI_12_00][CBODD_12_15|C_NI_12_00:CKNI_12_00:CBODD_12_00:CNOD_12_00:CBODN_12_00][CKND_12_15|CKNI_12_00:CKND_12_00:CKNN_12_00][CNOD_12_15|CBODD_12_00:CNOD_12_00:CNON_12_00][CBODN_12_15|CBODD_12_00:CBODN_12_00:CNON_12_00][CKNN_12_15|CKND_12_00:CKNN_12_00][CNON_12_15|CNOD_12_00:CBODN_12_00:CKNN_12_00:CNON_12_00][C_NI_12_30|C_NI_12_15][CKNI_12_30|CKNI_12_15][CBODD_12_30|C_NI_12_15:CKNI_12_15:CBODD_12_15:CNOD_12_15:CBODN_12_15][CKND_12_30|CKNI_12_15:CKND_12_15:CKNN_12_15][CNOD_12_30|CBODD_12_15:CNOD_12_15:CNON_12_15][CBODN_12_30|CBODD_12_15:CBODN_12_15:CNON_12_15][CKNN_12_30|CKND_12_15:CKNN_12_15][CNON_12_30|CNOD_12_15:CBODN_12_15:CKNN_12_15:CNON_12_15][C_NI_12_45|C_NI_12_30][CKNI_12_45|CKNI_12_30][CBODD_12_45|C_NI_12_30:CKNI_12_30:CBODD_12_30:CNOD_12_30:CBODN_12_30][CKND_12_45|CKNI_12_30:CKND_12_30:CKNN_12_30][CNOD_12_45|CBODD_12_30:CNOD_12_30:CNON_12_30][CBODN_12_45|CBODD_12_30:CBODN_12_30:CNON_12_30][CKNN_12_45|CKND_12_30:CKNN_12_30][CNON_12_45|CNOD_12_30:CBODN_12_30:CKNN_12_30:CNON_12_30]"
+modelStringCache["barley"] = "[jordtype][komm][forfrugt][pesticid][saatid][sort][nplac][saamng][tkvs][partigerm][nedbarea|komm][aar_mod|komm:jordtype][potnmin|jordtype:forfrugt][exptgens|jordtype:forfrugt:pesticid][rokap|jordtype][srtprot|sort][dg25|saatid][saakern|saamng:tkvs][frspdag|saatid][sorttkv|sort][srtsize|sort][nmin|jordtype:nedbarea][nopt|exptgens:pesticid][dgv1059|saatid:rokap][jordinf|frspdag][dgv5980|rokap][jordn|nmin:aar_mod:potnmin][mod_nmin|nmin:aar_mod][markgrm|partigerm:jordinf][bgbyg|dgv1059:dgv5980][ngodnt|forfrugt:exptgens:mod_nmin][ngodnn|nopt:jordn][antplnt|saakern:markgrm][ngodn|ngodnt:ngodnn][nprot|jordn:ngodn][ngtilg|ngodn:nplac:dg25][ntilg|ngtilg:jordn][aks_m2|antplnt:ntilg:dgv1059:sorttkv][keraks|ntilg:dgv1059:aks_m2][aks_vgt|ntilg:dgv5980:aks_m2][ksort|keraks:aks_vgt:srtsize][udb|aks_m2:aks_vgt][tkv|aks_m2:keraks:ntilg:sorttkv][slt22|keraks:aks_vgt:srtsize][s2225|keraks:aks_vgt:srtsize][s2528|keraks:aks_vgt:srtsize][protein|nprot:dgv1059:srtprot:ksort][spndx|ntilg:dgv5980:ksort]"
+
 
 for i in range(n):
 	var = mapFile.readline().strip()
@@ -75,51 +77,51 @@ def hammingDAG(trueBN, learnedBN):
 trueBN = model2network(modelStringCache[instance])
 
 
-# modelFile = open(instance + "_results")
+modelFile = open(instance + "_results")
 
-# scoreTotals = [0 for i in range(300)]
-# shdTotals = [0 for i in range(300)]
-# missingTotals = [0 for i in range(300)]
-# extraTotals = [0 for i in range(300)]
-# reversedTotals = [0 for i in range(300)]
-# counts = [0 for i in range(300)]
-
-
-# lastSz = -1
-
-# while True:
-# 	line1 = modelFile.readline()
-
-# 	if (not line1):
-# 		break
-
-# 	if (line1.strip() == "" or line1[0] == "#"):
-# 		continue
+scoreTotals = [0 for i in range(300)]
+shdTotals = [0 for i in range(300)]
+missingTotals = [0 for i in range(300)]
+extraTotals = [0 for i in range(300)]
+reversedTotals = [0 for i in range(300)]
+counts = [0 for i in range(300)]
 
 
+lastSz = -1
 
-# 	model = modelFile.readline()
-# 	line3 = modelFile.readline()
+while True:
+	line1 = modelFile.readline()
+
+	if (not line1):
+		break
+
+	if (line1.strip() == "" or line1[0] == "#"):
+		continue
+
+
+
+	model = modelFile.readline()
+	line3 = modelFile.readline()
 
 	
 
-# 	size = int(line1)
-# 	score = int(line3)
+	size = int(line1)
+	score = int(line3)
 
-# 	scoreTotals[size] += score
+	scoreTotals[size] += score
 
 
-# 	if (size != lastSz):
-# 		lastSz = size
+	if (size != lastSz):
+		lastSz = size
  
-# 	info = hammingDAG(trueBN, model2network(model))
-# 	shdTotals[size] +=  info[0]
-# 	missingTotals[size] += info [1]
-# 	extraTotals[size] += info [2]
-# 	reversedTotals[size] += info [3]
-# 	counts[size] += 1
+	info = hammingDAG(trueBN, model2network(model))
+	shdTotals[size] +=  info[0]
+	missingTotals[size] += info [1]
+	extraTotals[size] += info [2]
+	reversedTotals[size] += info [3]
+	counts[size] += 1
 
-# for i in range(300):
-# 	if counts[i] != 0:
-# 		#assert(counts[i] == 1 or counts[i] == 5)
-# 		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
+for i in range(300):
+	if counts[i] != 0:
+		#assert(counts[i] == 1 or counts[i] == 5)
+		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))

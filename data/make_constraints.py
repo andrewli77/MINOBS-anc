@@ -1,4 +1,4 @@
-base = "alarm"
+base = "barley"
 
 inF = open("constraints/" + base + ".txt")
 

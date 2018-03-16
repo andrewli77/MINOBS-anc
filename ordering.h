@@ -19,6 +19,7 @@ class Ordering {
     int findSmallestConsistentWithOrderingRandom(const int &i, Instance &instance, int greediness);
     void insert(const int &i, const int &j);
     void perturb(int PERTURB_FACTOR, const Instance &instance);
+    bool consistentWithAncestral(const Instance &instance, const std::vector<int> &positions);
     int getSize() const;
     bool equals(const Ordering &o) const;
   private:

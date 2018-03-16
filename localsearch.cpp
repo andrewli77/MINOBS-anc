@@ -615,12 +615,14 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   initialDAG = parents;
 
-
-  std::iota(positions.begin(), positions.end(), 0);
-
+/*
   if (curScore >= PENALTY) {
     return SearchResult(curScore, cur);
   }
+*/
+
+
+  std::iota(positions.begin(), positions.end(), 0);
 
   DBG("Inits: " << cur);
   do {
@@ -662,10 +664,12 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
 
+    o = hillClimb(Ordering::randomOrdering(instance));
+/*
     do {
       o = hillClimb(Ordering::randomOrdering(instance));
     } while (o.getScore() >= PENALTY);
-
+*/
 
     std::cout << "Time: " << rr.check() <<  " i = " << i << " The score is: " << o.getScore() << std::endl;
     std::vector<int> parents(n);
@@ -683,6 +687,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
     //std::cout << "Time: " << rr.check() << " Starting generation " << numGenerations << std::endl;
     //DBG(population);
     std::vector<SearchResult> offspring;
+
     population.addCrossovers(NUM_CROSSOVERS, crossoverType, offspring);
     //DBG(population);
     population.mutate(NUM_MUTATIONS, MUTATION_POWER, offspring, instance);
@@ -721,7 +726,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 20);
+  } while (numGenerations < 5);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
@@ -843,6 +848,9 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   } else if (instance.getFileName().find("water") != std::string::npos) {
     file = std::ifstream("data/mappings/water.mapping");
     outF.open("data/water_results", std::ios_base::app);
+  } else if (instance.getFileName().find("barley") != std::string::npos) {
+    file = std::ifstream("data/mappings/barley.mapping");
+    outF.open("data/barley_results", std::ios_base::app);
   }
 
   else {

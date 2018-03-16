@@ -101,8 +101,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
   std::cout << countParents << std::endl;
 
-  //pruned += pruneParentSetsLossless();
- // pruned += pruneParentSetsHeuristic();
+  pruned += pruneParentSetsLossless();
+  pruned += pruneParentSetsHeuristic();
 
   // Initialize the allParentSets array
   for (int i = 0; i < n; i++) {
@@ -224,9 +224,10 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  double omegaFactor = 0.25;
+  //double omegaFactor = 30;
 
-  return 1 + omegaFactor * m / (n * (n-1));
+  //return 1 + omegaFactor * m / (n * (n-1));
+  return 2;
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {
