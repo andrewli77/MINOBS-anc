@@ -224,10 +224,9 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  //double omegaFactor = 30;
+  double omegaFactor = 1;
 
-  //return 1 + omegaFactor * m / (n * (n-1));
-  return 2;
+  return 1 + omegaFactor * m / (n * (n-1));
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {

@@ -80,12 +80,12 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 
   if (m == 0) {
 
-/*
-    if (((double) (score - 205907722839)) / 205907722839 < 0.0005) {
+
+    if (((double) (score - 410805797111)) / 410805797111 < 0.0005) {
       std::cout << "Printed" << std::endl;
       printModelString(parents, true, score);
     }
-*/
+
 
     if (score < optimalScore) {
       optimalScore = score;
@@ -726,7 +726,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 5);
+  } while (numGenerations < 20);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

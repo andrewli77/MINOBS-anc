@@ -31,8 +31,8 @@ def model2network(model):
 
 		
 		if (varStr.find("|") == -1):
-			print("Parents of var ", mapping[varStr], ": ", end="")
-			print("")
+			#print("Parents of var ", mapping[varStr], ": ", end="")
+			#print("")
 			continue
 
 		else:
@@ -41,13 +41,13 @@ def model2network(model):
 
 			intPars = []
 
-			print("Parents of var ", mapping[var], ": ", end="")
+			#print("Parents of var ", mapping[var], ": ", end="")
 			for par in pars:
 				intPars.append(mapping[par])
 
 				network[mapping[par]][mapping[var]] = 1
 			intPars.sort()
-			print(" ".join(map(str, intPars)))
+			#print(" ".join(map(str, intPars)))
 
 	return network
 
@@ -79,12 +79,12 @@ trueBN = model2network(modelStringCache[instance])
 
 modelFile = open(instance + "_results")
 
-scoreTotals = [0 for i in range(300)]
-shdTotals = [0 for i in range(300)]
-missingTotals = [0 for i in range(300)]
-extraTotals = [0 for i in range(300)]
-reversedTotals = [0 for i in range(300)]
-counts = [0 for i in range(300)]
+scoreTotals = [0 for i in range(600)]
+shdTotals = [0 for i in range(600)]
+missingTotals = [0 for i in range(600)]
+extraTotals = [0 for i in range(600)]
+reversedTotals = [0 for i in range(600)]
+counts = [0 for i in range(600)]
 
 
 lastSz = -1
@@ -121,7 +121,7 @@ while True:
 	reversedTotals[size] += info [3]
 	counts[size] += 1
 
-for i in range(300):
+for i in range(600):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
 		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
