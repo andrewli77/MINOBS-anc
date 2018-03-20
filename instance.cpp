@@ -16,15 +16,14 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   // Assume the input file name is of the format {instance}_{dataSize}.BIC
   // Otherwise, hard code the value of dataSize here.
 
-  int underscoreIdx = fileName.find('_');
-  int nextUnderscoreIdx = fileName.find('_', underscoreIdx + 1);
+  int underscoreIdx = fileName.find('_'), periodIdx = fileName.find('.');
 
-  if (underscoreIdx == std::string::npos || nextUnderscoreIdx == std::string::npos || underscoreIdx > nextUnderscoreIdx) {
+  if (underscoreIdx == std::string::npos || periodIdx == std::string::npos || underscoreIdx > periodIdx) {
     std::cout << "Error: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
     exit(0);
   }
 
-  std::string sizeStr = fileName.substr(underscoreIdx + 1, nextUnderscoreIdx - underscoreIdx - 1);
+  std::string sizeStr = fileName.substr(underscoreIdx + 1, periodIdx - underscoreIdx - 1);
   dataSize = stoi(sizeStr);
   std::cout << "Number of data points: " << dataSize << std::endl;
 

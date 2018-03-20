@@ -1,5 +1,0 @@
-smoke => xray 1.0;
-asia => xray 1.0;
-tub => xray 1.0;
-asia => either 1.0;
-either => dysp 1.0;
