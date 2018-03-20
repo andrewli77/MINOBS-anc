@@ -85,7 +85,7 @@ missingTotals = [0 for i in range(600)]
 extraTotals = [0 for i in range(600)]
 reversedTotals = [0 for i in range(600)]
 counts = [0 for i in range(600)]
-
+models = [[] for i in range(600)]
 
 lastSz = -1
 
@@ -120,10 +120,17 @@ while True:
 	extraTotals[size] += info [2]
 	reversedTotals[size] += info [3]
 	counts[size] += 1
+	models[size].append(model)
 
 	print(size, info)
 
+parsedFile = open(instance + "_results_parsed", "w")
 for i in range(600):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
 		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
+
+		parsedFile.write(str(i) + "\n")
+		for model in models[i]:
+			parsedFile.write("\"" + model.strip() + "\",\n")
+parsedFile.close()
