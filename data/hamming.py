@@ -121,6 +121,8 @@ while True:
 	reversedTotals[size] += info [3]
 	counts[size] += 1
 
+	print(size, info)
+
 for i in range(600):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)

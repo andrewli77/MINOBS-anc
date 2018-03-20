@@ -1,0 +1,5 @@
+either => xray 1.0;
+tub => either 1.0;
+tub => dysp 1.0;
+asia => either 1.0;
+smoke => lung 1.0;

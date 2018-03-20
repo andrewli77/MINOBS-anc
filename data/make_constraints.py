@@ -58,4 +58,4 @@ base = "asia"
 
 inF = open("constraints/" + base + ".txt")
 
-parseConstraintsCaMML()
+parseConstraints()
