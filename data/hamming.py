@@ -1,5 +1,5 @@
-n = 48
-instance = "barley"
+n = 8
+instance = "asia"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()

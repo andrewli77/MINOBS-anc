@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include "debug.h"
 #include<boost/dynamic_bitset.hpp>
 
@@ -11,6 +12,20 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   std::ifstream file(fileName);
   std::ifstream constraintsFile(constraintsFileName);
   this->fileName = fileName;
+
+  // Assume the input file name is of the format {instance}_{dataSize}.BIC
+  // Otherwise, hard code the value of dataSize here.
+
+  int underscoreIdx = fileName.find('_'), periodIdx = fileName.find('.');
+
+  if (underscoreIdx == std::string::npos || periodIdx == std::string::npos || underscoreIdx > periodIdx) {
+    std::cout << "Error: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
+    exit(0);
+  }
+
+  std::string sizeStr = fileName.substr(underscoreIdx + 1, periodIdx - underscoreIdx - 1);
+  dataSize = stoi(sizeStr);
+  std::cout << "Number of data points: " << dataSize << std::endl;
 
   if (file.is_open()) {
     file >> n;
@@ -27,17 +42,18 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
     }
 
     // Read ancestral constraints.
-
-    constraintsFile >> m;
-    ancestralConstraints.resize(m);
-    for (int i=0; i < m; i++) {
+    constraintsFile >> m_anc;
+    ancestralConstraints.resize(m_anc);
+    for (int i=0; i < m_anc; i++) {
       int a, b;
       constraintsFile >> a >> b;
       ancestralConstraints[i] = std::make_pair(a, b);
-      orderConstraints[a][b] = true; // A basic hash
+      orderConstraints[a][b] = true; // We can infer that a < b from the ancestral constraint.
     }
 
-    // like Bellman-Ford to generate all possible inferred constraints.
+
+
+    // Bellman-Ford-esque algorithm to generate all possible inferred constraints.
     for (int iters = 0; iters < n; iters++) {
       bool improvement = false;
 
@@ -114,7 +130,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
   std::cout << "Pruned parent sets: " << pruned << std::endl;
-  std::cout << "Number of constraints: " << m << std::endl;
+  std::cout << "Number of ancestral constraints: " << m_anc << std::endl;
   std::cout << "Pruning factor: " << pruneFactor() << std::endl;
   sortAllParents();
 
@@ -224,9 +240,9 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  double omegaFactor = 1;
+  double omegaFactor = (double) 1000 / dataSize;
 
-  return 1 + omegaFactor * m / (n * (n-1));
+  return 1 + omegaFactor * m_anc / (n * (n-1));
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {
@@ -274,8 +290,8 @@ int Instance::getN() const {
   return n;
 }
 
-int Instance::getM() const {
-  return m;
+int Instance::getM_anc() const {
+  return m_anc;
 }
 
 std::string Instance::getFileName() const {

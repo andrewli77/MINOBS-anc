@@ -1,133 +1,36 @@
-#asia_100
-#0
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-#1
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|asia:either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-#18
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#2
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke|dysp][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc]",
-"[asia][tub|asia][smoke|dysp][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc]",
-"[asia][tub][smoke|dysp][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-#5
-"[asia][tub|asia][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub][smoke][lung|smoke][bronc|dysp][either|asia:tub:lung][xray|either][dysp|either]",
-#9
-"[asia][tub][smoke][lung|smoke][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]",
-Size: 0 	 Avg Score: 253409837.000000 	 Avg SHD 3.000000 	 Avg Missing 2.000000 	 Avg Extra 0.000000 	 Avg Reversed 1.000000
-Size: 1 	 Avg Score: 253409837.000000 	 Avg SHD 3.200000 	 Avg Missing 2.000000 	 Avg Extra 0.200000 	 Avg Reversed 1.000000
-Size: 2 	 Avg Score: 253758341.000000 	 Avg SHD 3.400000 	 Avg Missing 2.400000 	 Avg Extra 0.600000 	 Avg Reversed 0.400000
-Size: 5 	 Avg Score: 253771683.800000 	 Avg SHD 2.200000 	 Avg Missing 1.200000 	 Avg Extra 0.200000 	 Avg Reversed 0.800000
-Size: 9 	 Avg Score: 254857905.400000 	 Avg SHD 1.600000 	 Avg Missing 1.000000 	 Avg Extra 0.200000 	 Avg Reversed 0.400000
-Size: 18 	 Avg Score: 255873399.000000 	 Avg SHD 0.000000 	 Avg Missing 0.000000 	 Avg Extra 0.000000 	 Avg Reversed 0.000000
+asia_100:
+
+0
+[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]
+253409837
+2
+[asia][tub][smoke][lung|smoke][bronc|dysp][either|tub:lung][xray|either][dysp|either]
+253409837
+4
+[asia][tub][smoke][lung|smoke][bronc|dysp][either|asia:tub:lung][xray|either][dysp|either]
+253409837
+6
+[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc]
+255219071
+8
+[asia][tub][smoke|dysp][lung|smoke][bronc|tub][either|tub:lung][xray|either][dysp|asia:bronc]
+255465843
 
 
-#asia_500
-#0
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-#1
-"[asia][tub|lung:either][smoke|lung][lung|either][bronc|smoke][either|xray][xray|asia][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-#18
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#2
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|lung:either][smoke|lung][lung|either][bronc|smoke][either|xray][xray|asia][dysp|bronc:either]",
-"[asia|xray][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia|xray][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#5
-"[asia][tub][smoke|lung][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|either][smoke|lung][lung|tub:either][bronc|smoke][either|xray][xray|asia][dysp|bronc:either]",
-"[asia][tub][smoke|asia][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#9
-"[asia][tub][smoke|asia][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|asia][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-Size: 0 	 Avg Score: 1115006895.000000 	 Avg SHD 3.000000 	 Avg Missing 1.000000 	 Avg Extra 1.000000 	 Avg Reversed 1.000000
-Size: 1 	 Avg Score: 1115571496.000000 	 Avg SHD 3.800000 	 Avg Missing 1.000000 	 Avg Extra 1.200000 	 Avg Reversed 1.600000
-Size: 2 	 Avg Score: 1115571520.400000 	 Avg SHD 3.600000 	 Avg Missing 1.000000 	 Avg Extra 1.200000 	 Avg Reversed 1.400000
-Size: 5 	 Avg Score: 1118634774.600000 	 Avg SHD 2.800000 	 Avg Missing 0.600000 	 Avg Extra 0.800000 	 Avg Reversed 1.400000
-Size: 9 	 Avg Score: 1119081281.600000 	 Avg SHD 0.800000 	 Avg Missing 0.400000 	 Avg Extra 0.400000 	 Avg Reversed 0.000000
-Size: 18 	 Avg Score: 1119583920.000000 	 Avg SHD 0.000000 	 Avg Missing 0.000000 	 Avg Extra 0.000000 	 Avg Reversed 0.000000
+asia_1000:
 
-
-#asia_1000
-#0
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#1
-"[asia][tub][smoke|either][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#18
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#2
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#5
-"[asia][tub][smoke|either][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|asia][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-#9
-"[asia][tub][smoke|bronc][lung|smoke][bronc|asia][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|bronc][lung|smoke][bronc|asia][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-Size: 0 	 Avg Score: 2312929963.000000 	 Avg SHD 3.000000 	 Avg Missing 2.000000 	 Avg Extra 1.000000 	 Avg Reversed 0.000000
-Size: 1 	 Avg Score: 2313838602.800000 	 Avg SHD 3.000000 	 Avg Missing 1.800000 	 Avg Extra 1.000000 	 Avg Reversed 0.200000
-Size: 2 	 Avg Score: 2314046612.000000 	 Avg SHD 2.400000 	 Avg Missing 1.600000 	 Avg Extra 0.800000 	 Avg Reversed 0.000000
-Size: 5 	 Avg Score: 2317407659.800000 	 Avg SHD 1.600000 	 Avg Missing 0.800000 	 Avg Extra 0.800000 	 Avg Reversed 0.000000
-Size: 9 	 Avg Score: 2318384121.600000 	 Avg SHD 1.200000 	 Avg Missing 0.400000 	 Avg Extra 0.400000 	 Avg Reversed 0.400000
-Size: 18 	 Avg Score: 2318513208.000000 	 Avg SHD 0.000000 	 Avg Missing 0.000000 	 Avg Extra 0.000000 	 Avg Reversed 0.000000
+0
+[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
+2312929963
+2
+[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
+2312929963
+4
+[asia][tub][smoke|either][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
+2315230516
+6
+[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]
+2318513208
+8
+[asia][tub][smoke|bronc][lung|smoke][bronc|asia][either|tub:lung][xray|either][dysp|bronc:either]
+2318190492

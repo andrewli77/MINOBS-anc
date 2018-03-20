@@ -46,7 +46,7 @@ Ordering Ordering::greedyOrdering(Instance &instance) {
 
 Ordering Ordering::randomOrdering(Instance &instance) {
   int greediness = 10;
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
   std::vector<int> shuffled;
   for (int i = 0; i < n; i++) {
     shuffled.push_back(i);
@@ -69,7 +69,7 @@ Ordering Ordering::randomOrdering(Instance &instance) {
 
     bool sat = true;
 
-    for (int i=0; i < m; i++) {
+    for (int i=0; i < m_anc; i++) {
       int x = instance.getAncestral(i).first, y = instance.getAncestral(i).second;
       if (pos[x] > pos[y]) {
         o.swap(pos[x], pos[y]);
@@ -203,9 +203,9 @@ void Ordering::perturb(int PERTURB_FACTOR, const Instance &instance) {
 }
 
 bool Ordering::consistentWithAncestral(const Instance &instance, const std::vector<int> &pos) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
-  for (int i=0; i < m; i++) {
+  for (int i=0; i < m_anc; i++) {
     int x = instance.getAncestral(i).first, y = instance.getAncestral(i).second;
     if (pos[x] > pos[y]) {
       return false;

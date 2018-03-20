@@ -12,7 +12,7 @@ class Instance {
   public:
     Instance(std::string fileName, std::string constraintsFileName);
     int getN() const;
-    int getM() const;
+    int getM_anc() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
     bool canPruneParentLossless(int node, int j);
@@ -32,7 +32,7 @@ class Instance {
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
 
   private:
-    int n, m;
+    int n, dataSize, m_anc;
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;

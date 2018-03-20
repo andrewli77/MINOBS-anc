@@ -44,13 +44,13 @@ const ParentSet &LocalSearch::bestParentVar(const Types::Bitset &pred, const Var
 }
 
 bool LocalSearch::consistentWithAncestral(const Ordering &ordering) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
   int pos[n];
   for (int i=0; i < n; i++) {
     pos[ordering.get(i)] = i;
   }
 
-  for (int i=0; i < m; i++) {
+  for (int i=0; i < m_anc; i++) {
     int x = instance.getAncestral(i).first, y = instance.getAncestral(i).second;
     if (pos[x] > pos[y]) {
       return false;
@@ -62,7 +62,7 @@ bool LocalSearch::consistentWithAncestral(const Ordering &ordering) {
 
 // New code
 Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
   if (!consistentWithAncestral(ordering)) {
     return INF;
@@ -78,14 +78,14 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
     pred[ordering.get(i)] = 1;
   }
 
-  if (m == 0) {
 
-
+  if (m_anc == 0) {
+/*
     if (((double) (score - 410805797111)) / 410805797111 < 0.0005) {
       std::cout << "Printed" << std::endl;
       printModelString(parents, true, score);
     }
-
+*/
 
     if (score < optimalScore) {
       optimalScore = score;
@@ -101,20 +101,20 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 }
 
 void LocalSearch::alloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
   ancestor = new bool* [n];
   descendant = new bool* [n];
-  satisfied = new bool[m];
+  satisfied = new bool[m_anc];
 
   for (int i = 0; i < n; i++) {
-    ancestor[i] = new bool[m];
-    descendant[i] = new bool[m];
+    ancestor[i] = new bool[m_anc];
+    descendant[i] = new bool[m_anc];
   }
 }
 
 
 void LocalSearch::dealloc_2d(bool **&ancestor, bool **&descendant, bool *&satisfied) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
   for (int i = 0; i < n; i++) {
     delete[] ancestor[i];
@@ -168,9 +168,9 @@ bool LocalSearch::hasDipathWithOrdering(const std::vector<int> &parents, int x, 
 }
 
 int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) {
-  int n = instance.getN(), m = instance.getM(), count = 0;
+  int n = instance.getN(), m_anc = instance.getM_anc(), count = 0;
 
-  for (int i=0; i < m; i++) {
+  for (int i=0; i < m_anc; i++) {
     const Ancestral &cons = instance.getAncestral(i);
     if (hasDipath(parents, cons.first, cons.second)) {
       count++;
@@ -181,9 +181,9 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents) {
 }
 
 int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const std::vector<int> &positions) {
-  int n = instance.getN(), m = instance.getM(), count = 0;
+  int n = instance.getN(), m_anc = instance.getM_anc(), count = 0;
 
-  for (int i=0; i < m; i++) {
+  for (int i=0; i < m_anc; i++) {
     const Ancestral &cons = instance.getAncestral(i);
     if (hasDipathWithOrdering(parents, cons.first, cons.second, positions)) {
       count++;
@@ -194,12 +194,12 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &parents, const 
 }
 
 int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions) {
-  int n = instance.getN(), m = instance.getM(), count = 0, par = newParents[cur];
+  int n = instance.getN(), m_anc = instance.getM_anc(), count = 0, par = newParents[cur];
 
   const Variable &var = instance.getVar(cur);
   const ParentSet &p = var.getParent(par); 
 
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m_anc; i++) {
 
     // Check if a satisfied constraint is now unsatisfied
     if (satisfied[i]) {
@@ -251,13 +251,13 @@ int LocalSearch::numConstraintsSatisfied(const std::vector<int> &newParents, boo
 
 bool LocalSearch::improving(const std::vector<int> &newParents, bool **ancestor, bool **descendant, bool *satisfied, int cur, const std::vector<int> &positions, int curNumSat, int oldPar, int &numSat) {
 
-  int n = instance.getN(), m = instance.getM(), count = 0, par = newParents[cur];
+  int n = instance.getN(), m_anc = instance.getM_anc(), count = 0, par = newParents[cur];
 
   const Variable &var = instance.getVar(cur);
   const ParentSet &p = var.getParent(par); 
   const ParentSet &oldP = var.getParent(oldPar); 
 
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m_anc; i++) {
 
     // Check if an unsatisfied constraint is now satisfied.
     if (!satisfied[i]) {
@@ -282,7 +282,7 @@ bool LocalSearch::improving(const std::vector<int> &newParents, bool **ancestor,
 
   // Count now is a theoretical upper bound on the number of satisfied constraints.
 
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m_anc; i++) {
     // Check if a satisfied constraint is now unsatisfied
 
     if (count < curNumSat ||
@@ -312,14 +312,14 @@ bool LocalSearch::improving(const std::vector<int> &newParents, bool **ancestor,
 
 
 void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **ancestor, bool **descendant, bool *satisfied, const std::vector<int> &positions) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
-  for (int j = 0; j < m; j++) {
+  for (int j = 0; j < m_anc; j++) {
     satisfied[j] = false;
   }
 
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++) {
+    for (int j = 0; j < m_anc; j++) {
       ancestor[i][j] = hasDipathWithOrdering(parents, instance.getAncestral(j).first, i, positions);
       descendant[i][j] = hasDipathWithOrdering(parents, i, instance.getAncestral(j).second, positions);
       if (ancestor[i][j] && descendant[i][j]) {
@@ -331,7 +331,7 @@ void LocalSearch::computeAncestralGraph(const std::vector<int> &parents, bool **
 
 // GREEDY HILL-CLIMBING METHOD (First Improvement)
 Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
   std::vector<int> bestGraph(parents);
 
   std::vector<int> positions(n);
@@ -344,7 +344,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
   int curNumSat = 0;
 
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < m_anc; i++) {
     curNumSat += (satisfied[i]);
   }
 
@@ -376,7 +376,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
       Types::Score sc = p.getScore();
       
 
-      if (curNumSat == m && sc > oldP.getScore()) {
+      if (curNumSat == m_anc && sc > oldP.getScore()) {
         continue;
       }
 
@@ -408,7 +408,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         }
 
         // Add a penalty for each broken constraint.
-        finalSc += PENALTY * (m - curNumSat);
+        finalSc += PENALTY * (m_anc - curNumSat);
 
         if (finalSc < optimalScore) {
           optimalScore = finalSc;
@@ -452,7 +452,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
   parents = bestGraph;
 
   // Add a penalty for each broken constraint.
-  finalSc += PENALTY * (m - curNumSat);
+  finalSc += PENALTY * (m_anc - curNumSat);
 
   if (finalSc < optimalScore) {
     optimalScore = finalSc;
@@ -726,13 +726,13 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
 
-  } while (numGenerations < 20);
+  } while (numGenerations < 100);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }
 
 void LocalSearch::checkSolution() {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
   const Ordering &o = optimalOrdering;
   const std::vector<int> &parents = globalOptimum;
@@ -769,7 +769,7 @@ void LocalSearch::checkSolution() {
   std::string validStr = valid ? "Good" : "Bad";
   std::cout << "Validity Check: " << validStr << std::endl;
 
-  bool ancestralValid = (numConstraintsSatisfied(parents) == m);
+  bool ancestralValid = (numConstraintsSatisfied(parents) == m_anc);
   if (ancestralValid) {
     std::cout << "Ancestral constraints check: Good" << std::endl;
   } else {
@@ -805,7 +805,7 @@ bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<in
 }
 
 Types::Score LocalSearch::getBestScore(const Ordering &ordering) {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
   if (!consistentWithAncestral(ordering)) {
     return INF;
@@ -867,7 +867,7 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
 
 
   // Print the network.
-  outF << instance.getM() << std::endl;
+  outF << instance.getM_anc() << std::endl;
 
   if (!valid) {
     outF << "INVALID" << std::endl;
@@ -901,7 +901,7 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
 
 
 void LocalSearch::getScoreOfTrueBN() {
-  int n = instance.getN(), m = instance.getM();
+  int n = instance.getN(), m_anc = instance.getM_anc();
 
   
   std::vector< std::vector<int> > trueBN(n);
@@ -1169,7 +1169,7 @@ void LocalSearch::getScoreOfTrueBN() {
 
   std::cout << "Score of true BN: " << totalScore << std::endl;
 
-  bool ancestralValid = (numConstraintsSatisfied(trueParents) == m);
+  bool ancestralValid = (numConstraintsSatisfied(trueParents) == m_anc);
   if (ancestralValid) {
     std::cout << "Ancestral constraints check: Good" << std::endl;
   } else {

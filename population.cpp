@@ -185,7 +185,7 @@ void Population::diversify(int numKeep, Instance &instance) {
     diversified.push_back(specimens[i]);
   }
   for (int i = 0; i < size - numKeep; i++) {
-    diversified.push_back(localSearch.hillClimb(Ordering::greedyOrdering(instance)));
+    diversified.push_back(localSearch.hillClimb(Ordering::randomOrdering(instance)));
   }
   specimens = diversified;
 }
