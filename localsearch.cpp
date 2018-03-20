@@ -659,7 +659,7 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
   SearchResult best(Types::SCORE_MAX, Ordering(n));
   std::deque<Types::Score> fitnesses;
   Population population(*this);
-  int numGenerations = 1;
+  int numGenerations = 1, nonImprovingGenerations = 0;
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
@@ -720,11 +720,17 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
     if (optimalScore < initialSc) {
       walkProb = std::max(0.05, walkProb - 0.025);
+      nonImprovingGenerations = 0;
     } else {
       walkProb = std::min(0.20, walkProb + 0.025);
+      nonImprovingGenerations++;
     }
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
+
+    if (nonImprovingGenerations == 10) {
+      break;
+    }
 
   } while (numGenerations < 100);
   std::cout << "Generations: " << numGenerations << std::endl;

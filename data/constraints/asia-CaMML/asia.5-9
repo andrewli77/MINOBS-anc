@@ -1,5 +1,5 @@
+smoke => dysp 1.0;
 lung => either 1.0;
-either => dysp 1.0;
 lung => dysp 1.0;
-tub => either 1.0;
+smoke => lung 1.0;
 asia => dysp 1.0;
