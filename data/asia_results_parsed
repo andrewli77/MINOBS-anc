@@ -1,9 +1,9 @@
 0
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
 2
-"[asia][tub][smoke|asia][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke|bronc][lung|smoke][bronc][either|tub:lung][xray|either][dysp|lung:bronc]",
 5
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
 9
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 18
