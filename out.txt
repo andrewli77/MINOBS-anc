@@ -1,12 +1,14 @@
-data/asia_1000_5.BIC
-data/asia_1000_5.BIC
+data/asia_250_5.BIC
+data/asia_250_5.BIC
 data/constraints/asia/asia.9-16
 10
 -1
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-0	2295869809
-2 0 3 5 4 1 6 7 
-20	2290681784
-2 3 0 4 1 5 7 6 
+1	623998386
+2 3 4 1 5 7 0 6 
+1	621834885
+2 3 4 0 1 5 7 6 
+99	621444145
+0 2 3 1 4 5 7 6 
