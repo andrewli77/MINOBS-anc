@@ -1,11 +1,11 @@
 arcs {
-smoke => bronc 1.0;
-asia => dysp 1.0;
-asia => tub 1.0;
-asia => xray 1.0;
-smoke => dysp 1.0;
-tub => dysp 1.0;
-either => dysp 1.0;
-smoke => lung 1.0;
-tub => xray 1.0;
+	smoke => bronc 1.0;
+	asia => dysp 1.0;
+	asia => tub 1.0;
+	asia => xray 1.0;
+	smoke => dysp 1.0;
+	tub => dysp 1.0;
+	either => dysp 1.0;
+	smoke => lung 1.0;
+	tub => xray 1.0;
 }

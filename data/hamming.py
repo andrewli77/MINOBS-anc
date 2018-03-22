@@ -1,5 +1,5 @@
-n = 20
-instance = "child"
+n = 8
+instance = "asia"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -128,7 +128,7 @@ parsedFile = open(instance + "_results_parsed", "w")
 for i in range(600):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
-		print("Size: %d \t Avg Score: %f \t Avg SHD %f \t Avg Missing %f \t Avg Extra %f \t Avg Reversed %f" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i]))
+		print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \n" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i], counts[i]))
 
 		parsedFile.write(str(i) + "\n")
 		for model in models[i]:
