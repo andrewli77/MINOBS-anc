@@ -1,3 +1,4 @@
+arcs{
 tub => either 1.0;
 asia => tub 1.0;
 smoke => dysp 1.0;
@@ -16,3 +17,4 @@ lung => xray 1.0;
 asia => dysp 1.0;
 tub => xray 1.0;
 tub => dysp 1.0;
+}

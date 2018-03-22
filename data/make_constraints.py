@@ -46,15 +46,19 @@ def parseConstraintsCaMML():
 
 		outF = open("constraints/" + base + "-CaMML" + "/" + base + "." + str(m) + "-" + str(count), "w")
 
+		outF.write("arcs {\n")
+
 		for j in range(m):
 			line = lines.pop(0).strip()
 			a, b = line.split(" ")
-			outF.write(mapping[int(a)] + " => " + mapping[int(b)] + " 1.0;\n")
+			outF.write("\t" + mapping[int(a)] + " => " + mapping[int(b)] + " 1.0;\n")
 
 		count += 1
 
+		outF.write("}\n")
 
-base = "asia"
+
+base = "child"
 
 inF = open("constraints/" + base + ".txt")
 

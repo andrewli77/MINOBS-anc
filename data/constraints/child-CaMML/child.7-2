@@ -1,0 +1,9 @@
+arcs {
+	HypoxiaInO2 => LowerBodyO2 1.0;
+	Disease => LowerBodyO2 1.0;
+	CardiacMixing => HypDistrib 1.0;
+	BirthAsphyxia => CO2Report 1.0;
+	BirthAsphyxia => LowerBodyO2 1.0;
+	Disease => LVHreport 1.0;
+	BirthAsphyxia => RUQO2 1.0;
+}
