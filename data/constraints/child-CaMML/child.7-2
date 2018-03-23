@@ -1,0 +1,9 @@
+arcs {
+	BirthAsphyxia => LowerBodyO2 1.0;
+	Disease => Age 1.0;
+	ChestXray => XrayReport 1.0;
+	Disease => HypoxiaInO2 1.0;
+	Disease => ChestXray 1.0;
+	Disease => LungParench 1.0;
+	Sick => Age 1.0;
+}

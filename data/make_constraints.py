@@ -58,8 +58,8 @@ def parseConstraintsCaMML():
 		outF.write("}\n")
 
 
-base = "asia"
+base = "child"
 
 inF = open("constraints/" + base + ".txt")
 
-parseConstraintsCaMML()
+parseConstraints()

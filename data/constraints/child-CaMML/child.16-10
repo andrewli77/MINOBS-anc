@@ -1,0 +1,18 @@
+arcs {
+	LungParench => LowerBodyO2 1.0;
+	Disease => LungFlow 1.0;
+	Disease => CO2Report 1.0;
+	BirthAsphyxia => LVH 1.0;
+	LungParench => Grunting 1.0;
+	BirthAsphyxia => CO2 1.0;
+	BirthAsphyxia => GruntingReport 1.0;
+	Disease => RUQO2 1.0;
+	Disease => CO2 1.0;
+	LungParench => CO2Report 1.0;
+	LungParench => RUQO2 1.0;
+	BirthAsphyxia => RUQO2 1.0;
+	BirthAsphyxia => HypoxiaInO2 1.0;
+	Disease => DuctFlow 1.0;
+	Disease => LVHreport 1.0;
+	HypoxiaInO2 => RUQO2 1.0;
+}
