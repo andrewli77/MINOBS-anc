@@ -5,7 +5,7 @@ dir=$2
 timelimit=$3
 
 for file in $dir/*; do
-	cmd="./search $scores $file $timelimit -1 out.txt"
-	echo "$cmd"
+	cmd="sbatch --time=12:00:00 ./run-one-case.sh $scores $file"
 	eval "$cmd"
+	sleep 1
 done
