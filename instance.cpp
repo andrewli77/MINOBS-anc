@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <cmath>
 #include "debug.h"
 #include<boost/dynamic_bitset.hpp>
 
