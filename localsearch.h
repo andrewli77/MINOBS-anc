@@ -67,7 +67,7 @@ class LocalSearch {
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
     void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
-    void getScoreOfTrueBN();
+    
   private:
     Instance &instance;
     static int climbs;

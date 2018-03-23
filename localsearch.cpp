@@ -833,30 +833,42 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   std::ifstream file;
   std::ofstream outF;
 
+  std::string instanceFile = instance.getFileName();
+
+
+  int underscoreIdx = instanceFile.find('_'), underscore2Idx = instanceFile.find('_', underscoreIdx+1);
+
+  if (underscoreIdx == std::string::npos || underscore2Idx == std::string::npos || underscoreIdx > underscore2Idx) {
+    std::cout << "Error: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
+    exit(0);
+  }
+
+  std::string sizeStr = instanceFile.substr(underscoreIdx + 1, underscore2Idx - underscoreIdx - 1);
+
   if (instance.getFileName().find("asia") != std::string::npos) {
     file = std::ifstream("data/mappings/asia.mapping");
-    outF.open("data/asia_results", std::ios_base::app);
+    outF.open("data/asia_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("alarm") != std::string::npos) {
     file = std::ifstream("data/mappings/alarm.mapping");
-    outF.open("data/alarm_results", std::ios_base::app);
+    outF.open("data/alarm_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("hailfinder") != std::string::npos) {
     file = std::ifstream("data/mappings/hailfinder.mapping");
-    outF.open("data/hailfinder_results", std::ios_base::app);
+    outF.open("data/hailfinder_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("child") != std::string::npos) {
     file = std::ifstream("data/mappings/child.mapping");
-    outF.open("data/child_results", std::ios_base::app);
+    outF.open("data/child_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("sachs") != std::string::npos) {
     file = std::ifstream("data/mappings/sachs.mapping");
-    outF.open("data/sachs_results", std::ios_base::app);
+    outF.open("data/sachs_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("insurance") != std::string::npos) {
     file = std::ifstream("data/mappings/insurance.mapping");
-    outF.open("data/insurance_results", std::ios_base::app);
+    outF.open("data/insurance_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("water") != std::string::npos) {
     file = std::ifstream("data/mappings/water.mapping");
-    outF.open("data/water_results", std::ios_base::app);
+    outF.open("data/water_" + sizeStr + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("barley") != std::string::npos) {
     file = std::ifstream("data/mappings/barley.mapping");
-    outF.open("data/barley_results", std::ios_base::app);
+    outF.open("data/barley_" + sizeStr + "_results", std::ios_base::app);
   }
 
   else {
@@ -903,284 +915,4 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   outF << std::endl;
 
   outF << score << std::endl;
-}
-
-
-void LocalSearch::getScoreOfTrueBN() {
-  int n = instance.getN(), m_anc = instance.getM_anc();
-
-  
-  std::vector< std::vector<int> > trueBN(n);
-  std::vector< int > trueParents(n);
-
-/*
-  //asia
-  const int arr0[] = {};
-  const int arr1[] = {0};
-  const int arr2[] = {};
-  const int arr3[] = {2};
-  const int arr4[] = {2};
-  const int arr5[] = {1, 3};
-  const int arr6[] = {5};
-  const int arr7[] = {4, 5};
-
-  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
-  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
-  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
-  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
-  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
-  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
-  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
-  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
-*/
-/*
-  // sachs
-  const int arr8[] = {};
-  const int arr9[] = {};
-  const int arr6[] = {9};
-  const int arr7[] = {8};
-  const int arr2[] = {7, 8};
-  const int arr4[] = {7, 8};
-  const int arr5[] = {6, 9};
-  const int arr10[] = {7, 8};
-  const int arr3[] = {7, 8, 10};
-  const int arr1[] = {3, 7};
-  const int arr0[] = {1, 7};
-*/
-/*
-  // child
-  const int arr0[] =  {};
-  const int arr11[] =  {0};
-  const int arr14[] =  {11};
-  const int arr15[] =  {11};
-  const int arr16[] =  {11};
-  const int arr17[] =  {11};
-  const int arr18[] =  {11};
-  const int arr19[] =  {11};
-  const int arr1[] =  {15, 16};
-  const int arr2[] =  {16, 17};
-  const int arr3[] =  {17};
-  const int arr4[] =  {17, 18};
-  const int arr5[] =  {17, 19};
-  const int arr6[] =  {14};
-  const int arr13[] =  {11, 19};
-  const int arr7[] =  {1, 2};
-  const int arr8[] =  {2};
-  const int arr9[] =  {3};
-  const int arr10[] =  {4};
-  const int arr12[] =  {5};
-*/
-
-/*
-  // insurance
-    const int arr1[] = {};
-    const int arr10[] = {};
-    const int arr2[] = {1};
-    const int arr0[] = {1, 2};
-    const int arr3[] = {1, 2};
-    const int arr21[] = {2};
-    const int arr4[] = {2, 3};
-    const int arr8[] = {2, 3};
-    const int arr13[] = {1, 3};
-    const int arr17[] = {2, 3};
-    const int arr18[] = {2, 3};
-    const int arr6[] = {4, 8};
-    const int arr11[] = {4, 8};
-    const int arr12[] = {1, 13};
-    const int arr16[] = {4, 8, 10};
-    const int arr24[] = {4, 8};
-    const int arr9[] = {3, 12};
-    const int arr15[] = {16, 17, 18};
-    const int arr23[] = {6, 24};
-    const int arr26[] = {3, 12};
-    const int arr7[] = {9, 10, 11};
-    const int arr5[] = {6, 7};
-    const int arr20[] = {6, 7};
-    const int arr22[] = {1, 7, 23};
-    const int arr25[] = {7};
-    const int arr14[] = {5, 15, 16};
-    const int arr19[] = {14, 20};
-/*
-  // water
-  const int arr0[] = {};
-  const int arr1[] = {};
-  const int arr2[] = {};
-  const int arr3[] = {};
-  const int arr4[] = {};
-  const int arr5[] = {};
-  const int arr6[] = {};
-  const int arr7[] = {};
-  const int arr8[] = {0};
-  const int arr9[] = {1};
-  const int arr10[] = {0,1,2,4,5 };
-  const int arr11[] = {1,3,6 };
-  const int arr12[] = {2,4,7};
-  const int arr13[] = {2,5,7 };
-  const int arr14[] = {3, 6 };
-  const int arr15[] = {4,5,6,7 };
-  const int arr16[] = {8 };
-  const int arr17[] = {9 };
-  const int arr18[] = {8,9,10,12,13};
-  const int arr19[] = {9,11,14 };
-  const int arr20[] = {10, 12,15 };
-  const int arr21[] = {10, 13, 15 };
-  const int arr22[] = {11, 14 };
-  const int arr23[] = {12, 13, 14, 15 };
-  const int arr24[] = {16 };
-  const int arr25[] = {17 };
-  const int arr26[] = {16, 17, 18, 20, 21 };
-  const int arr27[] = {17, 19, 22 };
-  const int arr28[] = {18, 20, 23 };
-  const int arr29[] = {18, 21, 23 };
-  const int arr30[] = {19, 22 };
-  const int arr31[] = {20, 21, 22, 23};
-
-  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
-  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
-  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
-  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
-  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
-  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
-  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
-  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
-  trueBN[8] = std::vector<int>(arr8, arr8 + sizeof(arr8) / sizeof(int));
-  trueBN[9] = std::vector<int>(arr9, arr9 + sizeof(arr9) / sizeof(int));
-  trueBN[10] = std::vector<int>(arr10, arr10 + sizeof(arr10) / sizeof(int));
-  trueBN[11] = std::vector<int>(arr11, arr11 + sizeof(arr11) / sizeof(int));
-  trueBN[12] = std::vector<int>(arr12, arr12 + sizeof(arr12) / sizeof(int));
-  trueBN[13] = std::vector<int>(arr13, arr13 + sizeof(arr13) / sizeof(int));
-  trueBN[14] = std::vector<int>(arr14, arr14 + sizeof(arr14) / sizeof(int));
-  trueBN[15] = std::vector<int>(arr15, arr15 + sizeof(arr15) / sizeof(int));
-  trueBN[16] = std::vector<int>(arr16, arr16 + sizeof(arr16) / sizeof(int));
-  trueBN[17] = std::vector<int>(arr17, arr17 + sizeof(arr17) / sizeof(int));
-  trueBN[18] = std::vector<int>(arr18, arr18 + sizeof(arr18) / sizeof(int));
-  trueBN[19] = std::vector<int>(arr19, arr19 + sizeof(arr19) / sizeof(int));
-  trueBN[20] = std::vector<int>(arr20, arr20 + sizeof(arr20) / sizeof(int));
-  trueBN[21] = std::vector<int>(arr21, arr21 + sizeof(arr21) / sizeof(int));
-  trueBN[22] = std::vector<int>(arr22, arr22 + sizeof(arr22) / sizeof(int));
-  trueBN[23] = std::vector<int>(arr23, arr23 + sizeof(arr23) / sizeof(int));
-  trueBN[24] = std::vector<int>(arr24, arr24 + sizeof(arr24) / sizeof(int));
-  trueBN[25] = std::vector<int>(arr25, arr25 + sizeof(arr25) / sizeof(int));
-  trueBN[26] = std::vector<int>(arr26, arr26 + sizeof(arr26) / sizeof(int));
-  trueBN[27] = std::vector<int>(arr27, arr27 + sizeof(arr27) / sizeof(int));
-  trueBN[28] = std::vector<int>(arr28, arr28 + sizeof(arr28) / sizeof(int));
-  trueBN[29] = std::vector<int>(arr29, arr29 + sizeof(arr29) / sizeof(int));
-  trueBN[30] = std::vector<int>(arr30, arr30 + sizeof(arr30) / sizeof(int));
-  trueBN[31] = std::vector<int>(arr31, arr31 + sizeof(arr31) / sizeof(int));
-*/
-  const int arr3[] = {};
-  const int arr5[] = {};
-  const int arr7[] = {};
-  const int arr10[] = {};
-  const int arr12[] = {};
-  const int arr13[] = {};
-  const int arr16[] = {};
-  const int arr18[] = {};
-  const int arr22[] = {};
-  const int arr24[] = {};
-  const int arr26[] = {};
-  const int arr27[] = {};
-  const int arr0[] = {5};
-  const int arr4[] = {3, 5};
-  const int arr6[] = {3, 5};
-  const int arr14[] = {13};
-  const int arr21[] = {22};
-  const int arr23[] = {22, 24};
-  const int arr28[] = {27};
-  const int arr1[] = {4};
-  const int arr2[] = {4};
-  const int arr29[] = {26, 28};
-  const int arr25[] = {16, 24, 29};
-  const int arr30[] = {16, 24, 29};
-  const int arr17[] = {24, 30};
-  const int arr31[] = {24, 30};
-  const int arr19[] = {18, 31};
-  const int arr32[] = {31};
-  const int arr15[] = {30, 32};
-  const int arr20[] = {19, 23};
-  const int arr33[] = {12, 14, 20, 32};
-  const int arr34[] = {33};
-  const int arr8[] = {7, 34};
-  const int arr9[] = {10, 34};
-  const int arr11[] = {10, 34};
-  const int arr35[] = {6, 34};
-  const int arr36[] = {14, 35};
-
-  trueBN[0] = std::vector<int>(arr0, arr0 + sizeof(arr0) / sizeof(int));
-  trueBN[1] = std::vector<int>(arr1, arr1 + sizeof(arr1) / sizeof(int));
-  trueBN[2] = std::vector<int>(arr2, arr2 + sizeof(arr2) / sizeof(int));
-  trueBN[3] = std::vector<int>(arr3, arr3 + sizeof(arr3) / sizeof(int));
-  trueBN[4] = std::vector<int>(arr4, arr4 + sizeof(arr4) / sizeof(int));
-  trueBN[5] = std::vector<int>(arr5, arr5 + sizeof(arr5) / sizeof(int));
-  trueBN[6] = std::vector<int>(arr6, arr6 + sizeof(arr6) / sizeof(int));
-  trueBN[7] = std::vector<int>(arr7, arr7 + sizeof(arr7) / sizeof(int));
-  trueBN[8] = std::vector<int>(arr8, arr8 + sizeof(arr8) / sizeof(int));
-  trueBN[9] = std::vector<int>(arr9, arr9 + sizeof(arr9) / sizeof(int));
-  trueBN[10] = std::vector<int>(arr10, arr10 + sizeof(arr10) / sizeof(int));
-  trueBN[11] = std::vector<int>(arr11, arr11 + sizeof(arr11) / sizeof(int));
-  trueBN[12] = std::vector<int>(arr12, arr12 + sizeof(arr12) / sizeof(int));
-  trueBN[13] = std::vector<int>(arr13, arr13 + sizeof(arr13) / sizeof(int));
-  trueBN[14] = std::vector<int>(arr14, arr14 + sizeof(arr14) / sizeof(int));
-  trueBN[15] = std::vector<int>(arr15, arr15 + sizeof(arr15) / sizeof(int));
-  trueBN[16] = std::vector<int>(arr16, arr16 + sizeof(arr16) / sizeof(int));
-  trueBN[17] = std::vector<int>(arr17, arr17 + sizeof(arr17) / sizeof(int));
-  trueBN[18] = std::vector<int>(arr18, arr18 + sizeof(arr18) / sizeof(int));
-  trueBN[19] = std::vector<int>(arr19, arr19 + sizeof(arr19) / sizeof(int));
-  trueBN[20] = std::vector<int>(arr20, arr20 + sizeof(arr20) / sizeof(int));
-  trueBN[21] = std::vector<int>(arr21, arr21 + sizeof(arr21) / sizeof(int));
-  trueBN[22] = std::vector<int>(arr22, arr22 + sizeof(arr22) / sizeof(int));
-  trueBN[23] = std::vector<int>(arr23, arr23 + sizeof(arr23) / sizeof(int));
-  trueBN[24] = std::vector<int>(arr24, arr24 + sizeof(arr24) / sizeof(int));
-  trueBN[25] = std::vector<int>(arr25, arr25 + sizeof(arr25) / sizeof(int));
-  trueBN[26] = std::vector<int>(arr26, arr26 + sizeof(arr26) / sizeof(int));
-  trueBN[27] = std::vector<int>(arr27, arr27 + sizeof(arr27) / sizeof(int));
-  trueBN[28] = std::vector<int>(arr28, arr28 + sizeof(arr28) / sizeof(int));
-  trueBN[29] = std::vector<int>(arr29, arr29 + sizeof(arr29) / sizeof(int));
-  trueBN[30] = std::vector<int>(arr30, arr30 + sizeof(arr30) / sizeof(int));
-  trueBN[31] = std::vector<int>(arr31, arr31 + sizeof(arr31) / sizeof(int));
-  trueBN[32] = std::vector<int>(arr32, arr32 + sizeof(arr32) / sizeof(int));
-  trueBN[33] = std::vector<int>(arr33, arr33 + sizeof(arr33) / sizeof(int));
-  trueBN[34] = std::vector<int>(arr34, arr34 + sizeof(arr34) / sizeof(int));
-  trueBN[35] = std::vector<int>(arr35, arr35 + sizeof(arr35) / sizeof(int));
-  trueBN[36] = std::vector<int>(arr36, arr36 + sizeof(arr36) / sizeof(int));
-
-  Types::Score totalScore = 0;
-  for (int i = 0; i < n; i++) {
-    const Variable &var = instance.getVar(i);
-
-    bool foundParent = false;
-    for (int j = 0; j < var.numParents(); j++) {
-      const ParentSet &parSet = var.getParent(j);
-      const std::vector<int> &ps = parSet.getParentsVec();
-
-      if (ps.size() == trueBN[i].size() && std::equal(ps.begin(), ps.end(), trueBN[i].begin())) {
-
-        std::cout << "Node " << i << ": ";
-        for (int k = 0; k < trueBN[i].size(); k++) {
-          std::cout << trueBN[i][k] << " ";
-        }
-        std::cout << std::endl;
-        totalScore += parSet.getScore();
-        foundParent = true;
-        trueParents[i] = j;
-        break;
-      }
-    }
-
-    if (!foundParent) {
-      std::cout << "No parent found for: " << i << std::endl;
-    }
-    assert(foundParent);
-  }
-
-  std::cout << "Score of true BN: " << totalScore << std::endl;
-
-  bool ancestralValid = (numConstraintsSatisfied(trueParents) == m_anc);
-  if (ancestralValid) {
-    std::cout << "Ancestral constraints check: Good" << std::endl;
-  } else {
-    std::cout << "Ancestral constraints check: Bad" << std::endl;
-  }
-
-  std::cout << "Num constraints satisfied: " << numConstraintsSatisfied(trueParents) << std::endl;
 }
