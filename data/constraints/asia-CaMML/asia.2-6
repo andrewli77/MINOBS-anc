@@ -1,4 +1,4 @@
 arcs {
-	either => dysp 1.0;
-	bronc => dysp 1.0;
+	either => dysp 0.9999;
+	bronc => dysp 0.9999;
 }

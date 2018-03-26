@@ -1,4 +1,4 @@
 arcs {
-	smoke => lung 1.0;
-	asia => either 1.0;
+	smoke => lung 0.9999;
+	asia => either 0.9999;
 }

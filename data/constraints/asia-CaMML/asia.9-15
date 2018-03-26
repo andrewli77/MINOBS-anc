@@ -1,11 +1,11 @@
 arcs {
-	smoke => lung 1.0;
-	either => dysp 1.0;
-	lung => xray 1.0;
-	lung => either 1.0;
-	smoke => bronc 1.0;
-	asia => either 1.0;
-	smoke => either 1.0;
-	bronc => dysp 1.0;
-	asia => tub 1.0;
+	smoke => lung 0.9999;
+	either => dysp 0.9999;
+	lung => xray 0.9999;
+	lung => either 0.9999;
+	smoke => bronc 0.9999;
+	asia => either 0.9999;
+	smoke => either 0.9999;
+	bronc => dysp 0.9999;
+	asia => tub 0.9999;
 }

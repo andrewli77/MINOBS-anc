@@ -1,18 +1,18 @@
 arcs {
-	BirthAsphyxia => LungParench 1.0;
-	Sick => GruntingReport 1.0;
-	ChestXray => XrayReport 1.0;
-	Sick => Age 1.0;
-	BirthAsphyxia => HypoxiaInO2 1.0;
-	Sick => Grunting 1.0;
-	LungParench => Grunting 1.0;
-	BirthAsphyxia => LungFlow 1.0;
-	Disease => HypDistrib 1.0;
-	LungFlow => XrayReport 1.0;
-	HypoxiaInO2 => RUQO2 1.0;
-	Disease => RUQO2 1.0;
-	BirthAsphyxia => Sick 1.0;
-	Disease => LungParench 1.0;
-	BirthAsphyxia => HypDistrib 1.0;
-	BirthAsphyxia => CO2Report 1.0;
+	BirthAsphyxia => LungParench 0.9999;
+	Sick => GruntingReport 0.9999;
+	ChestXray => XrayReport 0.9999;
+	Sick => Age 0.9999;
+	BirthAsphyxia => HypoxiaInO2 0.9999;
+	Sick => Grunting 0.9999;
+	LungParench => Grunting 0.9999;
+	BirthAsphyxia => LungFlow 0.9999;
+	Disease => HypDistrib 0.9999;
+	LungFlow => XrayReport 0.9999;
+	HypoxiaInO2 => RUQO2 0.9999;
+	Disease => RUQO2 0.9999;
+	BirthAsphyxia => Sick 0.9999;
+	Disease => LungParench 0.9999;
+	BirthAsphyxia => HypDistrib 0.9999;
+	BirthAsphyxia => CO2Report 0.9999;
 }

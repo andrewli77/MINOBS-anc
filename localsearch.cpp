@@ -835,39 +835,39 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   std::string instanceFile = instance.getFileName();
 
 
-  int underscoreIdx = instanceFile.find('_'), underscore2Idx = instanceFile.find('_', underscoreIdx+1);
+  int periodIdx = instanceFile.find('.');
 
-  if (underscoreIdx == std::string::npos || underscore2Idx == std::string::npos || underscoreIdx > underscore2Idx) {
+  if (periodIdx == std::string::npos) {
     std::cout << "Error: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
     exit(0);
   }
 
-  std::string sizeStr = instanceFile.substr(underscoreIdx + 1, underscore2Idx - underscoreIdx - 1);
+  std::string instanceName = instanceFile.substr(0, periodIdx);
 
   if (instance.getFileName().find("asia") != std::string::npos) {
     file = std::ifstream("data/mappings/asia.mapping");
-    outF.open("data/asia_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("alarm") != std::string::npos) {
     file = std::ifstream("data/mappings/alarm.mapping");
-    outF.open("data/alarm_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("hailfinder") != std::string::npos) {
     file = std::ifstream("data/mappings/hailfinder.mapping");
-    outF.open("data/hailfinder_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("child") != std::string::npos) {
     file = std::ifstream("data/mappings/child.mapping");
-    outF.open("data/child_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("sachs") != std::string::npos) {
     file = std::ifstream("data/mappings/sachs.mapping");
-    outF.open("data/sachs_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("insurance") != std::string::npos) {
     file = std::ifstream("data/mappings/insurance.mapping");
-    outF.open("data/insurance_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("water") != std::string::npos) {
     file = std::ifstream("data/mappings/water.mapping");
-    outF.open("data/water_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   } else if (instance.getFileName().find("barley") != std::string::npos) {
     file = std::ifstream("data/mappings/barley.mapping");
-    outF.open("data/barley_" + sizeStr + "_results", std::ios_base::app);
+    outF.open(instanceName + "_results", std::ios_base::app);
   }
 
   else {

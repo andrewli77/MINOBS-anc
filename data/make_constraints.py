@@ -51,14 +51,14 @@ def parseConstraintsCaMML():
 		for j in range(m):
 			line = lines.pop(0).strip()
 			a, b = line.split(" ")
-			outF.write("\t" + mapping[int(a)] + " => " + mapping[int(b)] + " 1.0;\n")
+			outF.write("\t" + mapping[int(a)] + " => " + mapping[int(b)] + " 0.9999;\n")
 
 		count += 1
 
 		outF.write("}\n")
 
 
-base = "alarm"
+base = "child"
 
 inF = open("constraints/" + base + ".txt")
 

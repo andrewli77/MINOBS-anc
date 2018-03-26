@@ -1,4 +1,4 @@
 arcs {
-	tub => dysp 1.0;
-	either => xray 1.0;
+	tub => dysp 0.9999;
+	either => xray 0.9999;
 }
