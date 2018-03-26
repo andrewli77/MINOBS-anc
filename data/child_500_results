@@ -1,0 +1,4 @@
+64
+[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CO2Report:CardiacMixing][CO2|LungParench][ChestXray|LungParench:LungFlow][Grunting|LungParench:Sick][LVHreport|LVH][LowerBodyO2|HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|HypDistrib:CO2][XrayReport|ChestXray][Disease|BirthAsphyxia][GruntingReport|Grunting][Age|Disease:Sick][LVH|Disease][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|Disease]
+6582922607
+32.761
