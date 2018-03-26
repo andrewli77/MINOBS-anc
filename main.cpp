@@ -38,11 +38,12 @@ int main(int argc, char* argv[]) {
   std::string outFile = argv[5];
   seed = seed == -1 ? time(NULL) : seed;
   ResultRegister rr;
-  srand(seed);
-  Instance instance(fileName, constraintsFileName);
   rr.setOrigin();
   rr.set();
-  LocalSearch localSearch(instance);
+  srand(seed);
+  Instance instance(fileName, constraintsFileName);
+
+  LocalSearch localSearch(instance, rr);
   int n = instance.getN();
   int initPopulationSize = 20;
   int numCrossovers = 20;

@@ -13,7 +13,7 @@
 #include "movetabulist.h"
 #include "swaptabulist.h"
 
-LocalSearch::LocalSearch(Instance &instance) : instance(instance) { 
+LocalSearch::LocalSearch(Instance &instance, ResultRegister &rr) : instance(instance), rr(rr) { 
   allParents = instance.getParentList();
   alloc_2d(ancestor, descendant, satisfied);
 }
@@ -787,8 +787,7 @@ void LocalSearch::checkSolution() {
   std::cout << "Climbs: " << climbs << std::endl;
 
 
-  printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
-  std::cout << "Time: " << total_time << std::endl;
+  printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore, rr.check());
 }
 
 bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) {
@@ -828,7 +827,7 @@ Types::Score LocalSearch::getBestScore(const Ordering &ordering) {
   return score;
 }
 
-void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score) {
+void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score, float total_time) {
   int n = instance.getN();
   std::ifstream file;
   std::ofstream outF;
@@ -915,4 +914,6 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   outF << std::endl;
 
   outF << score << std::endl;
+
+  outF << total_time << std::endl;
 }

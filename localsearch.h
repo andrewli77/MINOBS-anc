@@ -38,7 +38,7 @@ const int tabuTenure = 3;
 
 class LocalSearch {
   public:
-    LocalSearch(Instance &instance);
+    LocalSearch(Instance &instance, ResultRegister &rr);
     ~LocalSearch();
     const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset &pred, int idx);
     const ParentSet &bestParentVar(const Types::Bitset &pred, const Variable &v);
@@ -66,10 +66,11 @@ class LocalSearch {
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
-    void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
+    void printModelString(const std::vector<int> &parents, bool valid, Types::Score score, float total_time);
     
   private:
     Instance &instance;
+    ResultRegister &rr;
     static int climbs;
     std::vector< std::pair<int,int> > allParents;
     bool **ancestor, **descendant, *satisfied;
@@ -81,7 +82,6 @@ class LocalSearch {
 
     double walkProb = 0.075;
     double transposeProb = 0;
-    double total_time = 0;
 };
 
 #endif /* LOCALSEARCH_H */
