@@ -1,6 +1,6 @@
-n = 37
-instance = "alarm"
-dataSize = "4000"
+n = 8
+instance = "asia"
+dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -103,11 +103,13 @@ while True:
 
 	model = modelFile.readline()
 	line3 = modelFile.readline()
+	line4 = modelFile.readline()
 
 	
 
 	size = int(line1)
 	score = int(line3)
+	tm = float(line4)
 
 	scoreTotals[size] += score
 

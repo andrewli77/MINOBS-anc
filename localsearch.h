@@ -66,7 +66,7 @@ class LocalSearch {
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
     Types::Score getBestScore(const Ordering &ordering);
-    void printModelString(const std::vector<int> &parents, bool valid, Types::Score score, float total_time);
+    void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
     
   private:
     Instance &instance;

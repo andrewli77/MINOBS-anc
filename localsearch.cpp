@@ -787,7 +787,7 @@ void LocalSearch::checkSolution() {
   std::cout << "Climbs: " << climbs << std::endl;
 
 
-  printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore, rr.check());
+  printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
 }
 
 bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) {
@@ -827,7 +827,7 @@ Types::Score LocalSearch::getBestScore(const Ordering &ordering) {
   return score;
 }
 
-void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score, float total_time) {
+void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score) {
   int n = instance.getN();
   std::ifstream file;
   std::ofstream outF;
@@ -914,6 +914,4 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   outF << std::endl;
 
   outF << score << std::endl;
-
-  outF << total_time << std::endl;
 }
