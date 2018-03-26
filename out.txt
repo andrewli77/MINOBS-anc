@@ -6,5 +6,5 @@ data/constraints/asia/asia.18-17
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-9	2346453024
+6	2346453024
 2 4 3 0 1 5 6 7 
