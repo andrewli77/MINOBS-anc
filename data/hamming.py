@@ -1,6 +1,6 @@
 n = 8
 instance = "asia"
-dataSize = "1000"
+dataSize = "250"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -85,6 +85,7 @@ shdTotals = [0 for i in range(600)]
 missingTotals = [0 for i in range(600)]
 extraTotals = [0 for i in range(600)]
 reversedTotals = [0 for i in range(600)]
+tmTotals = [0 for i in range(600)]
 counts = [0 for i in range(600)]
 models = [[] for i in range(600)]
 
@@ -105,6 +106,8 @@ while True:
 	line3 = modelFile.readline()
 	line4 = modelFile.readline()
 
+	print(model)
+
 	
 
 	size = int(line1)
@@ -122,16 +125,17 @@ while True:
 	missingTotals[size] += info [1]
 	extraTotals[size] += info [2]
 	reversedTotals[size] += info [3]
+	tmTotals[size] += tm
 	counts[size] += 1
 	models[size].append(model)
 
-	print(size, info)
+	#print(size, info)
 
 parsedFile = open(instance + "_results_parsed", "w")
 for i in range(600):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
-		print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \n" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i], counts[i]))
+		print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i], counts[i], tmTotals[i]/counts[i]))
 
 		parsedFile.write(str(i) + "\n")
 		for model in models[i]:
