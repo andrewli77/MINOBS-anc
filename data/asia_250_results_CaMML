@@ -1,127 +1,157 @@
 # Constraints: 0
 # Models: 6
-Avg time: 4.308333333333334
-% Feasible: 1.0
+Avg time: 4.398333333333334
+% Feasible: 100.0
 % Constraints: 100
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 1 -----------
+"[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 2 -----------
 "[asia|tub][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|lung:bronc]",
+case num 3 -----------
 "[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 4 -----------
 "[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 5 -----------
 "[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 6 -----------
+"[asia][tub][smoke|bronc:dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc]",
 # Constraints: 2
 # Models: 30
-Avg time: 5.4910000000000005
-% Feasible: 1.0
-% Constraints: 1.0
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+Avg time: 5.413999999999999
+% Feasible: 100.0
+% Constraints: 100.0
+case num 1 -----------
+"[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 2 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
 "[asia|tub][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia|tub][tub][smoke|bronc][lung][bronc|tub][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia|tub][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia|tub][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia|tub][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
+"[asia|tub][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
+"[asia|tub][tub][smoke|bronc][lung][bronc|tub][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 3 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+case num 4 -----------
+"[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 5 -----------
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:xray]",
-"[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:xray]",
+"[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 6 -----------
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|asia:either][dysp|smoke:bronc]",
+"[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|tub:smoke:bronc]",
+"[asia][tub][smoke|bronc:dysp][lung][bronc][either|tub:lung][xray|either][dysp|tub:bronc]",
+"[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|smoke:bronc]",
+"[asia][tub][smoke|bronc:dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
 # Constraints: 5
 # Models: 30
-Avg time: 6.202333333333334
-% Feasible: 1.0
-% Constraints: 1.0
+Avg time: 6.1800000000000015
+% Feasible: 100.0
+% Constraints: 100.0
+case num 1 -----------
 "[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
+"[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]",
+case num 2 -----------
+"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|asia:lung:bronc]",
+"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|smoke:either][dysp|bronc:either]",
 "[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia|tub][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:lung:bronc]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:lung:bronc]",
+case num 3 -----------
 "[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|lung][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke|lung:bronc][lung][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|asia:smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 4 -----------
 "[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|asia][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|bronc][lung][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]",
+case num 5 -----------
+"[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]",
-"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+case num 6 -----------
+"[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|smoke:bronc]",
+"[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|tub:smoke:bronc]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]",
-"[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:xray]",
-"[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:xray]",
+"[asia][tub][smoke|bronc:dysp][lung][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke:lung][either|tub:lung][xray|either][dysp|asia:smoke:bronc]",
 # Constraints: 9
 # Models: 30
-Avg time: 6.996666666666666
-% Feasible: 1.0
-% Constraints: 1.0
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+Avg time: 6.862666666666667
+% Feasible: 100.0
+% Constraints: 100.0
+case num 1 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:xray]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:xray]",
+case num 2 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 3 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
 "[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:xray]",
-"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:xray]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+case num 4 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+case num 5 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+case num 6 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|smoke:bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke:lung][either|asia:tub:lung][xray|either][dysp|tub:smoke:bronc]",
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
+"[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]",
 # Constraints: 18
 # Models: 6
-Avg time: 9.163333333333334
-% Feasible: 1.0
-% Constraints: 1.0
+Avg time: 9.12
+% Feasible: 100.0
+% Constraints: 100.0
+case num 1 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 2 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 3 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 4 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
+case num 5 -----------
 "[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
-"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:xray]",
+case num 6 -----------
+"[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]",
