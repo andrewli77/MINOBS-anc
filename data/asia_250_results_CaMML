@@ -1,0 +1,127 @@
+# Constraints: 0
+# Models: 6
+Avg time: 4.391666666666667
+% Feasible: 100.0
+% Constraints: 100
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia|tub][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke|bronc:dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc]", 6),
+# Constraints: 2
+# Models: 30
+Avg time: 5.451333333333334
+% Feasible: 100.0
+% Constraints: 100.0
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia|tub][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia|tub][tub][smoke|bronc][lung][bronc|tub][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia|tub][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia|tub][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung:bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke|dysp][lung][bronc][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke:dysp][either|tub:lung][xray|asia:either][dysp|smoke]", 6),
+c("[asia][tub][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|tub:smoke:bronc]", 6),
+c("[asia][tub][smoke|bronc:dysp][lung][bronc][either|tub:lung][xray|either][dysp|tub:bronc]", 6),
+c("[asia][tub][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|smoke:bronc]", 6),
+c("[asia][tub][smoke|either][lung|tub:either][bronc|smoke][either|tub][xray|either][dysp|smoke:bronc]", 6),
+# Constraints: 5
+# Models: 30
+Avg time: 6.104666666666668
+% Feasible: 100.0
+% Constraints: 100.0
+c("[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]", 1),
+c("[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia][tub|asia][smoke|bronc][lung][bronc][either|tub:lung][xray|smoke:either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke|bronc][lung][bronc][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia|tub][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:lung:bronc]", 2),
+c("[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke|lung:bronc][lung][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke|bronc][lung][bronc][either|asia:tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|asia:bronc:either]", 4),
+c("[asia][tub|asia][smoke|lung][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke][lung][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke|either][lung][bronc|smoke][either|tub:lung][xray|either][dysp|smoke:bronc]", 6),
+c("[asia][tub][smoke|either][lung][bronc|smoke][either|asia:tub:lung][xray|either][dysp|smoke:bronc]", 6),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 6),
+c("[asia][tub][smoke|either][lung|asia][bronc|smoke:dysp][either|tub:lung][xray|asia:either][dysp|smoke]", 6),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|smoke:bronc:either]", 6),
+# Constraints: 9
+# Models: 30
+Avg time: 6.816
+% Feasible: 100.0
+% Constraints: 100.0
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|lung:bronc]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|asia:smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 6),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 6),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|asia:tub:lung][xray|either][dysp|bronc:either]", 6),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 6),
+c("[asia][tub][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|asia:either][dysp|bronc:either]", 6),
+# Constraints: 18
+# Models: 6
+Avg time: 9.101666666666667
+% Feasible: 100.0
+% Constraints: 100.0
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 1),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 2),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 3),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 4),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 5),
+c("[asia][tub|asia][smoke][lung|smoke][bronc|smoke][either|tub:lung][xray|either][dysp|bronc:either]", 6),
