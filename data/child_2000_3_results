@@ -1,0 +1,8 @@
+0
+[BirthAsphyxia|Disease][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing:LungParench][CO2|CO2Report:LungParench][ChestXray|LungParench:LungFlow][Grunting|Age:LungParench:Sick][LVHreport|CO2Report:LVH][LowerBodyO2|HypDistrib:HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|Grunting:Age:LungParench][XrayReport|ChestXray][Disease|LungFlow][GruntingReport|Grunting:CO2Report:Sick][Age|Disease:Sick][LVH|Disease:Sick][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow][Sick|HypDistrib:Disease]
+24665474977
+9.68
+16
+[BirthAsphyxia][HypDistrib|DuctFlow:CardiacMixing][HypoxiaInO2|CardiacMixing:LungParench][CO2|CO2Report:LungParench][ChestXray|LungParench:LungFlow][Grunting|Age:LungParench:Sick][LVHreport|CO2Report:LVH][LowerBodyO2|HypDistrib:HypoxiaInO2][RUQO2|HypoxiaInO2][CO2Report|Grunting:Age:LungParench][XrayReport|ChestXray][Disease|BirthAsphyxia][GruntingReport|Grunting:CO2Report:Sick][Age|Disease:Sick][LVH|Disease:Sick][DuctFlow|Disease][CardiacMixing|Disease][LungParench|Disease][LungFlow|Disease][Sick|HypDistrib:Disease]
+24665475222
+28.02
