@@ -58,7 +58,7 @@ def parseConstraintsCaMML():
 		outF.write("}\n")
 
 
-base = "barley"
+base = "child"
 
 inF = open("constraints/" + base + ".txt")
 
