@@ -1,10 +1,12 @@
-data/child_2000_1.aBIC
-data/child_2000_1.aBIC
-data/constraints/child/child.32-12
+data/child_2000_2.aBIC
+data/child_2000_2.aBIC
+data/constraints/child/child.16-10
 10
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-488	24853782683
-0 11 17 18 4 14 16 10 15 6 3 9 1 19 2 7 5 12 13 8 
+506	24974859009
+4 10 11 0 16 18 17 13 19 5 15 1 9 3 14 7 2 6 12 8 
+592	24661002929
+0 11 17 18 4 10 16 13 19 15 1 5 3 9 12 14 6 2 8 7 
