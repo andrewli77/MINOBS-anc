@@ -1,6 +1,6 @@
 n = 8
 instance = "asia"
-dataSize = "250"
+dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -112,7 +112,7 @@ while True:
 
 	size = int(line1)
 	score = int(line3)
-	tm = float(line4)
+	tm = sum(map(float, line4.strip().split(",")))
 
 	scoreTotals[size] += score
 
