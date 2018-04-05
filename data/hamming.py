@@ -1,5 +1,5 @@
-n = 8
-instance = "asia"
+n = 20
+instance = "child"
 dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")
@@ -106,7 +106,7 @@ while True:
 	line3 = modelFile.readline()
 	line4 = modelFile.readline()
 
-	print(model)
+	#print(model)
 
 	
 

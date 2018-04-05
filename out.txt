@@ -1,10 +1,10 @@
-data/asia_1000_6.BDeu
-data/asia_1000_6.BDeu
-data/constraints/asia/asia.9-16
+data/child_500_6.BDeu
+data/child_500_6.BDeu
+data/constraints/child/child.7-6
 10
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-7	2329422876
-2 3 4 0 1 5 6 7 
+237	6690722800
+0 15 11 14 16 17 18 4 1 6 3 9 2 7 13 19 10 5 12 8 
