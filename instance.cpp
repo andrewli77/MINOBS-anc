@@ -244,7 +244,7 @@ double Instance::pruneFactor() const {
   double omegaFactor = (double) 100 * sqrt(n) / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
 
-  return 1 + omegaFactor * ( 1 - (constraintDensity - 1) * (constraintDensity - 1));
+  return 1 + omegaFactor * constraintDensity;
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {

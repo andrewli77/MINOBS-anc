@@ -1,6 +1,6 @@
 n = 20
 instance = "child"
-dataSize = "2000"
+dataSize = "500"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()

@@ -1,10 +1,10 @@
-data/child_500_6.BDeu
-data/child_500_6.BDeu
+data/child_500_6.aBIC
+data/child_500_6.aBIC
 data/constraints/child/child.7-6
 10
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-249	6690722800
-0 15 11 14 16 17 18 4 1 6 3 9 13 19 2 7 10 5 12 8 
+333	6388156021
+0 11 14 16 15 17 18 4 1 6 3 9 2 7 19 10 5 12 13 8 
