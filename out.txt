@@ -6,5 +6,5 @@ data/constraints/child/child.7-6
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-237	6690722800
-0 15 11 14 16 17 18 4 1 6 3 9 2 7 13 19 10 5 12 8 
+249	6690722800
+0 15 11 14 16 17 18 4 1 6 3 9 13 19 2 7 10 5 12 8 
