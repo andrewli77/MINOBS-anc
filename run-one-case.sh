@@ -1,3 +1,5 @@
+#!/bin/bash
+
 scores=$1
 file=$2
 outputFile=$3
