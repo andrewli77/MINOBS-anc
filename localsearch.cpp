@@ -80,13 +80,6 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 
 
   if (m_anc == 0) {
-/*
-    if (((double) (score - 410805797111)) / 410805797111 < 0.0005) {
-      std::cout << "Printed" << std::endl;
-      printModelString(parents, true, score);
-    }
-*/
-
     if (score < optimalScore) {
       optimalScore = score;
       optimalOrdering = ordering;
