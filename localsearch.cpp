@@ -39,7 +39,7 @@ const ParentSet &LocalSearch::bestParentVar(const Types::Bitset &pred, const Var
     }
   }
 
-  assert(false);
+  noValidParentFoundFlag = true;
   return v.getParent(0); //Should never happen in THeory
 }
 
@@ -533,7 +533,12 @@ void LocalSearch::bestSwapForward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
-      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
+      int pid = bestParentVar(pred, v).getId();
+      if (noValidParentFoundFlag) {
+        noValidParentFoundFlag = false;
+        break;
+      }
+      tmpParents[o.get(j+1)] = pid; //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
     }
 
     o.swap(j, j+1);
@@ -586,7 +591,14 @@ void LocalSearch::bestSwapBackward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
-      tmpParents[o.get(j+1)] = bestParentVar(pred, v).getId(); //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
+
+      int pid = bestParentVar(pred, v).getId();
+      if (noValidParentFoundFlag) {
+        noValidParentFoundFlag = false;
+        break;
+      }
+      tmpParents[o.get(j+1)] = pid; //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
+
     }
 
     o.swap(j, j+1);
@@ -653,7 +665,7 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   return SearchResult(curScore, cur);
 }
 
-SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS,
+SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS,
     int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr) {
   int n = instance.getN();
   SearchResult best(Types::SCORE_MAX, Ordering(n));
@@ -728,11 +740,13 @@ SearchResult LocalSearch::genetic(float cutoffTime, int INIT_POPULATION_SIZE, in
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
 
+/*
     if (nonImprovingGenerations == 10) {
       break;
     }
+*/
 
-  } while (numGenerations < 10);
+  } while (numGenerations < cutoffGenerations);
   std::cout << "Generations: " << numGenerations << std::endl;
   return best;
 }

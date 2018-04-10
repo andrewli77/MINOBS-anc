@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
   Types::Score opt;
   std::string fileName = argv[1];
   std::string constraintsFileName = argv[2];
-  float cutoffTime = atof(argv[3]);
+  int cutoffGenerations = atoi(argv[3]);
   int seed = atoi(argv[4]);
   std::string outFile = argv[5];
   seed = seed == -1 ? time(NULL) : seed;
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  SearchResult sr = localSearch.genetic(cutoffTime, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
+  SearchResult sr = localSearch.genetic(cutoffGenerations, initPopulationSize, numCrossovers, numMutations, mutationPower, divLookahead, numKeep, divTolerance, crossoverType, greediness, opt, rr);
   localSearch.checkSolution();
 
   rr.dump(outFile, fileName, argc, argv, sr);

@@ -83,8 +83,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int varId;
       int numParents;
       file >> varId >> numParents;
-
-      Variable v(varId, numParents, n);
+      Variable v(numParents, varId);
 
       for (int j = 0; j < numParents; j++) {
         double doubleScore;
@@ -241,7 +240,7 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  double omegaFactor = (double) 200 * sqrt(n) / dataSize;
+  double omegaFactor = (double) 1.5 * n*n / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
 
   return 1 + omegaFactor * constraintDensity;

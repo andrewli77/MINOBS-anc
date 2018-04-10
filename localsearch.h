@@ -60,7 +60,7 @@ class LocalSearch {
     void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);
-    SearchResult genetic(float cutoffTime, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
+    SearchResult genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
     void checkSolution();
     bool consistentWithAncestral(const Ordering &ordering);
     std::pair<int, int> constraintRange(const Ordering &ordering);
@@ -82,6 +82,8 @@ class LocalSearch {
 
     double walkProb = 0.075;
     double transposeProb = 0;
+
+    bool noValidParentFoundFlag = false;
 };
 
 #endif /* LOCALSEARCH_H */

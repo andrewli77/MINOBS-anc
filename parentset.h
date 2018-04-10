@@ -18,6 +18,7 @@ class ParentSet {
     void setId(const int &i);
     friend std::ostream& operator<<(std::ostream &os, const ParentSet& p);
     const std::vector<int> &getParentsVec() const;
+
   private:
     Types::Score score;
     Types::Bitset parents;
