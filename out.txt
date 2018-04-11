@@ -1,12 +1,10 @@
-data/bic/sachs_1000_6.BIC
-data/bic/sachs_1000_6.BIC
-data/constraints/sachs/sachs.6-9
+data/bic/earthquake_1000_6.BIC
+data/bic/earthquake_1000_6.BIC
+data/constraints/earthquake/earthquake.8-17
 50
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-32	7657366515
-10 8 7 4 3 1 6 9 2 0 5 
-40	7657366089
-3 10 7 1 8 4 0 2 6 9 5 
+0	486785849
+1 0 2 4 3 
