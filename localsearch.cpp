@@ -395,7 +395,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         }
       }
     }
-
     if (!foundImproving) {
       // Take a random walk.
       if ((double)rand() / RAND_MAX < walkProb) {
@@ -424,7 +423,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
           const Variable &var = instance.getVar(cur);
           const ParentSet &p = var.getParent(par);
 
-          if (par != bestGraph[cur] && p.subsetOf(pred[cur])) {
+          if (p.subsetOf(pred[cur])) {
             lastRandomWalk[cur] = iters;
             bestGraph[cur] = par;
             curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
@@ -513,7 +512,6 @@ void LocalSearch::bestSwapForward(
   for (int i = 0; i < pivot; i++) {
     pred[o.get(i)] = 1;
   }
-
   for (int j = pivot; j < n-1; j++) {
     // First check that the swap results in a valid ordering.
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
@@ -646,7 +644,6 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
       std::vector<int> bestDAG(n);
       Ordering bestOrdering;
       Types::Score bestSc = INF;
-
       bestSwapForward(pivot, cur, initialDAG, bestOrdering, bestDAG, bestSc);
       bestSwapBackward(pivot, cur, initialDAG, bestOrdering, bestDAG, bestSc);
 
@@ -675,7 +672,6 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
-
     o = hillClimb(Ordering::randomOrdering(instance));
 /*
     do {
@@ -882,8 +878,16 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   } else if (instance.getFileName().find("barley") != std::string::npos) {
     file = std::ifstream("data/mappings/barley.mapping");
     outF.open(instanceName + "_results", std::ios_base::app);
+  } else if (instance.getFileName().find("cancer") != std::string::npos) {
+    file = std::ifstream("data/mappings/cancer.mapping");
+    outF.open(instanceName + "_results", std::ios_base::app);
+  } else if (instance.getFileName().find("earthquake") != std::string::npos) {
+    file = std::ifstream("data/mappings/earthquake.mapping");
+    outF.open(instanceName + "_results", std::ios_base::app);
+  } else if (instance.getFileName().find("survey") != std::string::npos) {
+    file = std::ifstream("data/mappings/survey.mapping");
+    outF.open(instanceName + "_results", std::ios_base::app);
   }
-
   else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);

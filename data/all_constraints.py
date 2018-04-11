@@ -1,21 +1,21 @@
 from random import *
 from math import *
 
-n = 48
+n = 6
 p = 1
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
 
 
-file = open("barley.net", "r")
+file = open("survey.net", "r")
 
 for i in range(n): 
 	s = file.readline()
 	s = s[5:]
 	s = s.strip()
 
-	print("Mapping %s to %d" %(s, i))
+	#print("Mapping %s to %d" %(s, i))
 	mapping[s] = i;
 	rmapping[i] = s;
 
@@ -46,7 +46,7 @@ for i in range(n):
 	file.readline()
 
 
-print(graph)
+#print(graph)
 
 allConstraints = set()
 visited = set()
@@ -58,7 +58,7 @@ def ancestors(x, start):
 
 	if (start != x):
 		allConstraints.add((x, start))
-		print("Constraint: %s ---> %s" %(rmapping[x], rmapping[start]))
+		#print("Constraint: %s ---> %s" %(rmapping[x], rmapping[start]))
 
 	for parent in graph[x]:
 		ancestors(parent, start)
@@ -69,7 +69,7 @@ for i in range(n):
 	ancestors(i, i)
 
 
-print("Total number of positive constraints: " + str(len(allConstraints)))
+#print("Total number of positive constraints: " + str(len(allConstraints)))
 
 constraints = []
 
