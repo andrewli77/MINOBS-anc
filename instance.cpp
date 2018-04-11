@@ -74,7 +74,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
     // Read ordering constraints:
 
     constraintsFile >> m_ord;
-    for (int i = 0; i < m_aa; i++) {
+    for (int i = 0; i < m_ord; i++) {
       int a, b;
       constraintsFile >> a >> b;
       orderConstraints[a][b] = true;
