@@ -1,6 +1,6 @@
-n = 37
-instance = "alarm"
-dataSize = "4000"
+n = 20
+instance = "child"
+dataSize = "2000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
