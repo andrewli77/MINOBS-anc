@@ -1,14 +1,14 @@
 from random import *
 from math import *
 
-n = 6
+n = 35
 p = 1
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
 
 
-file = open("survey.net", "r")
+file = open("mildew.net", "r")
 
 for i in range(n): 
 	s = file.readline()

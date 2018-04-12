@@ -887,7 +887,10 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   } else if (instance.getFileName().find("survey") != std::string::npos) {
     file = std::ifstream("data/mappings/survey.mapping");
     outF.open(instanceName + "_results", std::ios_base::app);
-  }
+  } else if (instance.getFileName().find("mildew") != std::string::npos) {
+    file = std::ifstream("data/mappings/mildew.mapping");
+    outF.open(instanceName + "_results", std::ios_base::app);
+  } 
   else {
     std::cout << "No suitable mapping found!" << std::endl;
     exit(0);
