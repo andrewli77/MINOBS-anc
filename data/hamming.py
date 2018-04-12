@@ -1,6 +1,6 @@
-n = 5
-instance = "earthquake"
-dataSize = "1000"
+n = 37
+instance = "alarm"
+dataSize = "4000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
