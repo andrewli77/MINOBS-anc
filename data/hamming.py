@@ -1,5 +1,5 @@
-n = 20
-instance = "child"
+n = 27
+instance = "insurance"
 dataSize = "2000"
 
 mapFile = open("mappings/" + instance + ".mapping")
