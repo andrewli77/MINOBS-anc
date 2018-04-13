@@ -72,6 +72,11 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
   Types::Score score = 0;
   for (int i = 0; i < n; i++) {
     const ParentSet &p = bestParent(ordering, pred, i);
+
+    if (noValidParentFoundFlag) {
+      noValidParentFoundFlag = false;
+      return INF;
+    }
     parents[ordering.get(i)] = p.getId();
     scores[ordering.get(i)] = p.getScore();
     score += p.getScore();
@@ -80,12 +85,6 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 
 
   if (m_anc == 0) {
-/*
-    if (((double) (score - 410805797111)) / 410805797111 < 0.0005) {
-      std::cout << "Printed" << std::endl;
-      printModelString(parents, true, score);
-    }
-*/
 
     if (score < optimalScore) {
       optimalScore = score;
@@ -625,11 +624,11 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   initialDAG = parents;
 
-/*
-  if (curScore >= PENALTY) {
+
+  if (curScore == INF) {
     return SearchResult(curScore, cur);
   }
-*/
+
 
 
   std::iota(positions.begin(), positions.end(), 0);
@@ -673,11 +672,17 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
     o = hillClimb(Ordering::randomOrdering(instance));
-/*
+
+    int triesLeft = 10000;
     do {
       o = hillClimb(Ordering::randomOrdering(instance));
-    } while (o.getScore() >= PENALTY);
-*/
+      triesLeft--;
+
+      if (triesLeft == 0) {
+        exit(1);
+      }
+    } while (o.getScore() == INF);
+
 
     std::cout << "Time: " << rr.check() <<  " i = " << i << " The score is: " << o.getScore() << std::endl;
     std::vector<int> parents(n);
