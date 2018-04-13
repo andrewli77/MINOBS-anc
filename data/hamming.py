@@ -1,6 +1,6 @@
-n = 27
-instance = "insurance"
-dataSize = "2000"
+n = 35
+instance = "mildew"
+dataSize = "4000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
