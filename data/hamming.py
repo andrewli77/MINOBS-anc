@@ -1,6 +1,6 @@
-n = 8
-instance = "asia"
-dataSize = "1000"
+n = 48
+instance = "barley"
+dataSize = "8000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -15,6 +15,10 @@ modelStringCache["sachs"] = "[PKC][Plcg][PIP3|Plcg][PKA|PKC][Jnk|PKA:PKC][P38|PK
 modelStringCache["insurance"] = "[Age][Mileage][SocioEcon|Age][GoodStudent|SocioEcon:Age][RiskAversion|Age:SocioEcon][OtherCar|SocioEcon][VehicleYear|SocioEcon:RiskAversion][MakeModel|SocioEcon:RiskAversion][SeniorTrain|Age:RiskAversion][HomeBase|RiskAversion:SocioEcon][AntiTheft|RiskAversion:SocioEcon][RuggedAuto|MakeModel:VehicleYear][Antilock|MakeModel:VehicleYear][DrivingSkill|Age:SeniorTrain][CarValue|MakeModel:VehicleYear:Mileage][Airbag|MakeModel:VehicleYear][DrivQuality|DrivingSkill:RiskAversion][Theft|AntiTheft:HomeBase:CarValue][Cushioning|RuggedAuto:Airbag][DrivHist|DrivingSkill:RiskAversion][Accident|Antilock:Mileage:DrivQuality][ThisCarDam|Accident:RuggedAuto][OtherCarCost|Accident:RuggedAuto][MedCost|Accident:Age:Cushioning][ILiCost|Accident][ThisCarCost|ThisCarDam:CarValue:Theft][PropCost|OtherCarCost:ThisCarCost]"
 modelStringCache["water"] = "[C_NI_12_00][CKNI_12_00][CBODD_12_00][CKND_12_00][CNOD_12_00][CBODN_12_00][CKNN_12_00][CNON_12_00][C_NI_12_15|C_NI_12_00][CKNI_12_15|CKNI_12_00][CBODD_12_15|C_NI_12_00:CKNI_12_00:CBODD_12_00:CNOD_12_00:CBODN_12_00][CKND_12_15|CKNI_12_00:CKND_12_00:CKNN_12_00][CNOD_12_15|CBODD_12_00:CNOD_12_00:CNON_12_00][CBODN_12_15|CBODD_12_00:CBODN_12_00:CNON_12_00][CKNN_12_15|CKND_12_00:CKNN_12_00][CNON_12_15|CNOD_12_00:CBODN_12_00:CKNN_12_00:CNON_12_00][C_NI_12_30|C_NI_12_15][CKNI_12_30|CKNI_12_15][CBODD_12_30|C_NI_12_15:CKNI_12_15:CBODD_12_15:CNOD_12_15:CBODN_12_15][CKND_12_30|CKNI_12_15:CKND_12_15:CKNN_12_15][CNOD_12_30|CBODD_12_15:CNOD_12_15:CNON_12_15][CBODN_12_30|CBODD_12_15:CBODN_12_15:CNON_12_15][CKNN_12_30|CKND_12_15:CKNN_12_15][CNON_12_30|CNOD_12_15:CBODN_12_15:CKNN_12_15:CNON_12_15][C_NI_12_45|C_NI_12_30][CKNI_12_45|CKNI_12_30][CBODD_12_45|C_NI_12_30:CKNI_12_30:CBODD_12_30:CNOD_12_30:CBODN_12_30][CKND_12_45|CKNI_12_30:CKND_12_30:CKNN_12_30][CNOD_12_45|CBODD_12_30:CNOD_12_30:CNON_12_30][CBODN_12_45|CBODD_12_30:CBODN_12_30:CNON_12_30][CKNN_12_45|CKND_12_30:CKNN_12_30][CNON_12_45|CNOD_12_30:CBODN_12_30:CKNN_12_30:CNON_12_30]"
 modelStringCache["barley"] = "[jordtype][komm][forfrugt][pesticid][saatid][sort][nplac][saamng][tkvs][partigerm][nedbarea|komm][aar_mod|komm:jordtype][potnmin|jordtype:forfrugt][exptgens|jordtype:forfrugt:pesticid][rokap|jordtype][srtprot|sort][dg25|saatid][saakern|saamng:tkvs][frspdag|saatid][sorttkv|sort][srtsize|sort][nmin|jordtype:nedbarea][nopt|exptgens:pesticid][dgv1059|saatid:rokap][jordinf|frspdag][dgv5980|rokap][jordn|nmin:aar_mod:potnmin][mod_nmin|nmin:aar_mod][markgrm|partigerm:jordinf][bgbyg|dgv1059:dgv5980][ngodnt|forfrugt:exptgens:mod_nmin][ngodnn|nopt:jordn][antplnt|saakern:markgrm][ngodn|ngodnt:ngodnn][nprot|jordn:ngodn][ngtilg|ngodn:nplac:dg25][ntilg|ngtilg:jordn][aks_m2|antplnt:ntilg:dgv1059:sorttkv][keraks|ntilg:dgv1059:aks_m2][aks_vgt|ntilg:dgv5980:aks_m2][ksort|keraks:aks_vgt:srtsize][udb|aks_m2:aks_vgt][tkv|aks_m2:keraks:ntilg:sorttkv][slt22|keraks:aks_vgt:srtsize][s2225|keraks:aks_vgt:srtsize][s2528|keraks:aks_vgt:srtsize][protein|nprot:dgv1059:srtprot:ksort][spndx|ntilg:dgv5980:ksort]"
+modelStringCache["cancer"] = "[Pollution][Smoker][Cancer|Pollution:Smoker][Xray|Cancer][Dyspnoea|Cancer]"
+modelStringCache["earthquake"] = "[Burglary][Earthquake][Alarm|Burglary:Earthquake][JohnCalls|Alarm][MaryCalls|Alarm]"
+modelStringCache["survey"] = "[A][S][E|A:S][O|E][R|E][T|O:R]"
+modelStringCache["mildew"] = "[straaling_1][temp_1][meldug_1][lai_0][straaling_2][temp_2][straaling_3][temp_3][straaling_4][temp_4][middel_1][middel_2][middel_3][nedboer_1][nedboer_2][nedboer_3][lai_1|lai_0:meldug_1][foto_1|lai_1:temp_1:straaling_1][mikro_1|lai_1:temp_1:nedboer_1][dm_1|foto_1][meldug_2|middel_1:mikro_1:meldug_1][lai_2|lai_1:meldug_2][foto_2|lai_2:temp_2:straaling_2][mikro_2|lai_2:temp_2:nedboer_2][dm_2|foto_2:dm_1][meldug_3|middel_2:mikro_2:meldug_2][lai_3|lai_2:meldug_3][foto_3|lai_3:temp_3:straaling_3][mikro_3|lai_3:temp_3:nedboer_3][dm_3|foto_3:dm_2][meldug_4|middel_3:mikro_3:meldug_3][lai_4|lai_3:meldug_4][foto_4|lai_4:temp_4:straaling_4][dm_4|foto_4:dm_3][udbytte|dm_4]"
 
 
 for i in range(n):
@@ -78,7 +82,7 @@ def hammingDAG(trueBN, learnedBN):
 trueBN = model2network(modelStringCache[instance])
 
 
-modelFile = open(instance + "_" + dataSize +"_results")
+modelFile = open("bic/"+instance + "_" + dataSize +"_results")
 
 scoreTotals = [0 for i in range(600)]
 shdTotals = [0 for i in range(600)]

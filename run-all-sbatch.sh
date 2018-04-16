@@ -6,6 +6,6 @@ outFile=$3
 gens=$4
 
 for file in $dir/*; do
-	cmd="sbatch --time=12:00:00 --mem-per-cpu=2048 ./run-one-case.sh $scores $file $outFile $gens"
+	cmd="sbatch --time=16:00:00 --mem-per-cpu=4096 ./run-one-case.sh $scores $file $outFile $gens"
 	eval "$cmd"
 done
