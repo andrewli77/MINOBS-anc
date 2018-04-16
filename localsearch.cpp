@@ -85,7 +85,6 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 
 
   if (m_anc == 0) {
-
     if (score < optimalScore) {
       optimalScore = score;
       optimalOrdering = ordering;

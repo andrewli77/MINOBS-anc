@@ -32,11 +32,13 @@ class Instance {
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
 
   private:
-    int n, dataSize, m_anc;
+    int n, dataSize, m_anc, m_dae, m_uae, m_aa, m_ord;
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
     std::vector<std::vector<bool>> orderConstraints;
+    std::vector< std::pair<int, int> > undirectedArcExistence;
+    std::vector< std::vector<int> > mustHaveParent, mustNotHaveParent;
     std::string fileName;
 };
 

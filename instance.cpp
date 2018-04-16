@@ -42,7 +42,45 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       }
     }
 
-    // Read ancestral constraints.
+    // Read directed arc existence constraints:
+    constraintsFile >> m_dae;
+    directedArcExistence.resize(m_dae);
+    for (int i = 0; i < m_dae; i++) {
+      int a, b;
+      constraintsFile >> a >> b;
+      mustHaveParent[b].push_back(a);
+      orderConstraints[a][b] = true;
+    }
+
+
+    // Read undirected arc existence constraints:
+    constraintsFile >> m_uae;
+    undirectedArcExistence.resize(m_uae);
+    for (int i = 0; i < uae; i++) {
+      int a, b;
+      constraintsFile >> a >> b;
+      undirectedArcExistence[i] = std::make_pair(a, b);
+    }
+
+    // Read arc absence constraints:
+    constraintsFile >> m_aa;
+    arcAbsence.resize(m_aa);
+    for (int i = 0; i < m_aa; i++) {
+      int a, b;
+      constraintsFile >> a >> b;
+      mustNotHaveParent[b].push_back(a);
+    }
+
+    // Read ordering constraints:
+
+    constraintsFile >> m_ord;
+    for (int i = 0; i < m_ord; i++) {
+      int a, b;
+      constraintsFile >> a >> b;
+      orderConstraints[a][b] = true;
+    }
+
+    // Read ancestral constraints:
     constraintsFile >> m_anc;
     ancestralConstraints.resize(m_anc);
     for (int i=0; i < m_anc; i++) {
@@ -54,7 +92,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
 
 
-    // Bellman-Ford-esque algorithm to generate all possible inferred constraints.
+    // Bellman-Ford-esque algorithm to generate all possible inferred ordering constraints.
     for (int iters = 0; iters < n; iters++) {
       bool improvement = false;
 
@@ -171,9 +209,10 @@ int Instance::pruneParentSetsLossless() {
 
 bool Instance::canPruneParentLossless(int node, int j) {
   // Pruning rules-------------
-  // 1) If X--->Y, P is a parent set of X containing Y, P can be eliminated.
+  // 1) If X < Y, P is a parent set of X containing Y, P can be eliminated.
   // 2) If X--->Y, P is a parent set of Y and each W in P precedes X in every ordering, P can be eliminated.
-  // 3) If P \subset P' are parent sets for Y and 2*sc(P) < sc(P'), prune P'. This is a heuristic.
+  // 3) If X -> Y, P is a parent set of Y not containing X, P can be eliminated.
+  // 4) If X -/> Y, P is a parent set of Y containing X, P can be eliminated.
 
   const Variable &var = getVar(node);
   const ParentSet &ps = var.getParent(j);
@@ -202,6 +241,22 @@ bool Instance::canPruneParentLossless(int node, int j) {
       if (allPrecedes) {
         return true;
       }
+    }
+  }
+
+  // Rule 3
+
+  for (int i = 0; i < mustHaveParent[node].size(); i++) {
+    if (!ps.hasElement(mustHaveParent[node][i])) {
+      return true;
+    }
+  }
+
+  // Rule 4
+
+  for (int i = 0; i < mustNotHaveParent[node].size(); i++) {
+    if (ps.hasElement(mustNotHaveParent[node][i])) {
+      return true;
     }
   }
 
@@ -240,10 +295,10 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::pruneFactor() const {
-  double omegaFactor = (double) 100 * n / dataSize;
+  double omegaFactor = (double) 1.5 * n*n / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
 
-  return 1 + omegaFactor * (1 - (1-constraintDensity)*(1-constraintDensity));
+  return 1 + omegaFactor * constraintDensity;
 }
 
 bool Instance::canPruneParentHeuristic(int node, int j) {
