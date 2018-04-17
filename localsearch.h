@@ -40,8 +40,10 @@ class LocalSearch {
   public:
     LocalSearch(Instance &instance, ResultRegister &rr);
     ~LocalSearch();
-    const ParentSet &bestParent(const Ordering &ordering, const Types::Bitset &pred, int idx);
-    const ParentSet &bestParentVar(const Types::Bitset &pred, const Variable &v);
+    const ParentSet &bestParent(const Ordering &ordering, const std::vector<int> & positions, const Types::Bitset &pred, int idx);
+    const ParentSet &bestParentVar(const Types::Bitset &pred, const Variable &v, const std::vector<int> & positions);
+    bool consistentWithUndirected(const ParentSet &p, const std::vector<int> &positions);
+
     Types::Score getBestScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
 
     int numConstraintsSatisfied(const std::vector<int> &parents);
@@ -56,7 +58,6 @@ class LocalSearch {
 
     Types::Score modifiedDAGScoreWithParents(const Ordering &ordering, std::vector<int> &parents, std::vector<Types::Score> &scores);
 
-    int bestConstrainedParent(std::vector<int> &parents, int node, const Types::Bitset &pred, const std::vector<int> &positions);
     void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);
@@ -65,7 +66,6 @@ class LocalSearch {
     bool consistentWithAncestral(const Ordering &ordering);
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
-    Types::Score getBestScore(const Ordering &ordering);
     void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
     
   private:

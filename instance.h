@@ -28,6 +28,9 @@ class Instance {
     Variable &getVar(int i);
     const Ancestral &getAncestral(int i) const;
 
+    const std::vector<int> &getUndirectedExistence(int i) const;
+    bool hasUndirectedForNode(int i) const;
+    bool hasUndirectedExistence() const;
 
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
 
@@ -37,7 +40,7 @@ class Instance {
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
     std::vector<std::vector<bool>> orderConstraints;
-    std::vector< std::pair<int, int> > undirectedArcExistence;
+    std::vector<std::vector<int>> undirectedArcExistence;
     std::vector< std::vector<int> > mustHaveParent, mustNotHaveParent;
     std::string fileName;
 };

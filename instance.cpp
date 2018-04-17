@@ -43,8 +43,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
     }
 
     // Read directed arc existence constraints:
+    mustHaveParent.resize(n);
     constraintsFile >> m_dae;
-    directedArcExistence.resize(m_dae);
     for (int i = 0; i < m_dae; i++) {
       int a, b;
       constraintsFile >> a >> b;
@@ -55,16 +55,18 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
 
     // Read undirected arc existence constraints:
     constraintsFile >> m_uae;
-    undirectedArcExistence.resize(m_uae);
-    for (int i = 0; i < uae; i++) {
+    undirectedArcExistence = std::vector<std::vector<int>>(n);
+
+    for (int i = 0; i < m_uae; i++) {
       int a, b;
       constraintsFile >> a >> b;
-      undirectedArcExistence[i] = std::make_pair(a, b);
+      undirectedArcExistence[a].push_back(b);
+      undirectedArcExistence[b].push_back(a);
     }
 
     // Read arc absence constraints:
     constraintsFile >> m_aa;
-    arcAbsence.resize(m_aa);
+    mustNotHaveParent.resize(n);
     for (int i = 0; i < m_aa; i++) {
       int a, b;
       constraintsFile >> a >> b;
@@ -364,6 +366,18 @@ Variable &Instance::getVar(int i) {
 
 const Ancestral &Instance::getAncestral(int i) const {
   return ancestralConstraints[i];
+}
+
+const std::vector<int> &Instance::getUndirectedExistence(int i) const {
+  return undirectedArcExistence[i];
+}
+
+bool Instance::hasUndirectedForNode(int i) const {
+  return (undirectedArcExistence[i].size() > 0);
+}
+
+bool Instance::hasUndirectedExistence() const {
+  return (m_uae > 0);
 }
 
 std::ostream& operator<<(std::ostream &os, const Instance& I) {

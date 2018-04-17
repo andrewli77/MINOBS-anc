@@ -16,6 +16,13 @@ def parseConstraints():
 		m = int(line)
 
 		outF = open("constraints/" + base + "/" + base + "." + str(m) + "-" + str(count), "w")
+
+
+		outF.write("0\n")
+		outF.write("0\n")
+		outF.write("0\n")
+		outF.write("0\n")
+
 		outF.write(str(m) + "\n")
 
 		for j in range(m):
@@ -58,8 +65,8 @@ def parseConstraintsCaMML():
 		outF.write("}\n")
 
 
-base = "mildew"
+base = "water"
 
 inF = open("constraints/" + base + ".txt")
 
-parseConstraintsCaMML()
+parseConstraints()

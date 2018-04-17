@@ -24,23 +24,40 @@ LocalSearch::~LocalSearch() {
 
 int LocalSearch::climbs = 0;
 
-const ParentSet &LocalSearch::bestParent(const Ordering &ordering, const Types::Bitset &pred, int idx) {
+const ParentSet &LocalSearch::bestParent(const Ordering &ordering, const std::vector<int> & positions, const Types::Bitset &pred, int idx) {
   int current = ordering.get(idx);
   const Variable &v = instance.getVar(current);
-  return bestParentVar(pred, v);
+  return bestParentVar(pred, v, positions);
 }
 
-const ParentSet &LocalSearch::bestParentVar(const Types::Bitset &pred, const Variable &v) {
+const ParentSet &LocalSearch::bestParentVar(const Types::Bitset &pred, const Variable &v, const std::vector<int> & positions) {
   int numParents = v.numParents();
   for (int i = 0; i < numParents; i++) {
     const ParentSet &p = v.getParent(i);
-    if (p.subsetOf(pred)) {
+    if (p.subsetOf(pred) && (consistentWithUndirected(p, positions))) {
       return p;
     }
   }
 
   noValidParentFoundFlag = true;
   return v.getParent(0); //Should never happen in THeory
+}
+
+bool LocalSearch::consistentWithUndirected(const ParentSet &p, const std::vector<int> &positions) {
+  if (!instance.hasUndirectedForNode(p.getVar())) {
+    return true;
+  }
+
+  const std::vector<int> &undirectedConstraints = instance.getUndirectedExistence(p.getVar());
+  for (int i = 0; i < undirectedConstraints.size(); i++) {
+    if (positions[undirectedConstraints[i]] < positions[p.getVar()]) {
+      if (!p.hasElement(undirectedConstraints[i])) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 bool LocalSearch::consistentWithAncestral(const Ordering &ordering) {
@@ -70,8 +87,18 @@ Types::Score LocalSearch::getBestScoreWithParents(const Ordering &ordering, std:
 
   Types::Bitset pred(n, 0);
   Types::Score score = 0;
+
+  std::vector<int> positions;
+
+  if (instance.hasUndirectedExistence()) {
+    positions = std::vector<int>(n);
+    for (int i = 0; i < n; i++) {
+      positions[ordering.get(i)] = i;
+    }
+  }
+
   for (int i = 0; i < n; i++) {
-    const ParentSet &p = bestParent(ordering, pred, i);
+    const ParentSet &p = bestParent(ordering, positions, pred, i);
 
     if (noValidParentFoundFlag) {
       noValidParentFoundFlag = false;
@@ -378,7 +405,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         continue;
       }
 
-      if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur])) {
+      if (par != bestGraph[cur] && (iters - lastRandomWalk[cur] > tabuTenure) && p.subsetOf(pred[cur]) && consistentWithUndirected(p, positions)) {
         bestGraph[cur] = par;
         int numSat;
         bool improv = improving(bestGraph, ancestor, descendant, satisfied, cur, positions, curNumSat, oldPar, numSat);
@@ -421,7 +448,7 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
           const Variable &var = instance.getVar(cur);
           const ParentSet &p = var.getParent(par);
 
-          if (p.subsetOf(pred[cur])) {
+          if (p.subsetOf(pred[cur]) && consistentWithUndirected(p, positions)) {
             lastRandomWalk[cur] = iters;
             bestGraph[cur] = par;
             curNumSat = numConstraintsSatisfied(bestGraph, ancestor, descendant, satisfied, cur, positions);
@@ -461,39 +488,6 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
   return finalSc;
 }
 
-
-// Return the parent of node that satisfies the most ancestral constraints.
-// Score is used to tiebreak.
-int LocalSearch::bestConstrainedParent(std::vector<int> &parents, int node, const Types::Bitset &pred, const std::vector<int> &positions) {
-  int n = instance.getN();
-  int bestNumSat = -1, bestSize, bestParent;
-  Types::Score bestSc;
-
-  const Variable &var = instance.getVar(node);
-
-  for (int i = 0; i < var.numParents(); i++) {
-    const ParentSet &ps = var.getParent(i);
-
-    if (ps.subsetOf(pred)) {
-      int oldPar = parents[node];
-      parents[node] = i;
-      int numSat = numConstraintsSatisfied(parents, positions);
-      parents[node] = oldPar;
-
-      if (numSat > bestNumSat ||
-         (numSat == bestNumSat && ps.getScore() < bestSc) || 
-         (numSat == bestNumSat && ps.getScore() == bestSc && ps.size() < bestSize)) {
-        bestNumSat = numSat;
-        bestSc = ps.getScore();
-        bestSize = ps.size();
-        bestParent = i;
-      }
-    }
-  }
-
-  return bestParent;
-}
-
 void LocalSearch::bestSwapForward(
   int pivot,
   Ordering o,
@@ -510,6 +504,16 @@ void LocalSearch::bestSwapForward(
   for (int i = 0; i < pivot; i++) {
     pred[o.get(i)] = 1;
   }
+
+  std::vector<int> positions;
+
+  if (instance.hasUndirectedExistence()) {
+    positions = std::vector<int>(n);
+    for (int i = 0; i < n; i++) {
+      positions[o.get(i)] = i;
+    }
+  }
+
   for (int j = pivot; j < n-1; j++) {
     // First check that the swap results in a valid ordering.
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
@@ -529,12 +533,12 @@ void LocalSearch::bestSwapForward(
     if (ps.hasElement(o.get(j))) {
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
-      int pid = bestParentVar(pred, v).getId();
+      int pid = bestParentVar(pred, v, positions).getId();
       if (noValidParentFoundFlag) {
         noValidParentFoundFlag = false;
         break;
       }
-      tmpParents[o.get(j+1)] = pid; //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
+      tmpParents[o.get(j+1)] = pid;
     }
 
     o.swap(j, j+1);
@@ -567,6 +571,15 @@ void LocalSearch::bestSwapBackward(
     pred[o.get(i)] = 1;
   }
 
+  std::vector<int> positions;
+
+  if (instance.hasUndirectedExistence()) {
+    positions = std::vector<int>(n);
+    for (int i = 0; i < n; i++) {
+      positions[o.get(i)] = i;
+    }
+  }
+
   for (int j = pivot-1; j >= 0; j--) {
     // First check that the swap results in a valid ordering.
     // It is valid iff O[j] -> O[j+1] is NOT an ancestral constraint.
@@ -588,12 +601,12 @@ void LocalSearch::bestSwapBackward(
       // Replace the current parent set of O_{j+1} with some valid replacement.
       // Note that here pred[o.get(j)] = 0.
 
-      int pid = bestParentVar(pred, v).getId();
+      int pid = bestParentVar(pred, v, positions).getId();
       if (noValidParentFoundFlag) {
         noValidParentFoundFlag = false;
         break;
       }
-      tmpParents[o.get(j+1)] = pid; //bestConstrainedParent(tmpParents, o.get(j+1), pred, positions);
+      tmpParents[o.get(j+1)] = pid;
 
     }
 
@@ -821,24 +834,6 @@ bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<in
   }
 
   return true;
-}
-
-Types::Score LocalSearch::getBestScore(const Ordering &ordering) {
-  int n = instance.getN(), m_anc = instance.getM_anc();
-
-  if (!consistentWithAncestral(ordering)) {
-    return INF;
-  }
-
-  Types::Bitset pred(n, 0);
-  Types::Score score = 0;
-  for (int i = 0; i < n; i++) {
-    const ParentSet &p = bestParent(ordering, pred, i);
-    score += p.getScore();
-    pred[ordering.get(i)] = 1;
-  }
-
-  return score;
 }
 
 void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, Types::Score score) {
