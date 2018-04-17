@@ -764,6 +764,82 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
   return best;
 }
 
+
+bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const Ordering &o) {
+  int n = instance.getN();
+  if (numConstraintsSatisfied(parents) != instance.getM_anc()) {
+    return false;
+  }
+
+  std::vector< std::vector<int> > adj(n);
+
+  for (int i = 0; i < n; i++) {
+    adj[i] = std::vector<int> (n);
+    for (int j = 0; j < n; j++) {
+      adj[i][j] = 0;
+    }
+  }
+
+  for (int i = 0; i < n; i++) {
+    const Variable &var = instance.getVar(i);
+    const ParentSet &ps = var.getParent(parents[i]);
+    const std::vector<int> &parentsVec = ps.getParentsVec();
+
+    for (int j = 0; j < parentsVec.size(); j++) {
+      adj[parentsVec[j]][i] = 1;
+    }
+  }
+
+
+
+  // Check all directed arc existence
+
+  for (int i = 0; i < instance.getM_dae(); i++) {
+    std::pair<int, int> cons = instance.deConstraints[i];
+    if (!adj[cons.first][cons.second]) {
+      return false;
+    }
+  }
+
+  //Check undirected existence
+  for (int i = 0; i < instance.getM_uae(); i++) {
+    std::pair<int, int> cons = instance.ueConstraints[i];
+    if (!adj[cons.first][cons.second] && !adj[cons.second][cons.first]) {
+      return false;
+    }
+  }
+
+  //Check arc absence
+
+  for (int i = 0; i < instance.getM_aa(); i++) {
+    std::pair<int, int> cons = instance.absConstraints[i];
+    if (adj[cons.first][cons.second]) {
+      return false;
+    }
+  }
+
+
+  // Check ordering
+  std::vector< int > positions(n);
+
+  for (int i = 0; i < n; i++) {
+    positions[o.get(i)] = i;
+  }
+
+  for (int i = 0; i < instance.getM_ord(); i++) {
+    std::pair<int, int> cons = instance.ordConstraints[i];
+    if (positions[cons.first] >= positions[cons.second]) {
+      return false;
+    }
+  }
+
+  if (numConstraintsSatisfied(parents) != instance.getM_anc()) {
+    return false;
+  }
+
+  return true;
+}
+
 void LocalSearch::checkSolution() {
   int n = instance.getN(), m_anc = instance.getM_anc();
 
@@ -802,19 +878,16 @@ void LocalSearch::checkSolution() {
   std::string validStr = valid ? "Good" : "Bad";
   std::cout << "Validity Check: " << validStr << std::endl;
 
-  bool ancestralValid = (numConstraintsSatisfied(parents) == m_anc);
-  if (ancestralValid) {
-    std::cout << "Ancestral constraints check: Good" << std::endl;
+  bool constraintsSatisfied = allConstraintsSatisfied(parents, o);
+
+  if (constraintsSatisfied) {
+    std::cout << "Constraints check: Good" << std::endl;
   } else {
-    std::cout << "Ancestral constraints check: Bad" << std::endl;
+    std::cout << "Constraints check: Bad" << std::endl;
   }
 
-  std::cout << "Num constraints satisfied: " << numConstraintsSatisfied(parents) << std::endl;
 
-  std::cout << "Climbs: " << climbs << std::endl;
-
-
-  printModelString(parents, (ancestralValid && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
+  printModelString(parents, (constraintsSatisfied && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
 }
 
 bool LocalSearch::consistentWithOrdering(const Ordering &o, const std::vector<int> &parents) {

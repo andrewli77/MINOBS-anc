@@ -49,6 +49,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int a, b;
       constraintsFile >> a >> b;
       mustHaveParent[b].push_back(a);
+      deConstraints.push_back(std::make_pair(a,b));
       orderConstraints[a][b] = true;
     }
 
@@ -62,6 +63,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       constraintsFile >> a >> b;
       undirectedArcExistence[a].push_back(b);
       undirectedArcExistence[b].push_back(a);
+      ueConstraints.push_back(std::make_pair(a,b));
     }
 
     // Read arc absence constraints:
@@ -71,6 +73,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int a, b;
       constraintsFile >> a >> b;
       mustNotHaveParent[b].push_back(a);
+      absConstraints.push_back(std::make_pair(a,b));
     }
 
     // Read ordering constraints:
@@ -80,6 +83,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int a, b;
       constraintsFile >> a >> b;
       orderConstraints[a][b] = true;
+      ordConstraints.push_back(std::make_pair(a,b));
     }
 
     // Read ancestral constraints:
@@ -350,6 +354,22 @@ int Instance::getN() const {
 
 int Instance::getM_anc() const {
   return m_anc;
+}
+
+int Instance::getM_dae() const {
+  return m_dae;
+}
+
+int Instance::getM_uae() const {
+  return m_uae;
+}
+
+int Instance::getM_aa() const {
+  return m_aa;
+}
+
+int Instance::getM_ord() const {
+  return m_ord;
 }
 
 std::string Instance::getFileName() const {

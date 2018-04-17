@@ -13,6 +13,10 @@ class Instance {
     Instance(std::string fileName, std::string constraintsFileName);
     int getN() const;
     int getM_anc() const;
+    int getM_dae() const;
+    int getM_uae() const;
+    int getM_aa() const;
+    int getM_ord() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
     bool canPruneParentLossless(int node, int j);
@@ -34,12 +38,15 @@ class Instance {
 
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
 
+    std::vector< std::pair<int,int> > deConstraints, ueConstraints, absConstraints, ordConstraints;
   private:
     int n, dataSize, m_anc, m_dae, m_uae, m_aa, m_ord;
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
+
     std::vector<std::vector<bool>> orderConstraints;
+
     std::vector<std::vector<int>> undirectedArcExistence;
     std::vector< std::vector<int> > mustHaveParent, mustNotHaveParent;
     std::string fileName;

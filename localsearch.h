@@ -66,6 +66,7 @@ class LocalSearch {
     bool consistentWithAncestral(const Ordering &ordering);
     std::pair<int, int> constraintRange(const Ordering &ordering);
     bool consistentWithOrdering(const Ordering &o, const std::vector<int> &parents);
+    bool allConstraintsSatisfied(const std::vector<int> &parents, const Ordering &o);
     void printModelString(const std::vector<int> &parents, bool valid, Types::Score score);
     
   private:

@@ -1,14 +1,20 @@
 from random import *
 from math import *
 
-n = 35
-p = 1
+n = 8
+p = 0.1
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
+adj = [ [0]*n for i in range(n) ]
 
 
-file = open("mildew.net", "r")
+ancestralConstraints = []
+absenceConstraints = []
+existConstraints = []
+
+
+file = open("asia.net", "r")
 
 for i in range(n): 
 	s = file.readline()
@@ -37,6 +43,8 @@ for i in range(n):
 
 	for each in words[1:]:
 		graph[node].append(mapping[each])
+		adj[mapping[each]][node] = 1 
+		existConstraints.append( (mapping[each], node) )
 
 	assert(node == i)
 
@@ -46,9 +54,16 @@ for i in range(n):
 	file.readline()
 
 
-#print(graph)
+for i in range(n):
+	for j in range(n):
+		if (i == j):
+			continue
+		if (adj[i][j] == 0):
+			absenceConstraints.append((i, j))
 
-allConstraints = set()
+
+
+
 visited = set()
 
 def ancestors(x, start):
@@ -57,7 +72,7 @@ def ancestors(x, start):
 	visited.add(x)
 
 	if (start != x):
-		allConstraints.add((x, start))
+		ancestralConstraints.append((x, start))
 		#print("Constraint: %s ---> %s" %(rmapping[x], rmapping[start]))
 
 	for parent in graph[x]:
@@ -71,20 +86,57 @@ for i in range(n):
 
 #print("Total number of positive constraints: " + str(len(allConstraints)))
 
-constraints = []
+ancestralConstraints = list(set(ancestralConstraints))
 
-for each in allConstraints:
-	constraints.append(each)
+shuffle(ancestralConstraints)
+shuffle(existConstraints)
+shuffle(absenceConstraints)
 
-shuffle(constraints)
+
+directed = []
+undirected = []
+
+for i in range(int(ceil(len(existConstraints) * p))):
+	if (randint(0,1)==0):
+		directed.append(existConstraints[i])
+	else:
+		undirected.append(existConstraints[i])
 
 
-n0 = int(ceil(len(allConstraints) * p))
+nAbs = int(ceil(len(absenceConstraints) * p))
+nAnc = int(ceil(len(ancestralConstraints) * p))
 
-print(n0)
 
-for i in range(n0):
-	print("%d %d"%(constraints[i][0], constraints[i][1]))
 
-# for each in allConstraints:
-# 	print("%d %d"%(each[0], each[1]))
+
+
+
+
+print(len(directed))
+
+for i in range(len(directed)):
+	print("%d %d"%(directed[i][0], directed[i][1]))
+	#print(rmapping[directed[i][0]], rmapping[directed[i][1]])
+
+print(len(undirected))
+
+for i in range(len(undirected)):
+	if (randint(0,1) == 0):
+		print("%d %d"%(undirected[i][1], undirected[i][0]))
+	else:
+		print("%d %d"%(undirected[i][0], undirected[i][1]))
+	#print(rmapping[undirected[i][0]], rmapping[undirected[i][1]])
+
+print(nAbs)
+
+for i in range(nAbs):
+	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
+	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
+
+print("0")
+
+print(nAnc)
+
+for i in range(nAnc):
+	print("%d %d"%(ancestralConstraints[i][0], ancestralConstraints[i][1]))
+	#print(rmapping[ancestralConstraints[i][0]], rmapping[ancestralConstraints[i][1]])
