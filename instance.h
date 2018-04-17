@@ -49,7 +49,7 @@ class Instance {
 
     std::vector<std::vector<int>> undirectedArcExistence;
     std::vector< std::vector<int> > mustHaveParent, mustNotHaveParent;
-    std::string fileName;
+    std::string fileName, constraintFileName;
 };
 
 #endif /* INSTANCE_H */

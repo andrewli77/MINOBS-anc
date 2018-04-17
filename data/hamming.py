@@ -1,6 +1,6 @@
-n = 48
-instance = "barley"
-dataSize = "8000"
+n = 5
+instance = "cancer"
+dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -82,7 +82,7 @@ def hammingDAG(trueBN, learnedBN):
 trueBN = model2network(modelStringCache[instance])
 
 
-modelFile = open("bic/"+instance + "_" + dataSize +"_results")
+modelFile = open("bic/"+instance + "_" + dataSize +"_all_results")
 
 scoreTotals = [0 for i in range(600)]
 shdTotals = [0 for i in range(600)]

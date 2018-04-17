@@ -3,6 +3,9 @@ from math import *
 
 n = 8
 p = 0.1
+file = open("asia.net", "r")
+
+
 mapping = dict()
 rmapping = dict()
 graph = [ [] for i in range(n) ]
@@ -14,7 +17,7 @@ absenceConstraints = []
 existConstraints = []
 
 
-file = open("asia.net", "r")
+
 
 for i in range(n): 
 	s = file.readline()

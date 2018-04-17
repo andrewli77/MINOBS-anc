@@ -13,6 +13,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   std::ifstream file(fileName);
   std::ifstream constraintsFile(constraintsFileName);
   this->fileName = fileName;
+  this->constraintFileName = constraintsFileName;
 
   // Assume the input file name is of the format {instance}_{dataSize}.BIC
   // Otherwise, hard code the value of dataSize here.
@@ -302,6 +303,20 @@ int Instance::pruneParentSetsHeuristic() {
 
 double Instance::pruneFactor() const {
   double omegaFactor = (double) 1.5 * n*n / dataSize;
+
+  if (m_ord != 0 || m_aa != 0) {
+    if (constraintFileName.find("0.1") != std::string::npos) {
+      omegaFactor *= 10;
+    } else if (constraintFileName.find("0.2") != std::string::npos) {
+      omegaFactor *= 20;
+    } else if (constraintFileName.find("0.3") != std::string::npos) {
+      omegaFactor *= 30;
+    } else if (constraintFileName.find("0.4") != std::string::npos) {
+      omegaFactor *= 40;
+    }
+  }
+
+
   double constraintDensity = (double)m_anc / (n * (n-1));
 
   return 1 + omegaFactor * constraintDensity;

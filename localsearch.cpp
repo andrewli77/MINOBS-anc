@@ -691,6 +691,7 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
       triesLeft--;
 
       if (triesLeft == 0) {
+        std::cout << "Infeasible...try less pruning." << std::endl;
         exit(1);
       }
     } while (o.getScore() == INF);
