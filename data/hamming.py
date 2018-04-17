@@ -1,5 +1,5 @@
-n = 5
-instance = "cancer"
+n = 11
+instance = "sachs"
 dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")

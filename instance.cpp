@@ -306,13 +306,13 @@ double Instance::pruneFactor() const {
 
   if (m_ord != 0 || m_aa != 0) {
     if (constraintFileName.find("0.1") != std::string::npos) {
-      omegaFactor *= 10;
-    } else if (constraintFileName.find("0.2") != std::string::npos) {
       omegaFactor *= 20;
-    } else if (constraintFileName.find("0.3") != std::string::npos) {
-      omegaFactor *= 30;
-    } else if (constraintFileName.find("0.4") != std::string::npos) {
+    } else if (constraintFileName.find("0.2") != std::string::npos) {
       omegaFactor *= 40;
+    } else if (constraintFileName.find("0.3") != std::string::npos) {
+      omegaFactor *= 60;
+    } else if (constraintFileName.find("0.4") != std::string::npos) {
+      omegaFactor *= 80;
     }
   }
 

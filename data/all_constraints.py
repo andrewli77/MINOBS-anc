@@ -1,9 +1,9 @@
 from random import *
 from math import *
 
-n = 8
-p = 0.1
-file = open("asia.net", "r")
+n = 11
+p = 0.4
+file = open("sachs.net", "r")
 
 
 mapping = dict()

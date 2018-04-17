@@ -1,10 +1,12 @@
-data/bic/cancer_1000_6.BIC
-data/bic/cancer_1000_6.BIC
-data/all-constraints/cancer/cancer-0.4-5
+data/bic/sachs_1000_6.BIC
+data/bic/sachs_1000_6.BIC
+data/all-constraints/sachs/sachs-0.4-5
 50
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-1	2103020379
-0 1 2 4 3 
+40	7752678403
+8 7 9 1 10 6 5 0 4 2 3 
+45	7657366819
+8 7 10 9 6 5 3 1 2 0 4 
