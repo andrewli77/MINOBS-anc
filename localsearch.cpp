@@ -678,7 +678,7 @@ void LocalSearch::tunePruningFactor() {
     
     // Success: found a feasible solution.
     if (o.getScore() < PENALTY) {
-      instance.restartWithLessPrune(); // Increase the pruning factor one more time to ensure enough feasible results.
+      instance.restartWithLessPrune(10); // Increase the pruning factor one more time to ensure enough feasible results.
 
       // Reset the search results.
       optimalScore = INF;
@@ -688,7 +688,7 @@ void LocalSearch::tunePruningFactor() {
 
   // If no feasible solutions were found, we must restart with a higher pruning factor and continue tuning.
 
-  instance.restartWithLessPrune();
+  instance.restartWithLessPrune(2);
   tunePruningFactor();
 }
 
@@ -714,8 +714,8 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
       triesLeft--;
 
       if (triesLeft == 0) {
-        std::cout << "Infeasible...reinitializing with less pruning." << std::endl;
-        instance.restartWithLessPrune();
+        std::cout << "Infeasible..." << std::endl;
+        exit(1);
       }
     } while (o.getScore() == INF);
 

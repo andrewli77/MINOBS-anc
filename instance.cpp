@@ -366,11 +366,11 @@ void Instance::sortAllParents() {
 }
 
 
-void Instance::restartWithLessPrune() {
+void Instance::restartWithLessPrune(int multiplier) {
   // Too much pruning was done last time. 
   // Increase the pruning factor, and re-try.
 
-  pruneFactor = (pruneFactor - 1) * 2 + 1;
+  pruneFactor = (pruneFactor - 1) * multiplier + 1;
   std::cout << "Pruning factor: " << pruneFactor << std::endl;
 
   pruneParentSetsHeuristic();

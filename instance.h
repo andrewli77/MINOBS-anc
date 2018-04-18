@@ -23,7 +23,7 @@ class Instance {
     bool canPruneParentHeuristic(int node, int j);
     int pruneParentSetsLossless();
     int pruneParentSetsHeuristic();
-    void restartWithLessPrune();
+    void restartWithLessPrune(int multiplier);
 
     //double pruneFactor() const;
 
@@ -44,7 +44,7 @@ class Instance {
   private:
     int n, dataSize, m_anc, m_dae, m_uae, m_aa, m_ord;
 
-    double pruneFactor = 1.05;
+    double pruneFactor = 1.001;
 
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
