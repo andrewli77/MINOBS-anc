@@ -636,7 +636,6 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   initialDAG = parents;
 
-
   if (curScore == INF) {
     return SearchResult(curScore, cur);
   }
@@ -673,13 +672,37 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   return SearchResult(curScore, cur);
 }
 
+void LocalSearch::tunePruningFactor() {
+  for (int i = 0; i < 30; i++) {
+    SearchResult o = hillClimb(Ordering::randomOrdering(instance));
+    
+    // Success: found a feasible solution.
+    if (o.getScore() < PENALTY) {
+      instance.restartWithLessPrune(); // Increase the pruning factor one more time to ensure enough feasible results.
+
+      // Reset the search results.
+      optimalScore = INF;
+      return;
+    }
+  }
+
+  // If no feasible solutions were found, we must restart with a higher pruning factor and continue tuning.
+
+  instance.restartWithLessPrune();
+  tunePruningFactor();
+}
+
 SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS,
     int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr) {
   int n = instance.getN();
+
+  tunePruningFactor();
+
   SearchResult best(Types::SCORE_MAX, Ordering(n));
   std::deque<Types::Score> fitnesses;
   Population population(*this);
   int numGenerations = 1, nonImprovingGenerations = 0;
+
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
@@ -691,8 +714,8 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
       triesLeft--;
 
       if (triesLeft == 0) {
-        std::cout << "Infeasible...try less pruning." << std::endl;
-        exit(1);
+        std::cout << "Infeasible...reinitializing with less pruning." << std::endl;
+        instance.restartWithLessPrune();
       }
     } while (o.getScore() == INF);
 

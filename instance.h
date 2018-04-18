@@ -23,7 +23,9 @@ class Instance {
     bool canPruneParentHeuristic(int node, int j);
     int pruneParentSetsLossless();
     int pruneParentSetsHeuristic();
-    double pruneFactor() const;
+    void restartWithLessPrune();
+
+    //double pruneFactor() const;
 
     void sortAllParents();
     std::vector< std::pair<int, int> > &getParentList();
@@ -41,6 +43,9 @@ class Instance {
     std::vector< std::pair<int,int> > deConstraints, ueConstraints, absConstraints, ordConstraints;
   private:
     int n, dataSize, m_anc, m_dae, m_uae, m_aa, m_ord;
+
+    double pruneFactor = 1.05;
+
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
