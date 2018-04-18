@@ -293,7 +293,7 @@ int Instance::pruneParentSetsHeuristic() {
     }
 
     var.setNumParents(validParents.size());
-    var.parentSort();
+    //var.parentSort(); (Don't need this?)
     var.resetParentIds();
   }
   
