@@ -65,7 +65,7 @@ def parseConstraintsCaMML():
 		outF.write("}\n")
 
 
-base = "water"
+base = "alarm"
 
 inF = open("constraints/" + base + ".txt")
 

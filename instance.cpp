@@ -318,7 +318,6 @@ double Instance::pruneFactor() const {
 
 
   double constraintDensity = (double)m_anc / (n * (n-1));
-
   return 1 + omegaFactor * constraintDensity;
 }
 
