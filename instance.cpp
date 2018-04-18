@@ -180,7 +180,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       allParentSets.push_back(std::make_pair(i, j));  
     }
   }
-
+  
+  std::cout << "Old prune factor would have been: " << oldPruneFactor() << std::endl;
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
   std::cout << "Pruned parent sets: " << pruned << std::endl;
   std::cout << "Number of ancestral constraints: " << m_anc << std::endl;
@@ -211,7 +212,7 @@ int Instance::pruneParentSetsLossless() {
     }
 
     var.setNumParents(validParents.size());
-    var.parentSort();
+    //var.parentSort();
     var.resetParentIds();
 
 
@@ -308,27 +309,15 @@ int Instance::pruneParentSetsHeuristic() {
   return pruned;
 }
 
-/*
-double Instance::pruneFactor() const {
-  double omegaFactor = (double) 1.5 * n*n / dataSize;
 
-  if (m_ord != 0 || m_aa != 0) {
-    if (constraintFileName.find("0.1") != std::string::npos) {
-      omegaFactor *= 20;
-    } else if (constraintFileName.find("0.2") != std::string::npos) {
-      omegaFactor *= 40;
-    } else if (constraintFileName.find("0.3") != std::string::npos) {
-      omegaFactor *= 60;
-    } else if (constraintFileName.find("0.4") != std::string::npos) {
-      omegaFactor *= 80;
-    }
-  }
+double Instance::oldPruneFactor() const {
+  double omegaFactor = (double) 1.5 * n*n / dataSize;
 
 
   double constraintDensity = (double)m_anc / (n * (n-1));
   return 1 + omegaFactor * constraintDensity;
 }
-*/
+
 
 bool Instance::canPruneParentHeuristic(int node, int j) {
   // Pruning rules-------------
@@ -371,9 +360,21 @@ void Instance::restartWithLessPrune(int multiplier) {
   // Increase the pruning factor, and re-try.
 
   pruneFactor = (pruneFactor - 1) * multiplier + 1;
-  std::cout << "Pruning factor: " << pruneFactor << std::endl;
+  
 
   pruneParentSetsHeuristic();
+
+  allParentSets.clear();
+
+  for (int i = 0; i < n; i++) {
+    const Variable &v = getVar(i);
+    for (int j=0; j < v.numParents(); j++) {
+      allParentSets.push_back(std::make_pair(i, j));  
+    }
+  }
+
+  std::cout << "Pruning factor: " << pruneFactor << std::endl;
+  sortAllParents();
 }
 
 std::vector< std::pair<int, int> > &Instance::getParentList() {

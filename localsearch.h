@@ -74,7 +74,6 @@ class LocalSearch {
     Instance &instance;
     ResultRegister &rr;
     static int climbs;
-    std::vector< std::pair<int,int> > allParents;
     bool **ancestor, **descendant, *satisfied;
 
     std::vector<int> globalOptimum;

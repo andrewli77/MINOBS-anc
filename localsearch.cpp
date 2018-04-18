@@ -14,7 +14,6 @@
 #include "swaptabulist.h"
 
 LocalSearch::LocalSearch(Instance &instance, ResultRegister &rr) : instance(instance), rr(rr) { 
-  allParents = instance.getParentList();
   alloc_2d(ancestor, descendant, satisfied);
 }
 
@@ -392,8 +391,8 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     bool foundImproving = false;
 
-    for (int i = 0; i < allParents.size(); i++) {
-      int cur = allParents[i].first, par = allParents[i].second;
+    for (int i = 0; i < instance.getParentList().size(); i++) {
+      int cur = instance.getParentList()[i].first, par = instance.getParentList()[i].second;
       int oldPar = bestGraph[cur];
       const Variable &var = instance.getVar(cur);
       const ParentSet &p = var.getParent(par);
@@ -442,9 +441,9 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         }
 
         while (true) {
-          int i = rand() % allParents.size();
+          int i = rand() % instance.getParentList().size();
 
-          int cur = allParents[i].first, par = allParents[i].second;
+          int cur = instance.getParentList()[i].first, par = instance.getParentList()[i].second;
           const Variable &var = instance.getVar(cur);
           const ParentSet &p = var.getParent(par);
 
@@ -673,17 +672,17 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
 }
 
 void LocalSearch::tunePruningFactor() {
-  for (int i = 0; i < 30; i++) {
-    SearchResult o = hillClimb(Ordering::randomOrdering(instance));
-    
-    // Success: found a feasible solution.
-    if (o.getScore() < PENALTY) {
-      instance.restartWithLessPrune(10); // Increase the pruning factor one more time to ensure enough feasible results.
+  SearchResult o1 = hillClimb(Ordering::randomOrdering(instance));
+  SearchResult o2 = hillClimb(Ordering::randomOrdering(instance));
+  SearchResult o3 = hillClimb(Ordering::randomOrdering(instance));
+  
+  // Success.
+  if (o1.getScore() < PENALTY && o2.getScore() < PENALTY && o3.getScore() < PENALTY) {
+    instance.restartWithLessPrune(10); // Increase the pruning factor one more time to ensure enough feasible results.
 
-      // Reset the search results.
-      optimalScore = INF;
-      return;
-    }
+    // Reset the search results.
+    optimalScore = INF;
+    return;
   }
 
   // If no feasible solutions were found, we must restart with a higher pruning factor and continue tuning.

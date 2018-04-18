@@ -38,13 +38,15 @@ class Instance {
     bool hasUndirectedForNode(int i) const;
     bool hasUndirectedExistence() const;
 
+    double oldPruneFactor() const;
+
     friend std::ostream& operator<<(std::ostream &os, const Instance& I);
 
     std::vector< std::pair<int,int> > deConstraints, ueConstraints, absConstraints, ordConstraints;
   private:
     int n, dataSize, m_anc, m_dae, m_uae, m_aa, m_ord;
 
-    double pruneFactor = 1.001;
+    double pruneFactor = 1.01;
 
     std::vector< std::pair<int,int> > allParentSets;
     std::vector<Variable> vars;
