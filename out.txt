@@ -1,10 +1,10 @@
-data/bic/earthquake_1000_6.BIC
-data/bic/earthquake_1000_6.BIC
-data/all-constraints/earthquake/earthquake-0.4-5
+data/bic/asia_1000_6.BIC
+data/bic/asia_1000_6.BIC
+data/all-constraints/asia/asia-0.2-5
 50
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-1	486785849
-1 0 2 4 3 
+8	2350210392
+2 4 0 3 1 5 7 6 

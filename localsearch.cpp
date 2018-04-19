@@ -822,6 +822,7 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
   for (int i = 0; i < instance.getM_dae(); i++) {
     std::pair<int, int> cons = instance.deConstraints[i];
     if (!adj[cons.first][cons.second]) {
+      std::cout << "Directed arc existence constraint broken: " << cons.first << " -> " << cons.second << std::endl;
       return false;
     }
   }
@@ -830,6 +831,7 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
   for (int i = 0; i < instance.getM_uae(); i++) {
     std::pair<int, int> cons = instance.ueConstraints[i];
     if (!adj[cons.first][cons.second] && !adj[cons.second][cons.first]) {
+      std::cout << "Undirected arc existence constraint broken: " << cons.first << " -- " << cons.second << std::endl;
       return false;
     }
   }
@@ -839,6 +841,7 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
   for (int i = 0; i < instance.getM_aa(); i++) {
     std::pair<int, int> cons = instance.absConstraints[i];
     if (adj[cons.first][cons.second]) {
+      std::cout << "Arc absence constraint broken: " << cons.first << " -/-> " << cons.second << std::endl;
       return false;
     }
   }
@@ -853,11 +856,13 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
   for (int i = 0; i < instance.getM_ord(); i++) {
     std::pair<int, int> cons = instance.ordConstraints[i];
     if (positions[cons.first] >= positions[cons.second]) {
+      std::cout << "Ordering constraint broken: " << cons.first << " < " << cons.second << std::endl;
       return false;
     }
   }
 
   if (numConstraintsSatisfied(parents) != instance.getM_anc()) {
+    std::cout << "Ancestral constraint broken" << std::endl;
     return false;
   }
 

@@ -17,6 +17,7 @@ class Instance {
     int getM_uae() const;
     int getM_aa() const;
     int getM_ord() const;
+    const std::vector<std::vector<bool>> &getOrderConstraints() const;
     std::string getFileName() const;
     bool isConstraint(int a, int b) const;
     bool canPruneParentLossless(int node, int j);

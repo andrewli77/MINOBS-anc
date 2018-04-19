@@ -423,6 +423,10 @@ const std::vector<int> &Instance::getUndirectedExistence(int i) const {
   return undirectedArcExistence[i];
 }
 
+const std::vector<std::vector<bool>> &Instance::getOrderConstraints() const {
+  return orderConstraints;
+}
+
 bool Instance::hasUndirectedForNode(int i) const {
   return (undirectedArcExistence[i].size() > 0);
 }
