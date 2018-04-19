@@ -1,9 +1,16 @@
 from random import *
 from math import *
+import argparse
 
-n = 11
-p = 0.4
-file = open("sachs.net", "r")
+n = 48
+file = open("barley.net", "r")
+
+parser = argparse.ArgumentParser(description="Input the percentage of constraints you want to generate",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("percentage", help="Enter a decimal number")
+args = parser.parse_args()
+
+p = float(args.percentage)
 
 
 mapping = dict()
@@ -11,11 +18,12 @@ rmapping = dict()
 graph = [ [] for i in range(n) ]
 adj = [ [0]*n for i in range(n) ]
 
-
 ancestralConstraints = []
-absenceConstraints = []
+#absenceConstraints = []
 existConstraints = []
+orderingConstraints = []
 
+topological = []
 
 
 
@@ -57,17 +65,20 @@ for i in range(n):
 	file.readline()
 
 
-for i in range(n):
-	for j in range(n):
-		if (i == j):
-			continue
-		if (adj[i][j] == 0):
-			absenceConstraints.append((i, j))
+# for i in range(n):
+# 	for j in range(n):
+# 		if (i == j):
+# 			continue
+# 		if (adj[i][j] == 0):
+# 			absenceConstraints.append((i, j))
 
 
 
 
+####################################################################################
+# Compute all ancestral constraints
 visited = set()
+
 
 def ancestors(x, start):
 	if x in visited:
@@ -86,14 +97,50 @@ for i in range(n):
 	visited = set()
 	ancestors(i, i)
 
-
 #print("Total number of positive constraints: " + str(len(allConstraints)))
-
 ancestralConstraints = list(set(ancestralConstraints))
+
+
+
+
+####################################################################################
+# Ordering constraints:
+# Use DFS to get an arbitrary topological ordering of the nodes
+# Output some proportion of the (n choose 2) possible pairwise ordering constraints
+marked = set()
+
+def dfs(x): 
+	if x in marked:
+		return
+	for y in range(n):
+		if adj[x][y]:
+			dfs(y)
+
+	marked.add(x)
+	topological.append(x)
+
+
+for i in range(n):
+	if i not in marked:
+		dfs(i)
+
+topological = list(reversed(topological))
+
+# Randomly sample (n choose 2) * p constraints
+
+
+assert(len(topological) == n)
+
+for i in range(n-1):
+	for j in range(i+1, n):
+		orderingConstraints.append((topological[i], topological[j]))
+
+####################################################################################
 
 shuffle(ancestralConstraints)
 shuffle(existConstraints)
-shuffle(absenceConstraints)
+shuffle(orderingConstraints)
+#shuffle(absenceConstraints)
 
 
 directed = []
@@ -106,11 +153,11 @@ for i in range(int(ceil(len(existConstraints) * p))):
 		undirected.append(existConstraints[i])
 
 
-nAbs = int(ceil(len(absenceConstraints) * p))
+#nAbs = int(ceil(len(absenceConstraints) * p))
 nAnc = int(ceil(len(ancestralConstraints) * p))
+nOrd = int(ceil(len(orderingConstraints) * p))
 
-
-
+assert(len(orderingConstraints) == n * (n-1) / 2)
 
 
 
@@ -130,13 +177,19 @@ for i in range(len(undirected)):
 		print("%d %d"%(undirected[i][0], undirected[i][1]))
 	#print(rmapping[undirected[i][0]], rmapping[undirected[i][1]])
 
-print(nAbs)
-
-for i in range(nAbs):
-	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
-	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
-
 print("0")
+
+#print(nAbs)
+#
+# for i in range(nAbs):
+# 	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
+# 	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
+
+print(nOrd)
+
+for i in range(nOrd):
+	print("%d %d"%(orderingConstraints[i][0], orderingConstraints[i][1]))
+
 
 print(nAnc)
 

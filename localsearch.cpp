@@ -817,8 +817,6 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
     }
   }
 
-
-
   // Check all directed arc existence
 
   for (int i = 0; i < instance.getM_dae(); i++) {
@@ -844,7 +842,6 @@ bool LocalSearch::allConstraintsSatisfied(const std::vector<int> &parents, const
       return false;
     }
   }
-
 
   // Check ordering
   std::vector< int > positions(n);
@@ -878,8 +875,6 @@ void LocalSearch::checkSolution() {
   long long scoreFromParents = 0;
   std::vector<int> inverse(n);
 
-
-
   for (int i = 0; i < n; i++) {
     inverse[o.get(i)] = i;
   }
@@ -912,7 +907,6 @@ void LocalSearch::checkSolution() {
   } else {
     std::cout << "Constraints check: Bad" << std::endl;
   }
-
 
   printModelString(parents, (constraintsSatisfied && valid && (scoreFromParents == scoreFromScores && scoreFromScores == optimalScore)), optimalScore);
 }
