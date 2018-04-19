@@ -678,8 +678,6 @@ void LocalSearch::tunePruningFactor() {
   
   // Success.
   if (o1.getScore() < PENALTY && o2.getScore() < PENALTY && o3.getScore() < PENALTY) {
-    instance.restartWithLessPrune(10); // Increase the pruning factor one more time to ensure enough feasible results.
-
     // Reset the search results.
     optimalScore = INF;
     return;

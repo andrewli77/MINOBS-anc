@@ -15,6 +15,8 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
   this->fileName = fileName;
   this->constraintFileName = constraintsFileName;
 
+  pruneFactor = initialPruneFactor();
+
   // Assume the input file name is of the format {instance}_{dataSize}.BIC
   // Otherwise, hard code the value of dataSize here.
 
@@ -180,8 +182,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       allParentSets.push_back(std::make_pair(i, j));  
     }
   }
-  
-  std::cout << "Old prune factor would have been: " << oldPruneFactor() << std::endl;
+
   std::cout << "Number of candidate parents: " << allParentSets.size() << std::endl;
   std::cout << "Pruned parent sets: " << pruned << std::endl;
   std::cout << "Number of ancestral constraints: " << m_anc << std::endl;
@@ -310,7 +311,7 @@ int Instance::pruneParentSetsHeuristic() {
 }
 
 
-double Instance::oldPruneFactor() const {
+double Instance::initialPruneFactor() const {
   double omegaFactor = (double) 1.5 * n*n / dataSize;
 
 
