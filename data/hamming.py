@@ -1,5 +1,5 @@
-n = 8
-instance = "asia"
+n = 5
+instance = "earthquake"
 dataSize = "1000"
 
 mapFile = open("mappings/" + instance + ".mapping")

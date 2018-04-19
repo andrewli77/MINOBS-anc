@@ -678,15 +678,21 @@ void LocalSearch::tunePruningFactor() {
   
   // Success.
   if (o1.getScore() < PENALTY && o2.getScore() < PENALTY && o3.getScore() < PENALTY) {
-    // Reset the search results.
-    optimalScore = INF;
+    optimalScore = INF; // This resets the best score found so far.
     return;
   }
 
-  // If no feasible solutions were found, we must restart with a higher pruning factor and continue tuning.
+  // Restart with a higher pruning factor and continue tuning.
+  // Exception: if nothing was pruned there's no point in restarting.
+  int pruned = instance.restartWithLessPrune(2);
 
-  instance.restartWithLessPrune(2);
-  tunePruningFactor();
+  if (pruned > 0) {
+    tunePruningFactor();
+  } else {
+    optimalScore = INF;
+    return;
+  }
+  
 }
 
 SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS,

@@ -304,17 +304,15 @@ int Instance::pruneParentSetsHeuristic() {
     //var.parentSort(); (Don't need this?)
     var.resetParentIds();
   }
-  
   return pruned;
 }
 
 
 double Instance::initialPruneFactor() const {
-  double omegaFactor = (double) 1.5 * n*n / dataSize;
-
-
+  double omegaFactor = (double) 100 * n / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
-  return 1 + omegaFactor * constraintDensity;
+
+  return 1 + omegaFactor * (1 - (1-constraintDensity)*(1-constraintDensity));
 }
 
 
@@ -353,15 +351,14 @@ void Instance::sortAllParents() {
     });
 }
 
-
-void Instance::restartWithLessPrune(int multiplier) {
+// Return the number of parent sets pruned by the heuristic
+int Instance::restartWithLessPrune(int multiplier) {
   // Too much pruning was done last time. 
   // Increase the pruning factor, and re-try.
 
   pruneFactor = (pruneFactor - 1) * multiplier + 1;
   
-
-  pruneParentSetsHeuristic();
+  int pruned = pruneParentSetsHeuristic();
 
   allParentSets.clear();
 
@@ -374,6 +371,8 @@ void Instance::restartWithLessPrune(int multiplier) {
 
   std::cout << "Pruning factor: " << pruneFactor << std::endl;
   sortAllParents();
+
+  return pruned;
 }
 
 std::vector< std::pair<int, int> > &Instance::getParentList() {

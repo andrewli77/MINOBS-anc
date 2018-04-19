@@ -23,7 +23,7 @@ class Instance {
     bool canPruneParentHeuristic(int node, int j);
     int pruneParentSetsLossless();
     int pruneParentSetsHeuristic();
-    void restartWithLessPrune(int multiplier);
+    int restartWithLessPrune(int multiplier);
 
     //double pruneFactor() const;
 
