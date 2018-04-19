@@ -61,6 +61,7 @@ class LocalSearch {
     void bestSwapBackward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     void bestSwapForward(int pivot, Ordering o, const std::vector<int> &parents, Ordering &bestOrdering, std::vector<int> &bestParents, Types::Score &bestSc);
     SearchResult hillClimb(const Ordering &ordering);
+    void tunePruningFactor();
     SearchResult genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS, int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr);
     void checkSolution();
     bool consistentWithAncestral(const Ordering &ordering);
@@ -73,7 +74,6 @@ class LocalSearch {
     Instance &instance;
     ResultRegister &rr;
     static int climbs;
-    std::vector< std::pair<int,int> > allParents;
     bool **ancestor, **descendant, *satisfied;
 
     std::vector<int> globalOptimum;

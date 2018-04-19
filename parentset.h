@@ -14,6 +14,7 @@ class ParentSet {
     bool supersetOf(const Types::Bitset &set) const;
     int getVar() const;
     int getId() const;
+    Types::Bitset getParents() const;
     int size() const;
     void setId(const int &i);
     friend std::ostream& operator<<(std::ostream &os, const ParentSet& p);

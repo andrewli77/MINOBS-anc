@@ -18,6 +18,10 @@ const ParentSet &Variable::getParent(int i) const {
   return parents[i];
 }
 
+const ParentSet &Variable::getOriginalParent(int i) const {
+  return originalParents[i];
+}
+
 void Variable::parentSort() {
   std::sort(parents.begin(), parents.end(), [](ParentSet a, ParentSet b) {
     return a.getScore() < b.getScore() || (a.getScore() == b.getScore() && a.size() < b.size());
@@ -26,6 +30,10 @@ void Variable::parentSort() {
 
 int Variable::numParents() const {
   return nParents;
+}
+
+int Variable::numOriginalParents() const {
+  return originalParents.size();
 }
 
 void Variable::setNumParents(int n) {
@@ -49,4 +57,12 @@ void Variable::resetParentIds() {
 
 int Variable::getId() const {
   return varId;
+}
+
+void Variable::hardCopyParents() {
+
+  for (int i = 0; i < parents.size(); i++) {
+    const ParentSet &ps = parents[i];
+    originalParents.push_back(ParentSet(ps));
+  }
 }

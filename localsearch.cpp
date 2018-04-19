@@ -14,7 +14,6 @@
 #include "swaptabulist.h"
 
 LocalSearch::LocalSearch(Instance &instance, ResultRegister &rr) : instance(instance), rr(rr) { 
-  allParents = instance.getParentList();
   alloc_2d(ancestor, descendant, satisfied);
 }
 
@@ -392,8 +391,8 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
 
     bool foundImproving = false;
 
-    for (int i = 0; i < allParents.size(); i++) {
-      int cur = allParents[i].first, par = allParents[i].second;
+    for (int i = 0; i < instance.getParentList().size(); i++) {
+      int cur = instance.getParentList()[i].first, par = instance.getParentList()[i].second;
       int oldPar = bestGraph[cur];
       const Variable &var = instance.getVar(cur);
       const ParentSet &p = var.getParent(par);
@@ -442,9 +441,9 @@ Types::Score LocalSearch::modifiedDAGScoreWithParents(const Ordering &ordering, 
         }
 
         while (true) {
-          int i = rand() % allParents.size();
+          int i = rand() % instance.getParentList().size();
 
-          int cur = allParents[i].first, par = allParents[i].second;
+          int cur = instance.getParentList()[i].first, par = instance.getParentList()[i].second;
           const Variable &var = instance.getVar(cur);
           const ParentSet &p = var.getParent(par);
 
@@ -636,7 +635,6 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   Types::Score curScore = getBestScoreWithParents(cur, parents, scores);
   initialDAG = parents;
 
-
   if (curScore == INF) {
     return SearchResult(curScore, cur);
   }
@@ -673,13 +671,41 @@ SearchResult LocalSearch::hillClimb(const Ordering &ordering) {
   return SearchResult(curScore, cur);
 }
 
+void LocalSearch::tunePruningFactor() {
+  SearchResult o1 = hillClimb(Ordering::randomOrdering(instance));
+  SearchResult o2 = hillClimb(Ordering::randomOrdering(instance));
+  SearchResult o3 = hillClimb(Ordering::randomOrdering(instance));
+  
+  // Success.
+  if (o1.getScore() < PENALTY && o2.getScore() < PENALTY && o3.getScore() < PENALTY) {
+    optimalScore = INF; // This resets the best score found so far.
+    return;
+  }
+
+  // Restart with a higher pruning factor and continue tuning.
+  // Exception: if nothing was pruned there's no point in restarting.
+  int pruned = instance.restartWithLessPrune(2);
+
+  if (pruned > 0) {
+    tunePruningFactor();
+  } else {
+    optimalScore = INF;
+    return;
+  }
+  
+}
+
 SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZE, int NUM_CROSSOVERS, int NUM_MUTATIONS,
     int MUTATION_POWER, int DIV_LOOKAHEAD, int NUM_KEEP, float DIV_TOLERANCE, CrossoverType crossoverType, int greediness, Types::Score opt, ResultRegister &rr) {
   int n = instance.getN();
+
+  tunePruningFactor();
+
   SearchResult best(Types::SCORE_MAX, Ordering(n));
   std::deque<Types::Score> fitnesses;
   Population population(*this);
   int numGenerations = 1, nonImprovingGenerations = 0;
+
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
@@ -691,7 +717,7 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
       triesLeft--;
 
       if (triesLeft == 0) {
-        std::cout << "Infeasible...try less pruning." << std::endl;
+        std::cout << "Infeasible..." << std::endl;
         exit(1);
       }
     } while (o.getScore() == INF);
