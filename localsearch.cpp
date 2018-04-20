@@ -709,7 +709,6 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
   std::cout << "Time: " << rr.check() << " Generating initial population" << std::endl;
   for (int i = 0; i < INIT_POPULATION_SIZE; i++) {
     SearchResult o;
-    o = hillClimb(Ordering::randomOrdering(instance));
 
     int triesLeft = 10000;
     do {
@@ -736,8 +735,6 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
 
     Types::Score initialSc = optimalScore;
 
-    //std::cout << "Time: " << rr.check() << " Starting generation " << numGenerations << std::endl;
-    //DBG(population);
     std::vector<SearchResult> offspring;
 
     population.addCrossovers(NUM_CROSSOVERS, crossoverType, offspring);
@@ -779,12 +776,6 @@ SearchResult LocalSearch::genetic(int cutoffGenerations, int INIT_POPULATION_SIZ
     }
 
     std::cout << "Finished generation: " << numGenerations << std::endl;
-
-/*
-    if (nonImprovingGenerations == 10) {
-      break;
-    }
-*/
 
   } while (numGenerations < cutoffGenerations);
   std::cout << "Generations: " << numGenerations << std::endl;
@@ -946,8 +937,8 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
   int periodIdx = instanceFile.find('.');
 
   if (periodIdx == std::string::npos) {
-    std::cout << "Error: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
-    exit(0);
+    std::cout << "Warning: the parent scores file is not of the format {instance}_{dataSize}.{scoreType}. Rename the file or modify instance.cpp." << std::endl;
+    return;
   }
 
   std::string instanceName = instanceFile.substr(0, periodIdx);
@@ -1003,7 +994,7 @@ void LocalSearch::printModelString(const std::vector<int> &parents, bool valid, 
 
 
   // Print the network.
-  outF << instance.getM_anc() << std::endl;
+  outF << instance.getM_anc() + instance.getM_ord() + instance.getM_aa() + instance.getM_uae() + instance.getM_dae() << std::endl;
 
   if (!valid) {
     outF << "INVALID" << std::endl;

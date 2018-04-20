@@ -19,6 +19,7 @@ class Instance {
     int getM_ord() const;
     const std::vector<std::vector<bool>> &getOrderConstraints() const;
     std::string getFileName() const;
+    std::string getConstraintFileName() const;
     bool isConstraint(int a, int b) const;
     bool canPruneParentLossless(int node, int j);
     bool canPruneParentHeuristic(int node, int j);

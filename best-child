@@ -1,0 +1,24 @@
+w = 20
+
+Size: 0 	 Avg Score: 6619008614.500000 	 Avg SHD: 9.500000 	 Avg Missing: 5.333333 	 Avg Extra: 1.000000 	 Avg Reversed: 3.166667 	 Samples: 6 	 t: 1.055000
+
+Size: 7 	 Avg Score: 6625778330.166667 	 Avg SHD: 7.700000 	 Avg Missing: 4.800000 	 Avg Extra: 1.033333 	 Avg Reversed: 1.866667 	 Samples: 30 	 t: 4.145333
+
+Size: 16 	 Avg Score: 6634943748.366667 	 Avg SHD: 8.200000 	 Avg Missing: 4.700000 	 Avg Extra: 1.800000 	 Avg Reversed: 1.700000 	 Samples: 30 	 t: 9.976333
+
+Size: 32 	 Avg Score: 6638870231.766666 	 Avg SHD: 6.833333 	 Avg Missing: 3.800000 	 Avg Extra: 1.366667 	 Avg Reversed: 1.666667 	 Samples: 30 	 t: 17.051667
+
+Size: 64 	 Avg Score: 6675452169.833333 	 Avg SHD: 4.166667 	 Avg Missing: 2.166667 	 Avg Extra: 2.000000 	 Avg Reversed: 0.000000 	 Samples: 6 	 t: 18.326667
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+w = 20
+
+Size: 0 	 Avg Score: 25222155125.333332 	 Avg SHD: 5.333333 	 Avg Missing: 1.666667 	 Avg Extra: 0.166667 	 Avg Reversed: 3.500000 	 Samples: 6 	 t: 1.955000
+
+Size: 7 	 Avg Score: 25222982323.900002 	 Avg SHD: 2.100000 	 Avg Missing: 1.466667 	 Avg Extra: 0.166667 	 Avg Reversed: 0.466667 	 Samples: 30 	 t: 4.579000
+
+Size: 16 	 Avg Score: 25232077830.400002 	 Avg SHD: 1.300000 	 Avg Missing: 0.700000 	 Avg Extra: 0.300000 	 Avg Reversed: 0.300000 	 Samples: 30 	 t: 8.261333
+
+Size: 32 	 Avg Score: 25231769385.166668 	 Avg SHD: 1.400000 	 Avg Missing: 0.700000 	 Avg Extra: 0.300000 	 Avg Reversed: 0.400000 	 Samples: 30 	 t: 11.350000
+
+Size: 64 	 Avg Score: 25235491436.500000 	 Avg SHD: 0.500000 	 Avg Missing: 0.166667 	 Avg Extra: 0.333333 	 Avg Reversed: 0.000000 	 Samples: 6 	 t: 11.886667

@@ -1,10 +1,14 @@
-data/bic/asia_1000_6.BIC
-data/bic/asia_1000_6.BIC
-data/all-constraints/asia/asia-0.2-5
-50
+data/bdeu/child_2000_1.BDeu
+data/bdeu/child_2000_1.BDeu
+data/constraints/child/child.0-1
+10
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-8	2350210392
-2 4 0 3 1 5 7 6 
+231	25366421855
+10 4 17 3 18 11 16 15 1 14 9 0 6 13 2 8 7 19 5 12 
+245	25272354451
+15 11 14 17 19 5 18 4 10 6 12 16 1 2 0 13 8 7 3 9 
+307	25272354450
+8 2 16 11 17 19 5 12 18 3 9 4 10 14 6 13 0 15 1 7 

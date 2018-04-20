@@ -309,7 +309,7 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::initialPruneFactor() const {
-  double omegaFactor = (double) 100 * n / dataSize;
+  double omegaFactor = (double) 300 * n / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
 
   return 1 + omegaFactor * (1 - (1-constraintDensity)*(1-constraintDensity));
@@ -405,6 +405,10 @@ int Instance::getM_ord() const {
 
 std::string Instance::getFileName() const {
   return fileName;
+}
+
+std::string Instance::getConstraintFileName() const {
+  return constraintFileName;
 }
 
 bool Instance::isConstraint(int a, int b) const {
