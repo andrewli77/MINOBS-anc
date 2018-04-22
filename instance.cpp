@@ -309,7 +309,7 @@ int Instance::pruneParentSetsHeuristic() {
 
 
 double Instance::initialPruneFactor() const {
-  double omegaFactor = (double) 50 * n / dataSize;
+  double omegaFactor = (double) 100 * n / dataSize;
   double constraintDensity = (double)m_anc / (n * (n-1));
 
   return 1 + omegaFactor * (1 - (1-constraintDensity)*(1-constraintDensity));
