@@ -2,8 +2,8 @@ from random import *
 from math import *
 import argparse
 
-n = 48
-file = open("barley.net", "r")
+n = 20
+file = open("child.net", "r")
 
 parser = argparse.ArgumentParser(description="Input the percentage of constraints you want to generate",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
