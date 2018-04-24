@@ -1,6 +1,9 @@
-n = 48
-instance = "barley"
-dataSize = "8000"
+n = 27
+instance = "insurance"
+dataSize = "2000"
+modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
+
+
 
 mapFile = open("mappings/" + instance + ".mapping")
 mapping = dict()
@@ -82,7 +85,7 @@ def hammingDAG(trueBN, learnedBN):
 trueBN = model2network(modelStringCache[instance])
 
 
-modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
+
 
 scoreTotals = [0 for i in range(600)]
 shdTotals = [0 for i in range(600)]
