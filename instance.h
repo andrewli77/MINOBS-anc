@@ -54,7 +54,7 @@ class Instance {
     std::vector<Variable> vars;
     std::vector<Ancestral> ancestralConstraints;
 
-    std::vector<std::vector<bool>> orderConstraints;
+    std::vector<std::vector<bool>> orderConstraints, ancestralPairs;
 
     std::vector<std::vector<int>> undirectedArcExistence;
     std::vector< std::vector<int> > mustHaveParent, mustNotHaveParent;

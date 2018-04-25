@@ -19,7 +19,7 @@ graph = [ [] for i in range(n) ]
 adj = [ [0]*n for i in range(n) ]
 
 ancestralConstraints = []
-#absenceConstraints = []
+absenceConstraints = []
 existConstraints = []
 orderingConstraints = []
 
@@ -65,12 +65,12 @@ for i in range(n):
 	file.readline()
 
 
-# for i in range(n):
-# 	for j in range(n):
-# 		if (i == j):
-# 			continue
-# 		if (adj[i][j] == 0):
-# 			absenceConstraints.append((i, j))
+for i in range(n):
+	for j in range(n):
+		if (i == j):
+			continue
+		if (adj[i][j] == 0):
+			absenceConstraints.append((i, j))
 
 
 
@@ -140,7 +140,7 @@ for i in range(n-1):
 shuffle(ancestralConstraints)
 shuffle(existConstraints)
 shuffle(orderingConstraints)
-#shuffle(absenceConstraints)
+shuffle(absenceConstraints)
 
 
 directed = []
@@ -153,7 +153,7 @@ for i in range(int(ceil(len(existConstraints) * p))):
 		undirected.append(existConstraints[i])
 
 
-#nAbs = int(ceil(len(absenceConstraints) * p))
+nAbs = int(ceil(len(absenceConstraints) * p))
 nAnc = int(ceil(len(ancestralConstraints) * p))
 nOrd = int(ceil(len(orderingConstraints) * p))
 
@@ -177,13 +177,15 @@ for i in range(len(undirected)):
 		print("%d %d"%(undirected[i][0], undirected[i][1]))
 	#print(rmapping[undirected[i][0]], rmapping[undirected[i][1]])
 
-print("0")
 
-#print(nAbs)
-#
-# for i in range(nAbs):
-# 	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
-# 	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
+
+#print("0")
+
+print(nAbs)
+
+for i in range(nAbs):
+	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
+	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
 
 print(nOrd)
 

@@ -1,7 +1,7 @@
-n = 27
-instance = "insurance"
-dataSize = "2000"
-modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
+n = 5
+instance = "cancer"
+dataSize = "1000"
+modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
 
 
 

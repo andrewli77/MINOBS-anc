@@ -33,12 +33,15 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
     file >> n;
 
     orderConstraints = std::vector<std::vector<bool>>(n);
+    ancestralPairs = std::vector<std::vector<bool>>(n);
 
     for (int i = 0; i < n; i++) {
       orderConstraints[i].resize(n);
+      ancestralPairs[i].resize(n);
 
       for (int j = 0; j < n; j++) {
         orderConstraints[i][j] = false;
+        ancestralPairs[i][j] = false;
       }
     }
 
@@ -93,6 +96,7 @@ Instance::Instance(std::string fileName, std::string constraintsFileName) {
       int a, b;
       constraintsFile >> a >> b;
       ancestralConstraints[i] = std::make_pair(a, b);
+      ancestralPairs[a][b] = true;
       orderConstraints[a][b] = true; // We can infer that a < b from the ancestral constraint.
     }
 
@@ -243,7 +247,7 @@ bool Instance::canPruneParentLossless(int node, int j) {
 
   // Rule 2
   for (int x = 0; x < n; x++) {
-    if (orderConstraints[x][node]) {
+    if (ancestralPairs[x][node]) {
       bool allPrecedes = true;
 
       for (int i = 0; i < parents.size(); i++) {
@@ -281,7 +285,6 @@ bool Instance::canPruneParentLossless(int node, int j) {
 
 int Instance::pruneParentSetsHeuristic() {
   int pruned = 0;
-
   for (int i = 0; i < n; i++) {
     Variable &var = getVar(i);
     std::vector<ParentSet> validParents;
