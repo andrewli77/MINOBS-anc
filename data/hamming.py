@@ -1,6 +1,6 @@
-n = 5
-instance = "cancer"
-dataSize = "1000"
+n = 20
+instance = "child"
+dataSize = "2000"
 modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
 
 

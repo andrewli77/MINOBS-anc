@@ -1,10 +1,12 @@
-data/bdeu/cancer_1000_6.BDeu
-data/bdeu/cancer_1000_6.BDeu
-data/constraints/cancer/cancer.8-17
-50
+data/bdeu/child_2000_6.BDeu
+data/bdeu/child_2000_6.BDeu
+data/experiment2-constraints/child/child-0.2-5
+10
 0
 out.txt
 BEST
 Time (ms)	Score, followed by ordering next line
-0	2097634126
-0 1 2 4 3 
+194	25088757539
+17 11 0 18 19 5 12 15 4 3 9 10 16 2 14 6 8 1 7 13 
+217	25005489263
+0 11 17 19 18 5 12 4 10 3 9 14 16 2 15 8 6 1 7 13 

@@ -2,8 +2,8 @@ from random import *
 from math import *
 import argparse
 
-n = 5
-file = open("cancer.net", "r")
+n = 48
+file = open("barley.net", "r")
 
 parser = argparse.ArgumentParser(description="Input the percentage of constraints you want to generate",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -51,6 +51,7 @@ for i in range(n):
 		del words[1]
 
 	node = mapping[words[0]]
+	p
 
 	for each in words[1:]:
 		graph[node].append(mapping[each])
