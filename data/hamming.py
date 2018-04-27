@@ -1,8 +1,8 @@
-n = 27
-instance = "child"
-dataSize = "2000"
-modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
-
+n = 32
+instance = "water"
+dataSize = "1000"
+modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
+#modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
 
 
 mapFile = open("mappings/" + instance + ".mapping")

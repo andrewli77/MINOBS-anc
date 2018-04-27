@@ -2,8 +2,8 @@ from random import *
 from math import *
 import argparse
 
-n = 48
-file = open("barley.net", "r")
+n = 37
+file = open("alarm.net", "r")
 
 parser = argparse.ArgumentParser(description="Input the percentage of constraints you want to generate",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -180,13 +180,13 @@ for i in range(len(undirected)):
 
 
 
-#print("0")
+print("0")
 
-print(nAbs)
+#print(nAbs)
 
-for i in range(nAbs):
-	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
-	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
+# for i in range(nAbs):
+# 	print("%d %d"%(absenceConstraints[i][0], absenceConstraints[i][1]))
+# 	#print(rmapping[absenceConstraints[i][0]], rmapping[absenceConstraints[i][1]])
 
 print(nOrd)
 
