@@ -1,4 +1,4 @@
-n = 20
+n = 27
 instance = "child"
 dataSize = "2000"
 modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
@@ -87,14 +87,14 @@ trueBN = model2network(modelStringCache[instance])
 
 
 
-scoreTotals = [0 for i in range(600)]
-shdTotals = [0 for i in range(600)]
-missingTotals = [0 for i in range(600)]
-extraTotals = [0 for i in range(600)]
-reversedTotals = [0 for i in range(600)]
-tmTotals = [0 for i in range(600)]
-counts = [0 for i in range(600)]
-models = [[] for i in range(600)]
+scoreTotals = [0 for i in range(1000)]
+shdTotals = [0 for i in range(1000)]
+missingTotals = [0 for i in range(1000)]
+extraTotals = [0 for i in range(1000)]
+reversedTotals = [0 for i in range(1000)]
+tmTotals = [0 for i in range(1000)]
+counts = [0 for i in range(1000)]
+models = [[] for i in range(1000)]
 
 lastSz = -1
 
@@ -139,7 +139,7 @@ while True:
 	#print(size, info)
 
 parsedFile = open(instance + "_results_parsed", "w")
-for i in range(600):
+for i in range(1000):
 	if counts[i] != 0:
 		#assert(counts[i] == 1 or counts[i] == 5)
 		print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i], counts[i], tmTotals[i]/counts[i]))
