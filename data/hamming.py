@@ -1,6 +1,6 @@
-n = 32
-instance = "water"
-dataSize = "1000"
+n = 48
+instance = "barley"
+dataSize = "8000"
 modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
 #modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
 
