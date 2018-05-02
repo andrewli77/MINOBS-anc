@@ -1,8 +1,8 @@
-n = 48
-instance = "barley"
-dataSize = "8000"
-modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
-#modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
+n = 20
+instance = "sachs"
+dataSize = "1000"
+#modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
+modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
 
 
 mapFile = open("mappings/" + instance + ".mapping")
