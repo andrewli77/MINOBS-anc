@@ -1,6 +1,6 @@
-n = 6
-instance = "survey"
-dataSize = "1000"
+n = 48
+instance = "barley"
+dataSize = "8000"
 ancestralModelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
 allModelFile = open("bdeu/"+instance + "_" + dataSize +"_all_results")
 
@@ -140,9 +140,9 @@ class Parser:
 		parsedFile = open(instance + "_results_parsed", "w")
 		for i in range(1000):
 			if self.counts[i] != 0:
-				assert(self.counts[i] == 6 or self.counts[i] == 30)
+				#assert(self.counts[i] == 6 or self.counts[i] == 30)
 				parsedStr += str.format("%.1f %.1f %.1f %.1f\n" %(self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.scoreTotals[i]/self.counts[i]/1000000))
-				#print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, self.scoreTotals[i]/self.counts[i], self.shdTotals[i]/self.counts[i], self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.counts[i], self.tmTotals[i]/self.counts[i]))
+				print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, self.scoreTotals[i]/self.counts[i], self.shdTotals[i]/self.counts[i], self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.counts[i], self.tmTotals[i]/self.counts[i]))
 
 				parsedFile.write(str(i) + "\n")
 				for model in self.models[i]:
@@ -152,7 +152,7 @@ class Parser:
 
 		return parsedStr
 
-parserAncestral = Parser(n, instance, dataSize, ancestralModelFile)
+#parserAncestral = Parser(n, instance, dataSize, ancestralModelFile)
 parserAll = Parser(n, instance, dataSize, allModelFile)
 
 #str1 = parserAncestral.parse()
