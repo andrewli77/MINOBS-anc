@@ -1,13 +1,8 @@
-n = 20
-instance = "sachs"
+n = 6
+instance = "survey"
 dataSize = "1000"
-#modelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
-modelFile = open("bdeu/"+instance + "_" + dataSize +"_results")
-
-
-mapFile = open("mappings/" + instance + ".mapping")
-mapping = dict()
-rmapping = dict()
+ancestralModelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
+allModelFile = open("bdeu/"+instance + "_" + dataSize +"_all_results")
 
 
 modelStringCache = dict()
@@ -24,127 +19,169 @@ modelStringCache["survey"] = "[A][S][E|A:S][O|E][R|E][T|O:R]"
 modelStringCache["mildew"] = "[straaling_1][temp_1][meldug_1][lai_0][straaling_2][temp_2][straaling_3][temp_3][straaling_4][temp_4][middel_1][middel_2][middel_3][nedboer_1][nedboer_2][nedboer_3][lai_1|lai_0:meldug_1][foto_1|lai_1:temp_1:straaling_1][mikro_1|lai_1:temp_1:nedboer_1][dm_1|foto_1][meldug_2|middel_1:mikro_1:meldug_1][lai_2|lai_1:meldug_2][foto_2|lai_2:temp_2:straaling_2][mikro_2|lai_2:temp_2:nedboer_2][dm_2|foto_2:dm_1][meldug_3|middel_2:mikro_2:meldug_2][lai_3|lai_2:meldug_3][foto_3|lai_3:temp_3:straaling_3][mikro_3|lai_3:temp_3:nedboer_3][dm_3|foto_3:dm_2][meldug_4|middel_3:mikro_3:meldug_3][lai_4|lai_3:meldug_4][foto_4|lai_4:temp_4:straaling_4][dm_4|foto_4:dm_3][udbytte|dm_4]"
 
 
-for i in range(n):
-	var = mapFile.readline().strip()
-	rmapping[i] = var
-	mapping[var] = i
 
-def model2network(model):
-	network = [[0]*n for j in range(n)]
+class Parser:
+	def __init__(self, n, instance, dataSize, modelFile):
+		self.n = n
+		self.instance = instance
+		self.dataSize = dataSize
+		self.modelFile = modelFile
+		self.mapFile = open("mappings/" + instance + ".mapping")
+		self.mapping = dict()
+		self.rmapping = dict()
 
-	for i in range(n):
-		varStr = model[1:model.find("]")]
-		model = model[model.find("]") + 1:]
+
+		self.scoreTotals = [0 for i in range(1000)]
+		self.shdTotals = [0 for i in range(1000)]
+		self.missingTotals = [0 for i in range(1000)]
+		self.extraTotals = [0 for i in range(1000)]
+		self.reversedTotals = [0 for i in range(1000)]
+		self.tmTotals = [0 for i in range(1000)]
+		self.counts = [0 for i in range(1000)]
+		self.models = [[] for i in range(1000)]
+
+		for i in range(n):
+			var = self.mapFile.readline().strip()
+			self.rmapping[i] = var
+			self.mapping[var] = i
+
+	def model2network(self, model):
+		network = [[0]*n for j in range(n)]
+
+		for i in range(n):
+			varStr = model[1:model.find("]")]
+			model = model[model.find("]") + 1:]
 
 
-		
-		if (varStr.find("|") == -1):
-			#print("Parents of var ", mapping[varStr], ": ", end="")
-			#print("")
-			continue
+			
+			if (varStr.find("|") == -1):
+				#print("Parents of var ", mapping[varStr], ": ", end="")
+				#print("")
+				continue
 
+			else:
+				var, rest = varStr.split("|")
+				pars = rest.split(":")
+
+				intPars = []
+
+				#print("Parents of var ", mapping[var], ": ", end="")
+				for par in pars:
+					intPars.append(self.mapping[par])
+
+					network[self.mapping[par]][self.mapping[var]] = 1
+				intPars.sort()
+				#print(" ".join(map(str, intPars)))
+
+		return network
+
+
+	def hammingDAG(self, trueBN, learnedBN):
+		numMissing = 0
+		numExtra = 0
+		numReversed = 0
+
+		for i in range(n):
+			for j in range(n):
+				if learnedBN[i][j] == 1 and trueBN[i][j] == 0:
+					# Check first for if the reverse arc is present.
+					if trueBN[j][i] == 1:
+						numReversed += 1
+					else:
+						numExtra += 1
+
+				elif learnedBN[i][j] == 0 and trueBN[i][j] == 1:
+					# Avoid double counting the number of reversed arcs
+					if learnedBN[j][i] != 1:
+						numMissing += 1
+
+		return (numMissing + numExtra + numReversed, numMissing, numExtra, numReversed)
+
+
+	def parse(self):
+		lastSz = -1
+		trueBN = self.model2network(modelStringCache[instance])
+		parsedStr = ""
+
+		while True:
+			line1 = self.modelFile.readline()
+
+			if (not line1):
+				break
+
+			if (line1.strip() == "" or line1[0] == "#"):
+				continue
+
+
+
+			model = self.modelFile.readline()
+			line3 = self.modelFile.readline()
+			line4 = self.modelFile.readline()
+
+			size = int(line1)
+			score = int(line3)
+			tm = sum(map(float, line4.strip().split(",")))
+
+			self.scoreTotals[size] += score
+
+
+			if (size != lastSz):
+				lastSz = size
+		 
+			info = self.hammingDAG(trueBN, self.model2network(model))
+			self.shdTotals[size] +=  info[0]
+			self.missingTotals[size] += info [1]
+			self.extraTotals[size] += info [2]
+			self.reversedTotals[size] += info [3]
+			self.tmTotals[size] += tm
+			self.counts[size] += 1
+			self.models[size].append(model)
+
+		parsedFile = open(instance + "_results_parsed", "w")
+		for i in range(1000):
+			if self.counts[i] != 0:
+				assert(self.counts[i] == 6 or self.counts[i] == 30)
+				parsedStr += str.format("%.1f %.1f %.1f %.1f\n" %(self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.scoreTotals[i]/self.counts[i]/1000000))
+				#print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, self.scoreTotals[i]/self.counts[i], self.shdTotals[i]/self.counts[i], self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.counts[i], self.tmTotals[i]/self.counts[i]))
+
+				parsedFile.write(str(i) + "\n")
+				for model in self.models[i]:
+					parsedFile.write("\"" + model.strip() + "\",\n")
+		parsedFile.close()
+
+
+		return parsedStr
+
+parserAncestral = Parser(n, instance, dataSize, ancestralModelFile)
+parserAll = Parser(n, instance, dataSize, allModelFile)
+
+#str1 = parserAncestral.parse()
+str2 = parserAll.parse()
+
+
+def formatResults(s1, s2):
+	lines1 = s1.strip().split("\n")
+	lines2 = s2.strip().split("\n")
+
+	print("& $0^*$ & ", end="")
+	ls = lines1.pop(0).split(" ")
+
+	print(ls[0], "&", ls[1], "&", ls[2], "& &", ls[3], "\\\\")
+
+	for i in range(4):
+		if (i == 0):
+			print("& & 10 / 5 & ", end="")
+		elif (i == 1):
+			print("& & 25 / 10 & ", end="")
+		elif (i == 2):
+			print("& & 50 / 15 & ", end="")
 		else:
-			var, rest = varStr.split("|")
-			pars = rest.split(":")
+			print("& & 100 / 20 & ", end="")
 
-			intPars = []
+		ls1 = lines1[i].split(" ")
+		ls2 = lines2[i].split(" ")
 
-			#print("Parents of var ", mapping[var], ": ", end="")
-			for par in pars:
-				intPars.append(mapping[par])
+		print(ls1[0], "/", ls2[0], "&", ls1[1], "/", ls2[1], "&", ls1[2], "/", ls2[2], "& &", ls1[3], "/", ls2[3], "\\\\")
 
-				network[mapping[par]][mapping[var]] = 1
-			intPars.sort()
-			#print(" ".join(map(str, intPars)))
+#formatResults(str1, str2)
 
-	return network
-
-
-def hammingDAG(trueBN, learnedBN):
-	numMissing = 0
-	numExtra = 0
-	numReversed = 0
-
-	for i in range(n):
-		for j in range(n):
-			if learnedBN[i][j] == 1 and trueBN[i][j] == 0:
-				# Check first for if the reverse arc is present.
-				if trueBN[j][i] == 1:
-					numReversed += 1
-				else:
-					numExtra += 1
-
-			elif learnedBN[i][j] == 0 and trueBN[i][j] == 1:
-				# Avoid double counting the number of reversed arcs
-				if learnedBN[j][i] != 1:
-					numMissing += 1
-
-	return (numMissing + numExtra + numReversed, numMissing, numExtra, numReversed)
-
-
-trueBN = model2network(modelStringCache[instance])
-
-
-
-
-scoreTotals = [0 for i in range(1000)]
-shdTotals = [0 for i in range(1000)]
-missingTotals = [0 for i in range(1000)]
-extraTotals = [0 for i in range(1000)]
-reversedTotals = [0 for i in range(1000)]
-tmTotals = [0 for i in range(1000)]
-counts = [0 for i in range(1000)]
-models = [[] for i in range(1000)]
-
-lastSz = -1
-
-while True:
-	line1 = modelFile.readline()
-
-	if (not line1):
-		break
-
-	if (line1.strip() == "" or line1[0] == "#"):
-		continue
-
-
-
-	model = modelFile.readline()
-	line3 = modelFile.readline()
-	line4 = modelFile.readline()
-
-	#print(model)
-
-	
-
-	size = int(line1)
-	score = int(line3)
-	tm = sum(map(float, line4.strip().split(",")))
-
-	scoreTotals[size] += score
-
-
-	if (size != lastSz):
-		lastSz = size
- 
-	info = hammingDAG(trueBN, model2network(model))
-	shdTotals[size] +=  info[0]
-	missingTotals[size] += info [1]
-	extraTotals[size] += info [2]
-	reversedTotals[size] += info [3]
-	tmTotals[size] += tm
-	counts[size] += 1
-	models[size].append(model)
-
-	#print(size, info)
-
-parsedFile = open(instance + "_results_parsed", "w")
-for i in range(1000):
-	if counts[i] != 0:
-		#assert(counts[i] == 1 or counts[i] == 5)
-		print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, scoreTotals[i]/counts[i], shdTotals[i]/counts[i], missingTotals[i]/counts[i], extraTotals[i]/counts[i], reversedTotals[i]/counts[i], counts[i], tmTotals[i]/counts[i]))
-
-		parsedFile.write(str(i) + "\n")
-		for model in models[i]:
-			parsedFile.write("\"" + model.strip() + "\",\n")
-parsedFile.close()
