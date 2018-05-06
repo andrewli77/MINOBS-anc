@@ -1,6 +1,6 @@
 n = 48
 instance = "barley"
-dataSize = "8000"
+dataSize = "2000"
 ancestralModelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
 allModelFile = open("bdeu/"+instance + "_" + dataSize +"_all_results")
 
