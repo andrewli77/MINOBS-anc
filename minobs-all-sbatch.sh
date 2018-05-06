@@ -1,11 +1,12 @@
 #!/bin/bash
+#SBATCH --time=16:00:00
+#SBATCH --mem-per-cpu=4096
 
 instance=$1
 constraints=$2
 gens=$3
 
-#SBATCH --time=16:00:00
-#SBATCH --mem-per-cpu=4096
+
 
 i=0
 
