@@ -1,6 +1,6 @@
 n = 48
 instance = "barley"
-dataSize = "2000"
+dataSize = "8000"
 ancestralModelFile = open("bdeu/"+instance + "_" + dataSize +"_ancestral_results")
 allModelFile = open("bdeu/"+instance + "_" + dataSize +"_all_results")
 
@@ -19,6 +19,56 @@ modelStringCache["survey"] = "[A][S][E|A:S][O|E][R|E][T|O:R]"
 modelStringCache["mildew"] = "[straaling_1][temp_1][meldug_1][lai_0][straaling_2][temp_2][straaling_3][temp_3][straaling_4][temp_4][middel_1][middel_2][middel_3][nedboer_1][nedboer_2][nedboer_3][lai_1|lai_0:meldug_1][foto_1|lai_1:temp_1:straaling_1][mikro_1|lai_1:temp_1:nedboer_1][dm_1|foto_1][meldug_2|middel_1:mikro_1:meldug_1][lai_2|lai_1:meldug_2][foto_2|lai_2:temp_2:straaling_2][mikro_2|lai_2:temp_2:nedboer_2][dm_2|foto_2:dm_1][meldug_3|middel_2:mikro_2:meldug_2][lai_3|lai_2:meldug_3][foto_3|lai_3:temp_3:straaling_3][mikro_3|lai_3:temp_3:nedboer_3][dm_3|foto_3:dm_2][meldug_4|middel_3:mikro_3:meldug_3][lai_4|lai_3:meldug_4][foto_4|lai_4:temp_4:straaling_4][dm_4|foto_4:dm_3][udbytte|dm_4]"
 
 
+
+addedTimes = dict()
+
+addedTimes["cancer_250"] = 0.01
+addedTimes["cancer_1000"] = 0.0133333333
+addedTimes["earthquake_250"] = 0.0133333333
+addedTimes["earthquake_1000"] = 0.01
+addedTimes["survey_250"] = 0.015
+addedTimes["survey_1000"] = 0.01166666
+addedTimes["asia_250"] = 0.015
+addedTimes["asia_1000"] = 0.015
+addedTimes["sachs_250"] = 0.02
+addedTimes["sachs_1000"] = 0.0266666
+addedTimes["child_500"] = 0.14333333
+addedTimes["child_2000"] = 0.156666666
+addedTimes["insurance_500"] = 0.4983333333
+addedTimes["insurance_2000"] = 0.555
+addedTimes["water_1000"] = 1.116666666
+addedTimes["water_4000"] = 1.166666666
+addedTimes["mildew_8000"] = 22.08666666666
+addedTimes["mildew_32000"] = 32.508333333333
+addedTimes["alarm_1000"] = 2.15
+addedTimes["alarm_4000"] = 2.203333333333
+addedTimes["barley_2000"] = 18.49
+addedTimes["barley_8000"] = 31.2983333333333
+
+bestScores = dict()
+
+bestScores["cancer_250"] = 525.3
+bestScores["cancer_1000"] = 2107.7
+bestScores["earthquake_250"] = 131.8
+bestScores["earthquake_1000"] = 457.6
+bestScores["survey_250"] = 1014.7
+bestScores["survey_1000"] = 3977.6
+bestScores["asia_250"] = 598.1
+bestScores["asia_1000"] = 2307.5
+bestScores["sachs_250"] = 2002.6
+bestScores["sachs_1000"] = 7541.7
+bestScores["child_500"] = 6619.0
+bestScores["child_2000"] = 25222.2
+bestScores["insurance_500"] = 7263.3
+bestScores["insurance_2000"] = 27286.0
+bestScores["water_1000"] = 13306.1
+bestScores["water_4000"] = 51941.7
+bestScores["mildew_8000"] = 366734.7
+bestScores["mildew_32000"] = 1354857.3
+bestScores["alarm_1000"] = 11105.6
+bestScores["alarm_4000"] = 42751.1
+bestScores["barley_2000"] = 110098.1
+bestScores["barley_8000"] = 409719.4
 
 class Parser:
 	def __init__(self, n, instance, dataSize, modelFile):
@@ -140,9 +190,9 @@ class Parser:
 		parsedFile = open(instance + "_results_parsed", "w")
 		for i in range(1000):
 			if self.counts[i] != 0:
-				#assert(self.counts[i] == 6 or self.counts[i] == 30)
-				parsedStr += str.format("%.1f %.1f %.1f %.1f\n" %(self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.scoreTotals[i]/self.counts[i]/1000000))
-				print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, self.scoreTotals[i]/self.counts[i], self.shdTotals[i]/self.counts[i], self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.counts[i], self.tmTotals[i]/self.counts[i]))
+				assert(self.counts[i] == 6 or self.counts[i] == 30)
+				parsedStr += str.format("%.1f %.1f %.1f %.1f\\%%\n" %(self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], (self.scoreTotals[i]/self.counts[i]/1000000 - bestScores[instance + "_" + dataSize]) / bestScores[instance + "_" + dataSize]  * 100))
+				print("Size: %d \t Avg Score: %f \t Avg SHD: %f \t Avg Missing: %f \t Avg Extra: %f \t Avg Reversed: %f \t Samples: %d \t t: %f\n" %(i, (self.scoreTotals[i]/self.counts[i]/1000000 - bestScores[instance + "_" + dataSize]) / bestScores[instance + "_" + dataSize] , self.shdTotals[i]/self.counts[i], self.missingTotals[i]/self.counts[i], self.extraTotals[i]/self.counts[i], self.reversedTotals[i]/self.counts[i], self.counts[i], self.tmTotals[i]/self.counts[i] + addedTimes[instance + "_" + dataSize]))
 
 				parsedFile.write(str(i) + "\n")
 				for model in self.models[i]:
@@ -152,10 +202,11 @@ class Parser:
 
 		return parsedStr
 
-#parserAncestral = Parser(n, instance, dataSize, ancestralModelFile)
+parserAncestral = Parser(n, instance, dataSize, ancestralModelFile)
 parserAll = Parser(n, instance, dataSize, allModelFile)
 
-#str1 = parserAncestral.parse()
+str1 = parserAncestral.parse()
+print("------------------------------------------------------")
 str2 = parserAll.parse()
 
 
@@ -183,5 +234,5 @@ def formatResults(s1, s2):
 
 		print(ls1[0], "/", ls2[0], "&", ls1[1], "/", ls2[1], "&", ls1[2], "/", ls2[2], "& &", ls1[3], "/", ls2[3], "\\\\")
 
-#formatResults(str1, str2)
+formatResults(str1, str2)
 
