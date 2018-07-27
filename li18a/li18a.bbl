@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -156,5 +156,12 @@ M.~Teyssier and D.~Koller.
   {B}ayesian networks.
 \newblock In \emph{Proceedings of the 21st Conference on Uncertainty in
   Artificial Intelligence}, pages 548--549, 2005.
+
+\bibitem[Tsamardinos et~al.(2006)Tsamardinos, Brown, and
+  Aliferis]{Tsamardinos2006}
+I.~Tsamardinos, L.~E. Brown, and C.~F. Aliferis.
+\newblock The max-min hill-climbing {B}ayesian network structure learning
+  algorithm.
+\newblock \emph{Machine learning}, 65\penalty0 (1):\penalty0 31--78, 2006.
 
 \end{thebibliography}

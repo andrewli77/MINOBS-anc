@@ -146,31 +146,27 @@ successfully incorporate ancestral constraints into a local search based BN stru
 %potentially be applied in the future to other global constraints that are currently out of reach for local search algorithms. 
 %One example is \emph{d-separation}, which allows an expert to assert conditional independence statements. 
 
-\subsection{Related work.} We briefly discuss some of the most relevant work towards incorporating expert knowledge into
-BN structure learning algorithms.
+\subsection{Related work.} We briefly discuss some related work on BN structure learning algorithms.
 
 \smallskip
-A local search method produced by \cite{CamposC07} handles precisely the constraints (1) -- (3). It is
-worth mentioning that their local search method is based on the space of DAGs while our proposed method primarily searches
-over the space of topological orderings. Our method can handle constraints (1) -- (3) in a straightforward way while additionally 
-reducing the search space, and in addition handle positive ancestral constraints.
+In a classic paper by \cite{Tsamardinos2006}, greedy hill-climbing was used efficiently and accurately for standard BN structure learning.
+Another local search algorithm by \cite{CamposC07} was able to handle precisely the constraints (1) -- (3). However, this
+local search method is based on the space of DAGs while our proposed method primarily searches
+over the space of topological orderings.
 
 \smallskip
-A recent exact approach by \cite{Chen2016} called EC Tree was specifically designed to handle ancestral constraints. Note
-that EC Tree can also handle constraints asserting the absence of a directed path and finds solutions with guaranteed optimality
+A recent exact approach by \cite{Chen2016} called EC Tree was specifically designed to handle ancestral constraints. EC Tree can also handle constraints asserting
+ the absence of a directed path and finds solutions with guaranteed optimality
 which our proposed method cannot. However, their method does not scale beyond $n = 20$ random variables when using the BDeu score.
-
-\smallskip
-Another exact approach is the widely-used GOBNILP \citep{Bartlett2017} which is able to handle a large variety of
+GOBNILP \citep{Bartlett2017}, a widely-used exact approach, is able to handle a large variety of
 constraints. \cite{Chen2016} demonstrated that GOBNILP can be made to handle ancestral constraints, but requires orders of magnitude
 more time than EC Tree.
 
 \smallskip
-Causal discovery via MML (CaMML) \citep{Korb2010} is a stochastic search solver based on Markov Chain Monte Carlo
-that is widely used in application fields. It is capable of handling all of the constraints (1)-(4) except for arc absence. One is also able to
+Causal discovery via MML (CaMML) \citep{Korb2010} uses stochastic search based on Markov Chain Monte Carlo. 
+It is capable of handling all of the constraints (1)-(4) except for arc absence. One is also able to
 assert that two variables are correlated (i.e. not independent) and all constraints can be specified as a soft constraint by setting confidence levels. We
 compare CaMML with our proposed method in our experimental evaluation. 
-
 
 %
 % Background material. Include enough background material so that
@@ -349,7 +345,7 @@ In our approach, we restart the search with a higher value of $\lambda$ if feasi
 		return hillClimbDAG($G_0$, $\mathcal{O}$) \;
 \end{algorithm}
 
-In this section, we discuss how to search for an optimal solution consistent with a given ordering $\mathcal{O}$ that satisfies all constraints. Recall that  $x \rightarrow y$, $x \nrightarrow y$, and $x \text{ \textemdash \  } y$ can all be handled in parent set identification. We assume that $\mathcal{O}$ is consistent with all ordering constraints as this is handled in the ordering-based search (detailed in the next section). Here we show how to handle ancestral constraints.
+In this section, we discuss how to search for an optimal solution consistent with a given ordering $\mathcal{O}$ that satisfies all constraints. Recall that  $x \rightarrow y$, $x \nrightarrow y$, and $x \text{ \textemdash \  } y$ can all be handled in parent set identification. We assume that $\mathcal{O}$ is consistent with all ordering constraints as this is handled in the next section. Here we show how to handle ancestral constraints.
 For convenience, we denote $\phi($G$)$ to be the number of ancestral constraints $x \rightsquigarrow y$ that are satisfied by a DAG $G$.
 
 \begin{definition} [Parent assignment neighbour]
@@ -413,6 +409,8 @@ feasible parent under $\mathcal{O'}$.
 In our experiments, we compare our proposed method, denoted by MINOBSx\footnote{Code is available at https://github.com/acliuw/MINOBS-anc},
 against the CaMML\footnote{http://bayesian-intelligence.com/software/} software. CaMML was chosen for comparison as it is widely
 used in application fields (see, e.g. \cite{Flores2011}, \cite{Kennett2001}, \cite{Sesen2013}) and is also based on a stochastic score-and-search approach. 
+It is important to note that the learning problem is significantly easier without ancestral constraints (adding any of the other constraints also generally improves
+performance), therefore we did not find it useful to compare MINOBSx against methods that could not handle ancestral constraints. 
 Unfortunately, the source code for EC Tree was not made available.
 
 \smallskip
@@ -443,7 +441,9 @@ For each dataset and each constraint set, we ran both MINOBSx and CaMML, providi
 All tests were run on a single core of an Intel ``Broadwell" E5-2683 v4 CPU @ 2.1 Ghz with a memory limit of 512 MB for small networks and 4 GB for medium networks. 
 
 \smallskip
-The parent set scores for MINOBSx were generated using GOBNILP \citep{Bartlett2017} with a parent limit of 3, due to limited disk space. The running time for GOBNILP is included in 
+The parent set scores for MINOBSx were generated using GOBNILP \citep{Bartlett2017} with a parent limit of 3, due to limited disk space.\footnote{For the largest case, \emph{barley}, the number of parent sets
+generated is $48*({48-1 \choose 3} + {48-1 \choose 2} + {48-1 \choose 1} + {48-1 \choose 0}) = 832512$ with a parent limit of 3. If the parent limit is increased to 4, the number of parent sets generated is $9394032$.}
+The running time for GOBNILP is included in 
 the running time for MINOBSx in the results. MINOBSx was run for 50 generations on small networks and 10 generations on medium networks. The parameter
 $\omega$ described in Section 3 was tuned to a value of $50$ using the \emph{cancer}, \emph{child}, and \emph{barley} instances. 
 
@@ -614,7 +614,7 @@ instance & $N$ & \% & Missing & Extra & Reversed & SID & Score (BDeu) \\
 \end{table}
 
 MINOBSx was able to find feasible solutions incorporating all constraints imposed \emph{for all tests}. CaMML was able to consistently incorporate most constraints on small networks,
-but performed poorly on all larger cases. Results for 3 of the 11 networks are explicitly specified in Table 1. 
+but performed poorly on all larger cases. Results for 3 of the 11 networks are explicitly specified in Table 1. \footnote{Extended versions of Table 1 and Table 2 containing full results are available at github.com/acliuw/MINOBS-anc.}
 
 \smallskip
 We also compare the quality of the networks learned by MINOBSx against the ground truth networks. We do not compare against the 
@@ -642,8 +642,8 @@ On the other hand, ancestral constraints alone appear to significantly improve t
 indirect causes and the SID measures differences in causal statements.
 
 \smallskip
-One pitfall that we note is that due to the low parent limit of 3, MINOBSx is unable to recover the ground truth network in some cases, as seen in the results for \emph{alarm} which
-contains a node with 4 parents. However, this is generally insignificant as large parent sets result in overly complex models that are unlikely to appear in optimal
+One pitfall we note is that due to the low parent limit of 3, MINOBSx is unable to recover the ground truth network in some cases, while CaMML does not explicitly set a parent limit. 
+This is observed in the results for \emph{alarm} which contains a node with 4 parents. However, this is generally insignificant as large parent sets result in overly complex models that are unlikely to appear in optimal
 solutions, especially when the amount of data is small. 
 
 
